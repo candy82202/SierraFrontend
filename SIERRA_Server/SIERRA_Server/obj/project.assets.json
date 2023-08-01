@@ -2274,19 +2274,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ispan\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\SierraCore\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server.csproj",
+      "projectUniqueName": "C:\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server.csproj",
       "projectName": "SIERRA_Server",
-      "projectPath": "C:\\SierraCore\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server.csproj",
-      "packagesPath": "C:\\Users\\ispan\\.nuget\\packages\\",
-      "outputPath": "C:\\SierraCore\\SIERRA_Server\\SIERRA_Server\\obj\\",
+      "projectPath": "C:\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ispan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2294,7 +2294,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2345,7 +2344,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
