@@ -1,4 +1,4 @@
-﻿namespace SIERRA_Server.Models.DTOs
+﻿namespace SIERRA_Server.Models.DTOs.Desserts
 {
     public class DessertDTO
     {

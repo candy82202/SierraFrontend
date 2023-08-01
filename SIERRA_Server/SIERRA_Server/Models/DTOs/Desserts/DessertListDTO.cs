@@ -1,6 +1,6 @@
 ﻿using SIERRA_Server.Models.EFModels;
 
-namespace SIERRA_Server.Models.DTOs
+namespace SIERRA_Server.Models.DTOs.Desserts
 {
     public class DessertListDTO
     {
