@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class DessertOrders
+    public partial class DessertOrder
     {
-        public DessertOrders()
+        public DessertOrder()
         {
-            DessertOrderDetails = new HashSet<DessertOrderDetails>();
+            DessertOrderDetails = new HashSet<DessertOrderDetail>();
         }
 
         public int DessertOrderId { get; set; }
@@ -26,9 +26,9 @@ namespace SIERRA_Server.Models.EFModels
         public string Note { get; set; }
         public string DiscountInfo { get; set; }
 
-        public virtual Coupons Coupon { get; set; }
-        public virtual OrderStatuses DessertOrderStatus { get; set; }
-        public virtual Members Member { get; set; }
-        public virtual ICollection<DessertOrderDetails> DessertOrderDetails { get; set; }
+        public virtual Coupon Coupon { get; set; }
+        public virtual OrderStatus DessertOrderStatus { get; set; }
+        public virtual Member Member { get; set; }
+        public virtual ICollection<DessertOrderDetail> DessertOrderDetails { get; set; }
     }
 }

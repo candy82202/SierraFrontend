@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class LessonImages
+    public partial class LessonImage
     {
         public int LessonImageId { get; set; }
         public int LessonId { get; set; }
         public string LessonImageName { get; set; }
 
-        public virtual Lessons Lesson { get; set; }
+        public virtual Lesson Lesson { get; set; }
     }
 }

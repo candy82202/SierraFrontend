@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class DessertCartItems
+    public partial class DessertCartItem
     {
         public int Id { get; set; }
         public int DessertCartId { get; set; }
@@ -13,7 +13,7 @@ namespace SIERRA_Server.Models.EFModels
         public int DessertId { get; set; }
         public string Quantity { get; set; }
 
-        public virtual Desserts Dessert { get; set; }
-        public virtual DessertCarts DessertCart { get; set; }
+        public virtual Dessert Dessert { get; set; }
+        public virtual DessertCart DessertCart { get; set; }
     }
 }

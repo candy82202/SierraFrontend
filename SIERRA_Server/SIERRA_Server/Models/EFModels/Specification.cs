@@ -13,6 +13,6 @@ namespace SIERRA_Server.Models.EFModels
         public string Size { get; set; }
         public int UnitPrice { get; set; }
 
-        public virtual Desserts Dessert { get; set; }
+        public virtual Dessert Dessert { get; set; }
     }
 }

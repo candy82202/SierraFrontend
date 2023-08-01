@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class LessonOrderDetails
+    public partial class LessonOrderDetail
     {
         public int LessonOrderDetailId { get; set; }
         public int LessonOrderId { get; set; }
@@ -15,7 +15,7 @@ namespace SIERRA_Server.Models.EFModels
         public int LessonUnitPrice { get; set; }
         public int Subtotal { get; set; }
 
-        public virtual Lessons Lesson { get; set; }
-        public virtual LessonOrders LessonOrder { get; set; }
+        public virtual Lesson Lesson { get; set; }
+        public virtual LessonOrder LessonOrder { get; set; }
     }
 }

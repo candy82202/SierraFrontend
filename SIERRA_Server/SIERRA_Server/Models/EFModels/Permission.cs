@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class Permissions
+    public partial class Permission
     {
-        public Permissions()
+        public Permission()
         {
-            Role = new HashSet<Roles>();
+            Roles = new HashSet<Role>();
         }
 
         public int Id { get; set; }
         public string PermissionName { get; set; }
 
-        public virtual ICollection<Roles> Role { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

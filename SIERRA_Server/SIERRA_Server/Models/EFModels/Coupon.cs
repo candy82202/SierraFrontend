@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class Coupons
+    public partial class Coupon
     {
-        public Coupons()
+        public Coupon()
         {
-            CouponSettings = new HashSet<CouponSettings>();
-            DessertOrders = new HashSet<DessertOrders>();
-            LessonOrders = new HashSet<LessonOrders>();
-            MemberCoupons = new HashSet<MemberCoupons>();
-            Promotions = new HashSet<Promotions>();
+            CouponSettings = new HashSet<CouponSetting>();
+            DessertOrders = new HashSet<DessertOrder>();
+            LessonOrders = new HashSet<LessonOrder>();
+            MemberCoupons = new HashSet<MemberCoupon>();
+            Promotions = new HashSet<Promotion>();
         }
 
         public int CouponId { get; set; }
@@ -31,12 +31,12 @@ namespace SIERRA_Server.Models.EFModels
         public DateTime CreateAt { get; set; }
         public bool Status { get; set; }
 
-        public virtual CouponCategories CouponCategory { get; set; }
-        public virtual DiscountGroups DiscountGroup { get; set; }
-        public virtual ICollection<CouponSettings> CouponSettings { get; set; }
-        public virtual ICollection<DessertOrders> DessertOrders { get; set; }
-        public virtual ICollection<LessonOrders> LessonOrders { get; set; }
-        public virtual ICollection<MemberCoupons> MemberCoupons { get; set; }
-        public virtual ICollection<Promotions> Promotions { get; set; }
+        public virtual CouponCategory CouponCategory { get; set; }
+        public virtual DiscountGroup DiscountGroup { get; set; }
+        public virtual ICollection<CouponSetting> CouponSettings { get; set; }
+        public virtual ICollection<DessertOrder> DessertOrders { get; set; }
+        public virtual ICollection<LessonOrder> LessonOrders { get; set; }
+        public virtual ICollection<MemberCoupon> MemberCoupons { get; set; }
+        public virtual ICollection<Promotion> Promotions { get; set; }
     }
 }

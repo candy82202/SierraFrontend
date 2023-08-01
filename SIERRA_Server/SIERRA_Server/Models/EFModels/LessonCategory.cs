@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class LessonCategories
+    public partial class LessonCategory
     {
-        public LessonCategories()
+        public LessonCategory()
         {
-            Lessons = new HashSet<Lessons>();
+            Lessons = new HashSet<Lesson>();
         }
 
         public int LessonCategoryId { get; set; }
         public string LessonCategoryName { get; set; }
 
-        public virtual ICollection<Lessons> Lessons { get; set; }
+        public virtual ICollection<Lesson> Lessons { get; set; }
     }
 }

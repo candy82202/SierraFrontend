@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class MemberCoupons
+    public partial class MemberCoupon
     {
         public int MemberCouponId { get; set; }
         public int MemberId { get; set; }
@@ -15,7 +15,7 @@ namespace SIERRA_Server.Models.EFModels
         public DateTime ExpireAt { get; set; }
         public string CouponName { get; set; }
 
-        public virtual Coupons Coupon { get; set; }
-        public virtual Members Member { get; set; }
+        public virtual Coupon Coupon { get; set; }
+        public virtual Member Member { get; set; }
     }
 }

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class Lessons
+    public partial class Lesson
     {
-        public Lessons()
+        public Lesson()
         {
-            LessonImages = new HashSet<LessonImages>();
-            LessonOrderDetails = new HashSet<LessonOrderDetails>();
+            LessonImages = new HashSet<LessonImage>();
+            LessonOrderDetails = new HashSet<LessonOrderDetail>();
         }
 
         public int LessonId { get; set; }
@@ -29,9 +29,9 @@ namespace SIERRA_Server.Models.EFModels
         public DateTime LessonEndTime { get; set; }
         public DateTime CreateTime { get; set; }
 
-        public virtual LessonCategories LessonCategory { get; set; }
-        public virtual Teachers Teacher { get; set; }
-        public virtual ICollection<LessonImages> LessonImages { get; set; }
-        public virtual ICollection<LessonOrderDetails> LessonOrderDetails { get; set; }
+        public virtual LessonCategory LessonCategory { get; set; }
+        public virtual Teacher Teacher { get; set; }
+        public virtual ICollection<LessonImage> LessonImages { get; set; }
+        public virtual ICollection<LessonOrderDetail> LessonOrderDetails { get; set; }
     }
 }

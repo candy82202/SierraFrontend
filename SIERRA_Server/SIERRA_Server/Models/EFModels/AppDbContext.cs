@@ -18,84 +18,53 @@ namespace SIERRA_Server.Models.EFModels
         {
         }
 
-        public virtual DbSet<Categories> Categories { get; set; }
-        public virtual DbSet<CouponCategories> CouponCategories { get; set; }
-        public virtual DbSet<CouponSettings> CouponSettings { get; set; }
-        public virtual DbSet<Coupons> Coupons { get; set; }
-        public virtual DbSet<DessertCartItems> DessertCartItems { get; set; }
-        public virtual DbSet<DessertCarts> DessertCarts { get; set; }
-        public virtual DbSet<DessertImages> DessertImages { get; set; }
-        public virtual DbSet<DessertOrderDetails> DessertOrderDetails { get; set; }
-        public virtual DbSet<DessertOrders> DessertOrders { get; set; }
-        public virtual DbSet<DessertTags> DessertTags { get; set; }
-        public virtual DbSet<Desserts> Desserts { get; set; }
-        public virtual DbSet<DiscountGroupItems> DiscountGroupItems { get; set; }
-        public virtual DbSet<DiscountGroups> DiscountGroups { get; set; }
-        public virtual DbSet<Discounts> Discounts { get; set; }
-        public virtual DbSet<Employees> Employees { get; set; }
-        public virtual DbSet<LessonCategories> LessonCategories { get; set; }
-        public virtual DbSet<LessonImages> LessonImages { get; set; }
-        public virtual DbSet<LessonOrderDetails> LessonOrderDetails { get; set; }
-        public virtual DbSet<LessonOrders> LessonOrders { get; set; }
-        public virtual DbSet<Lessons> Lessons { get; set; }
-        public virtual DbSet<MemberCoupons> MemberCoupons { get; set; }
-        public virtual DbSet<Members> Members { get; set; }
-        public virtual DbSet<OrderStatuses> OrderStatuses { get; set; }
-        public virtual DbSet<Permissions> Permissions { get; set; }
-        public virtual DbSet<Promotions> Promotions { get; set; }
-        public virtual DbSet<Roles> Roles { get; set; }
-        public virtual DbSet<Specification> Specification { get; set; }
-        public virtual DbSet<Teachers> Teachers { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Coupon> Coupons { get; set; }
+        public virtual DbSet<CouponCategory> CouponCategories { get; set; }
+        public virtual DbSet<CouponSetting> CouponSettings { get; set; }
+        public virtual DbSet<Dessert> Desserts { get; set; }
+        public virtual DbSet<DessertCart> DessertCarts { get; set; }
+        public virtual DbSet<DessertCartItem> DessertCartItems { get; set; }
+        public virtual DbSet<DessertImage> DessertImages { get; set; }
+        public virtual DbSet<DessertOrder> DessertOrders { get; set; }
+        public virtual DbSet<DessertOrderDetail> DessertOrderDetails { get; set; }
+        public virtual DbSet<DessertTag> DessertTags { get; set; }
+        public virtual DbSet<Discount> Discounts { get; set; }
+        public virtual DbSet<DiscountGroup> DiscountGroups { get; set; }
+        public virtual DbSet<DiscountGroupItem> DiscountGroupItems { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Lesson> Lessons { get; set; }
+        public virtual DbSet<LessonCategory> LessonCategories { get; set; }
+        public virtual DbSet<LessonImage> LessonImages { get; set; }
+        public virtual DbSet<LessonOrder> LessonOrders { get; set; }
+        public virtual DbSet<LessonOrderDetail> LessonOrderDetails { get; set; }
+        public virtual DbSet<Member> Members { get; set; }
+        public virtual DbSet<MemberCoupon> MemberCoupons { get; set; }
+        public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<Promotion> Promotions { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Specification> Specifications { get; set; }
+        public virtual DbSet<Teacher> Teachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Sierra0743;Persist Security Info=True;User ID=sa5;Password=sa5");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Categories>(entity =>
+            modelBuilder.Entity<Category>(entity =>
             {
-                entity.HasKey(e => e.CategoryId)
-                    .HasName("PK__Categori__19093A0B5129B724");
-
                 entity.Property(e => e.CategoryName).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<CouponCategories>(entity =>
+            modelBuilder.Entity<Coupon>(entity =>
             {
-                entity.HasKey(e => e.CouponCategoryId)
-                    .HasName("PK__CouponCa__799E5F0B77DAF30C");
-
-                entity.Property(e => e.CouponCategoryName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<CouponSettings>(entity =>
-            {
-                entity.HasKey(e => e.CouponSettingId)
-                    .HasName("PK__CouponSe__022B600418599282");
-
-                entity.Property(e => e.CouponSettingName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.Coupon)
-                    .WithMany(p => p.CouponSettings)
-                    .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__CouponSet__Coupo__6A30C649");
-            });
-
-            modelBuilder.Entity<Coupons>(entity =>
-            {
-                entity.HasKey(e => e.CouponId)
-                    .HasName("PK__Coupons__384AF1BAD677426F");
-
                 entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D349080095A749AD")
                     .IsUnique();
 
@@ -127,7 +96,66 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__Coupons__Discoun__6754599E");
             });
 
-            modelBuilder.Entity<DessertCartItems>(entity =>
+            modelBuilder.Entity<CouponCategory>(entity =>
+            {
+                entity.Property(e => e.CouponCategoryName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<CouponSetting>(entity =>
+            {
+                entity.Property(e => e.CouponSettingName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Coupon)
+                    .WithMany(p => p.CouponSettings)
+                    .HasForeignKey(d => d.CouponId)
+                    .HasConstraintName("FK__CouponSet__Coupo__6A30C649");
+            });
+
+            modelBuilder.Entity<Dessert>(entity =>
+            {
+                entity.Property(e => e.CreateTime)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.DessertName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ScheduledPublishDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Desserts)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Desserts__Catego__4F7CD00D");
+            });
+
+            modelBuilder.Entity<DessertCart>(entity =>
+            {
+                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEF6F888575")
+                    .IsUnique();
+
+                entity.Property(e => e.MemberName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.MemberNameNavigation)
+                    .WithOne(p => p.DessertCart)
+                    .HasPrincipalKey<Member>(p => p.MemberName)
+                    .HasForeignKey<DessertCart>(d => d.MemberName)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__DessertCa__Membe__17F790F9");
+            });
+
+            modelBuilder.Entity<DessertCartItem>(entity =>
             {
                 entity.Property(e => e.Quantity)
                     .IsRequired()
@@ -146,24 +174,7 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__DessertCa__Desse__1BC821DD");
             });
 
-            modelBuilder.Entity<DessertCarts>(entity =>
-            {
-                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEF6F888575")
-                    .IsUnique();
-
-                entity.Property(e => e.MemberName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.MemberNameNavigation)
-                    .WithOne(p => p.DessertCarts)
-                    .HasPrincipalKey<Members>(p => p.MemberName)
-                    .HasForeignKey<DessertCarts>(d => d.MemberName)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Membe__17F790F9");
-            });
-
-            modelBuilder.Entity<DessertImages>(entity =>
+            modelBuilder.Entity<DessertImage>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
                     .HasName("PK__DessertI__7516F70C0E5DB944");
@@ -176,33 +187,8 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__DessertIm__Desse__52593CB8");
             });
 
-            modelBuilder.Entity<DessertOrderDetails>(entity =>
+            modelBuilder.Entity<DessertOrder>(entity =>
             {
-                entity.HasKey(e => e.DessertOrderDetailId)
-                    .HasName("PK__DessertO__2F9C51B9EFFCC18D");
-
-                entity.Property(e => e.DessertName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.Dessert)
-                    .WithMany(p => p.DessertOrderDetails)
-                    .HasForeignKey(d => d.DessertId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertOr__Desse__14270015");
-
-                entity.HasOne(d => d.DessertOrder)
-                    .WithMany(p => p.DessertOrderDetails)
-                    .HasForeignKey(d => d.DessertOrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertOr__Desse__1332DBDC");
-            });
-
-            modelBuilder.Entity<DessertOrders>(entity =>
-            {
-                entity.HasKey(e => e.DessertOrderId)
-                    .HasName("PK__DessertO__112D4EEDAD0CF7E9");
-
                 entity.Property(e => e.CreateTime)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -245,11 +231,27 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__DessertOr__Membe__0E6E26BF");
             });
 
-            modelBuilder.Entity<DessertTags>(entity =>
+            modelBuilder.Entity<DessertOrderDetail>(entity =>
             {
-                entity.HasKey(e => e.DessertTagId)
-                    .HasName("PK__DessertT__81D7420A4E19B65B");
+                entity.Property(e => e.DessertName)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
+                entity.HasOne(d => d.Dessert)
+                    .WithMany(p => p.DessertOrderDetails)
+                    .HasForeignKey(d => d.DessertId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__DessertOr__Desse__14270015");
+
+                entity.HasOne(d => d.DessertOrder)
+                    .WithMany(p => p.DessertOrderDetails)
+                    .HasForeignKey(d => d.DessertOrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__DessertOr__Desse__1332DBDC");
+            });
+
+            modelBuilder.Entity<DessertTag>(entity =>
+            {
                 entity.Property(e => e.DessertTagName)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -260,37 +262,28 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__DessertTa__Desse__5535A963");
             });
 
-            modelBuilder.Entity<Desserts>(entity =>
+            modelBuilder.Entity<Discount>(entity =>
             {
-                entity.HasKey(e => e.DessertId)
-                    .HasName("PK__Desserts__2FF5148B00A0C94D");
+                entity.Property(e => e.EndAt).HasColumnType("datetime");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.StartAt).HasColumnType("datetime");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasMaxLength(1000);
-
-                entity.Property(e => e.DessertName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.ScheduledPublishDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.Desserts)
-                    .HasForeignKey(d => d.CategoryId)
+                entity.HasOne(d => d.Dessert)
+                    .WithMany(p => p.Discounts)
+                    .HasForeignKey(d => d.DessertId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Desserts__Catego__4F7CD00D");
+                    .HasConstraintName("FK__Discounts__Desse__6D0D32F4");
             });
 
-            modelBuilder.Entity<DiscountGroupItems>(entity =>
+            modelBuilder.Entity<DiscountGroup>(entity =>
             {
-                entity.HasKey(e => e.DiscountGroupItemId)
-                    .HasName("PK__Discount__6B5FED7BBE6F263A");
+                entity.Property(e => e.DiscountGroupName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
 
+            modelBuilder.Entity<DiscountGroupItem>(entity =>
+            {
                 entity.HasOne(d => d.Dessert)
                     .WithMany(p => p.DiscountGroupItems)
                     .HasForeignKey(d => d.DessertId)
@@ -304,33 +297,7 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__DiscountG__Disco__60A75C0F");
             });
 
-            modelBuilder.Entity<DiscountGroups>(entity =>
-            {
-                entity.HasKey(e => e.DiscountGroupId)
-                    .HasName("PK__Discount__2ACF1AEB81753F9D");
-
-                entity.Property(e => e.DiscountGroupName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<Discounts>(entity =>
-            {
-                entity.HasKey(e => e.DiscountId)
-                    .HasName("PK__Discount__E43F6D96553A16B5");
-
-                entity.Property(e => e.EndAt).HasColumnType("datetime");
-
-                entity.Property(e => e.StartAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Dessert)
-                    .WithMany(p => p.Discounts)
-                    .HasForeignKey(d => d.DessertId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Discounts__Desse__6D0D32F4");
-            });
-
-            modelBuilder.Entity<Employees>(entity =>
+            modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42A51422DB2")
                     .IsUnique();
@@ -349,12 +316,12 @@ namespace SIERRA_Server.Models.EFModels
 
                 entity.Property(e => e.ImageName).HasMaxLength(255);
 
-                entity.HasMany(d => d.Role)
-                    .WithMany(p => p.Employee)
+                entity.HasMany(d => d.Roles)
+                    .WithMany(p => p.Employees)
                     .UsingEntity<Dictionary<string, object>>(
-                        "EmployeeToRoles",
-                        l => l.HasOne<Roles>().WithMany().HasForeignKey("RoleId").HasConstraintName("FK_EmployeeToRoles_Roles"),
-                        r => r.HasOne<Employees>().WithMany().HasForeignKey("EmployeeId").HasConstraintName("FK_EmployeeToRoles_Employees"),
+                        "EmployeeToRole",
+                        l => l.HasOne<Role>().WithMany().HasForeignKey("RoleId").HasConstraintName("FK_EmployeeToRoles_Roles"),
+                        r => r.HasOne<Employee>().WithMany().HasForeignKey("EmployeeId").HasConstraintName("FK_EmployeeToRoles_Employees"),
                         j =>
                         {
                             j.HasKey("EmployeeId", "RoleId");
@@ -363,92 +330,8 @@ namespace SIERRA_Server.Models.EFModels
                         });
             });
 
-            modelBuilder.Entity<LessonCategories>(entity =>
+            modelBuilder.Entity<Lesson>(entity =>
             {
-                entity.HasKey(e => e.LessonCategoryId)
-                    .HasName("PK__LessonCa__10E2893EB3C4B705");
-
-                entity.Property(e => e.LessonCategoryName)
-                    .IsRequired()
-                    .HasMaxLength(20);
-            });
-
-            modelBuilder.Entity<LessonImages>(entity =>
-            {
-                entity.HasKey(e => e.LessonImageId)
-                    .HasName("PK__LessonIm__A7D3A24E02A7F1C0");
-
-                entity.Property(e => e.LessonImageName)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.HasOne(d => d.Lesson)
-                    .WithMany(p => p.LessonImages)
-                    .HasForeignKey(d => d.LessonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonIma__Lesso__7F2BE32F");
-            });
-
-            modelBuilder.Entity<LessonOrderDetails>(entity =>
-            {
-                entity.HasKey(e => e.LessonOrderDetailId)
-                    .HasName("PK__LessonOr__6F3B533D2F51D959");
-
-                entity.Property(e => e.LessonTitle)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.Lesson)
-                    .WithMany(p => p.LessonOrderDetails)
-                    .HasForeignKey(d => d.LessonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Lesso__0A9D95DB");
-
-                entity.HasOne(d => d.LessonOrder)
-                    .WithMany(p => p.LessonOrderDetails)
-                    .HasForeignKey(d => d.LessonOrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Lesso__09A971A2");
-            });
-
-            modelBuilder.Entity<LessonOrders>(entity =>
-            {
-                entity.HasKey(e => e.LessonOrderId)
-                    .HasName("PK__LessonOr__D7FD33138ACC350C");
-
-                entity.Property(e => e.CreateTime)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.DiscountInfo).HasMaxLength(200);
-
-                entity.Property(e => e.Note).HasMaxLength(200);
-
-                entity.Property(e => e.OrderCancellationReason).HasMaxLength(200);
-
-                entity.HasOne(d => d.Coupon)
-                    .WithMany(p => p.LessonOrders)
-                    .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__LessonOrd__Coupo__06CD04F7");
-
-                entity.HasOne(d => d.LessonOrderStatus)
-                    .WithMany(p => p.LessonOrders)
-                    .HasForeignKey(d => d.LessonOrderStatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Lesso__05D8E0BE");
-
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.LessonOrders)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Membe__04E4BC85");
-            });
-
-            modelBuilder.Entity<Lessons>(entity =>
-            {
-                entity.HasKey(e => e.LessonId)
-                    .HasName("PK__Lessons__B084ACD0C8835B5E");
-
                 entity.Property(e => e.CreateTime)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -486,37 +369,76 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__Lessons__Teacher__7C4F7684");
             });
 
-            modelBuilder.Entity<MemberCoupons>(entity =>
+            modelBuilder.Entity<LessonCategory>(entity =>
             {
-                entity.HasKey(e => e.MemberCouponId)
-                    .HasName("PK__MemberCo__227AC287F5136670");
-
-                entity.Property(e => e.CouponName)
+                entity.Property(e => e.LessonCategoryName)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(20);
+            });
 
-                entity.Property(e => e.CreateAt)
+            modelBuilder.Entity<LessonImage>(entity =>
+            {
+                entity.Property(e => e.LessonImageName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.HasOne(d => d.Lesson)
+                    .WithMany(p => p.LessonImages)
+                    .HasForeignKey(d => d.LessonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__LessonIma__Lesso__7F2BE32F");
+            });
+
+            modelBuilder.Entity<LessonOrder>(entity =>
+            {
+                entity.Property(e => e.CreateTime)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.ExpireAt).HasColumnType("datetime");
+                entity.Property(e => e.DiscountInfo).HasMaxLength(200);
 
-                entity.Property(e => e.UseAt).HasColumnType("datetime");
+                entity.Property(e => e.Note).HasMaxLength(200);
+
+                entity.Property(e => e.OrderCancellationReason).HasMaxLength(200);
 
                 entity.HasOne(d => d.Coupon)
-                    .WithMany(p => p.MemberCoupons)
+                    .WithMany(p => p.LessonOrders)
                     .HasForeignKey(d => d.CouponId)
+                    .HasConstraintName("FK__LessonOrd__Coupo__06CD04F7");
+
+                entity.HasOne(d => d.LessonOrderStatus)
+                    .WithMany(p => p.LessonOrders)
+                    .HasForeignKey(d => d.LessonOrderStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberCou__Coupo__70DDC3D8");
+                    .HasConstraintName("FK__LessonOrd__Lesso__05D8E0BE");
 
                 entity.HasOne(d => d.Member)
-                    .WithMany(p => p.MemberCoupons)
+                    .WithMany(p => p.LessonOrders)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberCou__Membe__71D1E811");
+                    .HasConstraintName("FK__LessonOrd__Membe__04E4BC85");
             });
 
-            modelBuilder.Entity<Members>(entity =>
+            modelBuilder.Entity<LessonOrderDetail>(entity =>
+            {
+                entity.Property(e => e.LessonTitle)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Lesson)
+                    .WithMany(p => p.LessonOrderDetails)
+                    .HasForeignKey(d => d.LessonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__LessonOrd__Lesso__0A9D95DB");
+
+                entity.HasOne(d => d.LessonOrder)
+                    .WithMany(p => p.LessonOrderDetails)
+                    .HasForeignKey(d => d.LessonOrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__LessonOrd__Lesso__09A971A2");
+            });
+
+            modelBuilder.Entity<Member>(entity =>
             {
                 entity.HasIndex(e => e.MemberName, "UQ__Members__BE50FDEFB962063E")
                     .IsUnique();
@@ -559,26 +481,47 @@ namespace SIERRA_Server.Models.EFModels
                     .HasDefaultValueSql("('False')");
             });
 
-            modelBuilder.Entity<OrderStatuses>(entity =>
+            modelBuilder.Entity<MemberCoupon>(entity =>
             {
-                entity.HasKey(e => e.OrderStatusId)
-                    .HasName("PK__OrderSta__BC674CA15AE32F90");
+                entity.Property(e => e.CouponName)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ExpireAt).HasColumnType("datetime");
+
+                entity.Property(e => e.UseAt).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Coupon)
+                    .WithMany(p => p.MemberCoupons)
+                    .HasForeignKey(d => d.CouponId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__MemberCou__Coupo__70DDC3D8");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.MemberCoupons)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__MemberCou__Membe__71D1E811");
+            });
+
+            modelBuilder.Entity<OrderStatus>(entity =>
+            {
                 entity.Property(e => e.StatusName)
                     .IsRequired()
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Permissions>(entity =>
+            modelBuilder.Entity<Permission>(entity =>
             {
                 entity.Property(e => e.PermissionName).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Promotions>(entity =>
+            modelBuilder.Entity<Promotion>(entity =>
             {
-                entity.HasKey(e => e.PromotionId)
-                    .HasName("PK__Promotio__52C42FCF0C61A206");
-
                 entity.Property(e => e.CreateAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -607,18 +550,18 @@ namespace SIERRA_Server.Models.EFModels
                     .HasConstraintName("FK__Promotion__Coupo__75A278F5");
             });
 
-            modelBuilder.Entity<Roles>(entity =>
+            modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleDisplayName).HasMaxLength(50);
 
                 entity.Property(e => e.RoleName).HasMaxLength(50);
 
-                entity.HasMany(d => d.Permission)
-                    .WithMany(p => p.Role)
+                entity.HasMany(d => d.Permissions)
+                    .WithMany(p => p.Roles)
                     .UsingEntity<Dictionary<string, object>>(
-                        "RoleToPermissions",
-                        l => l.HasOne<Permissions>().WithMany().HasForeignKey("PermissionId").HasConstraintName("FK_RoleToPermissions_Permissions"),
-                        r => r.HasOne<Roles>().WithMany().HasForeignKey("RoleId").HasConstraintName("FK_RoleToPermissions_Roles"),
+                        "RoleToPermission",
+                        l => l.HasOne<Permission>().WithMany().HasForeignKey("PermissionId").HasConstraintName("FK_RoleToPermissions_Permissions"),
+                        r => r.HasOne<Role>().WithMany().HasForeignKey("RoleId").HasConstraintName("FK_RoleToPermissions_Roles"),
                         j =>
                         {
                             j.HasKey("RoleId", "PermissionId");
@@ -629,21 +572,20 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Specification>(entity =>
             {
+                entity.ToTable("Specification");
+
                 entity.Property(e => e.Flavor).HasMaxLength(50);
 
                 entity.Property(e => e.Size).HasMaxLength(50);
 
                 entity.HasOne(d => d.Dessert)
-                    .WithMany(p => p.Specification)
+                    .WithMany(p => p.Specifications)
                     .HasForeignKey(d => d.DessertId)
                     .HasConstraintName("FK__Specifica__Desse__5812160E");
             });
 
-            modelBuilder.Entity<Teachers>(entity =>
+            modelBuilder.Entity<Teacher>(entity =>
             {
-                entity.HasKey(e => e.TeacherId)
-                    .HasName("PK__Teachers__EDF259646A7228C6");
-
                 entity.Property(e => e.Academic)
                     .IsRequired()
                     .HasMaxLength(150);

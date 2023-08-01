@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class DiscountGroupItems
+    public partial class DiscountGroupItem
     {
         public int DiscountGroupItemId { get; set; }
         public int DiscountGroupId { get; set; }
         public int DessertId { get; set; }
 
-        public virtual Desserts Dessert { get; set; }
-        public virtual DiscountGroups DiscountGroup { get; set; }
+        public virtual Dessert Dessert { get; set; }
+        public virtual DiscountGroup DiscountGroup { get; set; }
     }
 }

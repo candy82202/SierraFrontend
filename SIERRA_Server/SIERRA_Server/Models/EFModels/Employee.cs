@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class Employees
+    public partial class Employee
     {
-        public Employees()
+        public Employee()
         {
-            Role = new HashSet<Roles>();
+            Roles = new HashSet<Role>();
         }
 
         public int Id { get; set; }
@@ -18,6 +18,6 @@ namespace SIERRA_Server.Models.EFModels
         public DateTime CreateAt { get; set; }
         public string ImageName { get; set; }
 
-        public virtual ICollection<Roles> Role { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

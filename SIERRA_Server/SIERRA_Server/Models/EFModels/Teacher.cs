@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class Teachers
+    public partial class Teacher
     {
-        public Teachers()
+        public Teacher()
         {
-            Lessons = new HashSet<Lessons>();
+            Lessons = new HashSet<Lesson>();
         }
 
         public int TeacherId { get; set; }
@@ -21,6 +21,6 @@ namespace SIERRA_Server.Models.EFModels
         public string Academic { get; set; }
         public bool TeacherStatus { get; set; }
 
-        public virtual ICollection<Lessons> Lessons { get; set; }
+        public virtual ICollection<Lesson> Lessons { get; set; }
     }
 }

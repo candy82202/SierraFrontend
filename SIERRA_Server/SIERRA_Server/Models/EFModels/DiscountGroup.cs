@@ -5,18 +5,18 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class DiscountGroups
+    public partial class DiscountGroup
     {
-        public DiscountGroups()
+        public DiscountGroup()
         {
-            Coupons = new HashSet<Coupons>();
-            DiscountGroupItems = new HashSet<DiscountGroupItems>();
+            Coupons = new HashSet<Coupon>();
+            DiscountGroupItems = new HashSet<DiscountGroupItem>();
         }
 
         public int DiscountGroupId { get; set; }
         public string DiscountGroupName { get; set; }
 
-        public virtual ICollection<Coupons> Coupons { get; set; }
-        public virtual ICollection<DiscountGroupItems> DiscountGroupItems { get; set; }
+        public virtual ICollection<Coupon> Coupons { get; set; }
+        public virtual ICollection<DiscountGroupItem> DiscountGroupItems { get; set; }
     }
 }

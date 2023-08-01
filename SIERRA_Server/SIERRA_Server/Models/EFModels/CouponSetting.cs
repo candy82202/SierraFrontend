@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SIERRA_Server.Models.EFModels
 {
-    public partial class CouponSettings
+    public partial class CouponSetting
     {
         public int CouponSettingId { get; set; }
         public int? CouponId { get; set; }
@@ -13,6 +13,6 @@ namespace SIERRA_Server.Models.EFModels
         public int CouponType { get; set; }
         public int? Qty { get; set; }
 
-        public virtual Coupons Coupon { get; set; }
+        public virtual Coupon Coupon { get; set; }
     }
 }
