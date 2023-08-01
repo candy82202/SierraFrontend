@@ -2274,7 +2274,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\USER\\.nuget\\packages\\": {}
+    "C:\\Users\\ispan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -2282,11 +2282,11 @@
       "projectUniqueName": "C:\\SierraCore\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server.csproj",
       "projectName": "SIERRA_Server",
       "projectPath": "C:\\SierraCore\\SIERRA_Server\\SIERRA_Server\\SIERRA_Server.csproj",
-      "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\ispan\\.nuget\\packages\\",
       "outputPath": "C:\\SierraCore\\SIERRA_Server\\SIERRA_Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ispan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
