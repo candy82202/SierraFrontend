@@ -12,4 +12,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\SierraCore\SIERRA_Server\SIERRA_Server\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\SierraCore\SIERRA_Server\SIERRA_Server\.editorconfig" />
+  </ItemGroup>
+
 </Project>
