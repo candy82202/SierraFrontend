@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.EFModels;
+using SIERRA_Server.Models.Interfaces;
+using SIERRA_Server.Models.Repository.EFRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,10 @@ builder.Services.AddCors(options =>
         name: MyAllowSpecificOrigins,
         policy => policy.WithOrigins("*").WithHeaders("*").WithMethods("*"));
 });
+//DIª`¤J
+builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
