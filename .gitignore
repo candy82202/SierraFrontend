@@ -366,3 +366,13 @@ Debug/net6.0/
 *.cache
 
 /SIERRA_Server/SIERRA_Server/bin/Debug/net6.0/SIERRA_Server.dll
+/SIERRA_Server/SIERRA_Server/obj/SIERRA_Server.csproj.nuget.g.props
+/SIERRA_Server/SIERRA_Server/obj/SIERRA_Server.csproj.nuget.dgspec.json
+/SIERRA_Server/SIERRA_Server/obj/Debug/net6.0/SIERRA_Server.assets.cache
+/SIERRA_Server/SIERRA_Server/obj/Debug/net6.0/SIERRA_Server.csproj.AssemblyReference.cache
+/SIERRA_Server/SIERRA_Server/obj/project.assets.json
+/SIERRA_Server/SIERRA_Server/obj/project.nuget.cache
+/SIERRA_Server/.vs/SIERRA_Server/FileContentIndex/679ff32f-0cd9-476c-b0c8-51509d11260b.vsidx
+/SIERRA_Server/.vs/SIERRA_Server/FileContentIndex/8ac8a88f-6f1a-4f20-927e-dea34dd33bb4.vsidx
+/SIERRA_Server/.vs/SIERRA_Server/FileContentIndex/c4e1552b-d4bb-4b1b-918c-58e2c96f8bea.vsidx
+/SIERRA_Server/.vs/SIERRA_Server/FileContentIndex/c4fc39bf-9219-4d1c-93f1-ff0a965a5bd2.vsidx
