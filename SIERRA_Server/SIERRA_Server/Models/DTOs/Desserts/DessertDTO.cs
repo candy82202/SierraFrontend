@@ -12,8 +12,8 @@
 
         public string Description { get; set; }
 
-        public bool Status { get; set; }
+        public string DessertImageName { get; set; }
 
-        public DateTime? CreateTime { get; set; }
+
     }
 }

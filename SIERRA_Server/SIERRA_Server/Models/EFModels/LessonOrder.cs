@@ -12,7 +12,7 @@ namespace SIERRA_Server.Models.EFModels
             LessonOrderDetails = new HashSet<LessonOrderDetail>();
         }
 
-        public int LessonOrderId { get; set; }
+        public int Id { get; set; }
         public int MemberId { get; set; }
         public int LessonOrderStatusId { get; set; }
         public int? CouponId { get; set; }

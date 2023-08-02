@@ -7,7 +7,7 @@ namespace SIERRA_Server.Models.EFModels
 {
     public partial class LessonOrderDetail
     {
-        public int LessonOrderDetailId { get; set; }
+        public int Id { get; set; }
         public int LessonOrderId { get; set; }
         public int LessonId { get; set; }
         public string LessonTitle { get; set; }

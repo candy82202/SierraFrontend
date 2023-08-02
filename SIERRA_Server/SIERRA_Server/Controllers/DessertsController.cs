@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Desserts;
@@ -174,7 +175,38 @@ namespace SIERRA_Server.Controllers
             List<DessertListDTO> hotProducts = await GetHotProductsAsync();
             return Ok(hotProducts);
         }
+        // GET: api/Desserts/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Dessert>> GetDessert(int id=3)
+        {
+            var dvm = new List<DessertDTO>();
 
+            var desserts = _context.Desserts
+                .Include(d => d.Category)
+                .Include(d => d.DessertImages)
+                .Include(d => d.Specifications)
+                .Where(d => d.DessertId == id)
+                .ToList();
+
+            foreach (var dessert in desserts)
+            {
+                // Fetching UnitPrice from Specifications
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertDTO item = new DessertDTO
+                {
+                    DessertId = dessert.DessertId,
+                    DessertName = dessert.DessertName,
+                    UnitPrice = unitPrice,
+                    Description = dessert.Description,
+                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName
+                };
+                dvm.Add(item);
+            }
+
+            return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+        }
         private async Task<List<DessertListDTO>> GetHotProductsAsync()
         {
             var dvm = new List<DessertListDTO>();
