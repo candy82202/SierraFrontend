@@ -365,3 +365,4 @@ FodyWeavers.xsd
 Debug/net6.0/
 *.cache
 
+/SIERRA_Server/SIERRA_Server/bin/Debug/net6.0/SIERRA_Server.dll
