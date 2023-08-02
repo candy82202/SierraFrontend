@@ -7,13 +7,13 @@ namespace SIERRA_Server.Models.EFModels
 {
     public partial class DessertOrderDetail
     {
-        public int DessertOrderDetailId { get; set; }
+        public int Id { get; set; }
         public int SpecificationId { get; set; }
         public int DessertOrderId { get; set; }
         public int DessertId { get; set; }
         public string DessertName { get; set; }
         public int Quantity { get; set; }
-        public int DessertUnitPrice { get; set; }
+        public int UnitPrice { get; set; }
         public int Subtotal { get; set; }
 
         public virtual Dessert Dessert { get; set; }

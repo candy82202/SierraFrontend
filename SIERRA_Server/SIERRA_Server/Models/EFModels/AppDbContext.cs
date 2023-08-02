@@ -51,8 +51,8 @@ namespace SIERRA_Server.Models.EFModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Sierra0743;Persist Security Info=True;User ID=sa5;Password=sa5");
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Sierra0801;Persist Security Info=True;User ID=sa5;Password=sa5");
             }
         }
 
@@ -65,7 +65,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Coupon>(entity =>
             {
-                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D349080095A749AD")
+                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D3490800950C98F1")
                     .IsUnique();
 
                 entity.Property(e => e.CouponCode)
@@ -140,7 +140,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<DessertCart>(entity =>
             {
-                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEF6F888575")
+                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEF1884A54C")
                     .IsUnique();
 
                 entity.Property(e => e.MemberName)
@@ -157,10 +157,6 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<DessertCartItem>(entity =>
             {
-                entity.Property(e => e.Quantity)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
                 entity.HasOne(d => d.DessertCart)
                     .WithMany(p => p.DessertCartItems)
                     .HasForeignKey(d => d.DessertCartId)
@@ -177,7 +173,7 @@ namespace SIERRA_Server.Models.EFModels
             modelBuilder.Entity<DessertImage>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
-                    .HasName("PK__DessertI__7516F70C0E5DB944");
+                    .HasName("PK__DessertI__7516F70C592BDBBC");
 
                 entity.Property(e => e.DessertImageName).HasMaxLength(255);
 
@@ -299,7 +295,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42A51422DB2")
+                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42A008F143C")
                     .IsUnique();
 
                 entity.Property(e => e.CreateAt)
@@ -440,7 +436,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasIndex(e => e.MemberName, "UQ__Members__BE50FDEFB962063E")
+                entity.HasIndex(e => e.MemberName, "UQ__Members__BE50FDEFA3D484CB")
                     .IsUnique();
 
                 entity.Property(e => e.Address)
