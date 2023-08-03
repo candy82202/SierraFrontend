@@ -1,6 +1,8 @@
 ﻿
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Desserts;
 using SIERRA_Server.Models.EFModels;
@@ -105,6 +107,65 @@ namespace SIERRA_Server.Controllers
 
             return Ok(dvm); // 將結果轉為 JSON 格式並回傳
         }
-     
+
+        [HttpGet("ChocoDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetChocoDiscountGroups()
+        {
+            var dessertDiscountList = new List<DessertDiscountDTO>();
+
+            // Get the connection string from configuration
+            var connectionString = _configuration.GetConnectionString("Sierra");
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                // Your SQL query goes here (use the one you provided)
+                string sqlQuery = @"
+                SELECT 
+                    D.DessertId,
+                    D.DessertName,
+                    S.UnitPrice,
+                    S.Flavor,
+                    S.Size,
+                    DG.DiscountGroupId,
+                    DI.DessertImageName
+                FROM 
+                    DiscountGroups DG
+                INNER JOIN 
+                    DiscountGroupItems DGI ON DG.DiscountGroupId = DGI.DiscountGroupId
+                INNER JOIN 
+                    Desserts D ON DGI.DessertId = D.DessertId
+                LEFT JOIN 
+                    DessertImages DI ON DI.DessertId = D.DessertId
+                LEFT JOIN 
+                    Specification S ON D.DessertId = S.DessertId 
+WHERE Dg.DiscountGroupId=6 
+                ORDER BY DG.DiscountGroupId";
+
+                await connection.OpenAsync();
+
+                var queryResult = await connection.QueryAsync(sqlQuery);
+
+                foreach (var row in queryResult)
+                {
+                    var dessertDiscountDTO = new DessertDiscountDTO
+                    {
+                        DessertId = row.DessertId,
+                        DessertName = row.DessertName,
+                        UnitPrice = row.UnitPrice,
+                        DessertImageName = row.DessertImageName,
+                        DiscountGroupId = row.DiscountGroupId,
+                        Specification = new Specification
+                        {
+                            UnitPrice = row.UnitPrice,
+                            Flavor = row.Flavor,
+                            Size = row.Size
+                        }
+                    };
+                    dessertDiscountList.Add(dessertDiscountDTO);
+                }
+            }
+
+            return Ok(dessertDiscountList);
+        }
     }
 }

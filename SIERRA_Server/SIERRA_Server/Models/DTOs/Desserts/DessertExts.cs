@@ -20,12 +20,23 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         {
             int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
             return new DessertsIndexDTO
-            {              
+            {
                 DessertId = entity.DessertId,
                 DessertImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
                 DessertName = entity.DessertName,
                 UnitPrice = unitPrice,
             };
         }
+        //public static DessertDiscountDTO ToDDiscountDto(this DiscountGroup entity)
+        //{
+        //    int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
+        //    return new DessertDiscountDTO
+        //    {
+        //        DessertId = entity.DessertId,
+        //        DessertImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
+        //        DessertName = entity.DessertName,
+        //        UnitPrice = unitPrice,
+        //    };
+        //}
     }
 }
