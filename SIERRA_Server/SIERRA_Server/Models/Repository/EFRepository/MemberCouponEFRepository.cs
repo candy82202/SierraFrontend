@@ -44,7 +44,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<bool>  CheckCouponExist(string code)
         {
-            if(await _db.Coupons.Where(c=>c.CouponCategoryId==4).FirstOrDefaultAsync(c=>c.CouponCode== code) != null)
+            if(await _db.Coupons.Where(c=>c.CouponCategoryId==4).AnyAsync(c=>c.CouponCode==code))
             {
                 return  true;
             }

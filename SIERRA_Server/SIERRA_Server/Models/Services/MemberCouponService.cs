@@ -27,7 +27,7 @@ namespace SIERRA_Server.Models.Services
         public async Task<string> GetCouponByCode(int? memberId, string code)
         {
             var isExist = await _repo.CheckCouponExist(code);
-            if (isExist)
+            if (!isExist)
             {
                 return "查無此優惠碼";
             }
