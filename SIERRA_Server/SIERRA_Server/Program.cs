@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.EFModels;
+using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
 using SIERRA_Server.Models.Repository.EFRepository;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,8 @@ builder.Services.AddCors(options =>
 });
 //DI注入
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
-
+builder.Services.AddScoped<MemberEFRepository>();
+builder.Services.AddScoped<HashUtility>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -50,6 +53,10 @@ app.UseRouting();
 app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 
+// 驗證(登入所需加的)
+app.UseCookiePolicy();
+app.UseAuthentication();
+// 授權(原本就有)
 app.UseAuthorization();
 
 app.MapControllers();
