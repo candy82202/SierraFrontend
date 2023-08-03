@@ -1,9 +1,9 @@
-﻿using SIERRA_Server.Models.DTOs;
+﻿using SIERRA_Server.Models.DTOs.Peomotions;
 using SIERRA_Server.Models.EFModels;
 
 namespace SIERRA_Server.Models.Exts
 {
-	public static class MemberCouponExts
+    public static class MemberCouponExts
 	{
 		public static MemberCouponDto ToMemberCouponDto(this MemberCoupon entity)
 		{
@@ -47,5 +47,6 @@ namespace SIERRA_Server.Models.Exts
 				ApplyTo = applyTo
 			};
 		}
+
 	}
 }
