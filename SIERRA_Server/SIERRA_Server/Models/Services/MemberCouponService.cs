@@ -54,5 +54,11 @@ namespace SIERRA_Server.Models.Services
             var coupons = await _repo.GetCouponHasUsed(memberId);
             return coupons;
         }
+
+        public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
+        {
+            var coupons = await _repo.GetCouponMeetCriteria(memberId);
+            return coupons;
+        }
     }
 }

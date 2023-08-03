@@ -11,5 +11,6 @@ namespace SIERRA_Server.Models.Interfaces
         Task<ResultForCheck> CheckHaveSame(int memberId, string code);
         Task<string> GetCouponByCode(MemberCouponCreateDto dto);
         Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId);
+        Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId);
     }
 }

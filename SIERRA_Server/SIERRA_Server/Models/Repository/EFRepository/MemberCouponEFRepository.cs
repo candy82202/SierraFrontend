@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
@@ -92,6 +93,25 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                                 .Where(mc => mc.UseAt != null && ((TimeSpan)(DateTime.Now - mc.UseAt)).TotalDays < 30)
                                                 .Select(mc=>mc.ToMemberCouponHasUsedDto());
             return coupons;
+        }
+
+        public async Task<IEnumerable<DessertCartItem>> GetCartItems(int memberId)
+        {
+            var member = await _db.Members.FindAsync(memberId);
+            var memberName = member.MemberName;
+            //取得該會員的購物車
+            var cart = await _db.DessertCarts.FirstOrDefaultAsync(dc => dc.MemberName == memberName);
+            if (cart == null)
+            {
+                return Enumerable.Empty<DessertCartItem>();
+            }
+            var cartItems = cart.DessertCartItems;
+            return cartItems;
+        }
+
+        public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
