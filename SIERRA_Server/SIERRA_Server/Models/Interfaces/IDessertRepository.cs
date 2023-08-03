@@ -5,5 +5,6 @@ namespace SIERRA_Server.Models.Interfaces
     public interface IDessertRepository
     {
        Task<List<DessertListDTO>> GetHotProductsAsync();
+        Task<List<DessertsIndexDTO>> GetPresents();
     }
 }
