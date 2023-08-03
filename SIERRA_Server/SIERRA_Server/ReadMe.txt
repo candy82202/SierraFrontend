@@ -12,7 +12,11 @@
 Desserts 部分
 [V] - Get all Categories Desserts To Views
 [V] - Get Top Sales 3 Desserts
-
+[V] - Turn into Three Layers
+	- Add new IDessertRepository
+		- method Getpresents , GetMoldCake , GetLongCake , GetSnack , GetRoomTemperature ,TopSaleDesserts
+	- Add new IDessertCategoryRepository
+		- Select desserts base on different categoryId  
 
 
 
