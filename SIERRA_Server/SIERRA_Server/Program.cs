@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 });
 //DIª`¤J
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
-
+builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

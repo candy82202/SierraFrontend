@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Desserts;
 using SIERRA_Server.Models.EFModels;
+using SIERRA_Server.Models.Interfaces;
+using SIERRA_Server.Models.Services;
 
 namespace SIERRA_Server.Controllers
 {
@@ -13,11 +15,12 @@ namespace SIERRA_Server.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
-
-        public DessertsController(AppDbContext context, IConfiguration config)
+        private readonly IDessertRepository _repo;
+        public DessertsController(AppDbContext context, IConfiguration config,IDessertRepository repo)
         {
             _context = context;
             _configuration = config;
+            _repo = repo;
         }
         // GET: api/Desserts/moldCake
         [HttpGet("moldCake")]
@@ -172,7 +175,10 @@ namespace SIERRA_Server.Controllers
         [HttpGet("TopSalesDesserts")]
         public async Task<IActionResult> TopSaleDesserts()
         {
-            List<DessertListDTO> hotProducts = await GetHotProductsAsync();
+            //List<DessertListDTO> hotProducts = await GetHotProductsAsync();
+            var service = new DessertService(_repo);
+            var hotProducts = await service.GetHotProductsAsync();
+
             return Ok(hotProducts);
         }
         // GET: api/Desserts/5
@@ -226,7 +232,7 @@ namespace SIERRA_Server.Controllers
             var hotProducts = await hotProductsQuery.ToListAsync();
 
             var hotProductsDTO = hotProducts
-                .OrderBy(d => hotProductIds.IndexOf(d.DessertId)) // 在内存中进行排序
+                .OrderBy(d => hotProductIds.IndexOf(d.DessertId)) // 在内存中進行排序
                 .Select(d => new DessertListDTO
                 {
                     Dessert = d,
