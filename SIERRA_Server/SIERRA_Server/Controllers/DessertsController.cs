@@ -23,125 +23,39 @@ namespace SIERRA_Server.Controllers
             _repo = repo;
         }
         // GET: api/Desserts/moldCake
-        [HttpGet("moldCake")]
-        public IActionResult GetMoldCake()
+        [HttpGet("moldCake")]   
+        public async Task<IActionResult> GetMoldCake()
         {
-            var dvm = new List<DessertsIndexDTO>();
-
-            var desserts = _context.Desserts
-                .Include(d => d.Category)
-                .Include(d => d.DessertImages)
-                .Include(d => d.Specifications)
-                .Where(d => d.Status && d.CategoryId == 1)
-                .ToList();
-
-            foreach (var dessert in desserts)
-            {
-                // Fetching UnitPrice from Specifications
-                var specification = dessert.Specifications.FirstOrDefault();
-                int unitPrice = specification?.UnitPrice ?? 0;
-
-                DessertsIndexDTO item = new DessertsIndexDTO
-                {
-                    DessertName = dessert.DessertName,
-                    UnitPrice = unitPrice,
-                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName
-                };
-                dvm.Add(item);
-            }
-
-            return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+            var service = new DessertService(_repo);
+            var moldCake = await service.GetMoldCake();
+            return Ok(moldCake);
         }
         // GET: api/Desserts/roomTemperature
         [HttpGet("roomTemperature")]
-        public IActionResult GetRoomTemperature()
+        public async Task<IActionResult> GetRoomTemperature()
         {
-            var dvm = new List<DessertsIndexDTO>();
-
-            var desserts = _context.Desserts
-                .Include(d => d.Category)
-                .Include(d => d.DessertImages)
-                .Include(d => d.Specifications)
-                .Where(d => d.Status && d.CategoryId == 2)
-                .ToList();
-
-            foreach (var dessert in desserts)
-            {
-                // Fetching UnitPrice from Specifications
-                var specification = dessert.Specifications.FirstOrDefault();
-                int unitPrice = specification?.UnitPrice ?? 0;
-
-                DessertsIndexDTO item = new DessertsIndexDTO
-                {
-                    DessertName = dessert.DessertName,
-                    UnitPrice = unitPrice,
-                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName
-                };
-                dvm.Add(item);
-            }
-
-            return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+            var service = new DessertService(_repo);
+            var roomTemperature = await service.GetRoomTemperature();
+            return Ok(roomTemperature);
         }
         // GET: api/Desserts/snack
         [HttpGet("snack")]
-        public IActionResult GetSnack()
+        public async Task<IActionResult> GetSnack()
         {
-            var dvm = new List<DessertsIndexDTO>();
-
-            var desserts = _context.Desserts
-                .Include(d => d.Category)
-                .Include(d => d.DessertImages)
-                .Include(d => d.Specifications)
-                .Where(d => d.Status && d.CategoryId == 3)
-                .ToList();
-
-            foreach (var dessert in desserts)
-            {
-                // Fetching UnitPrice from Specifications
-                var specification = dessert.Specifications.FirstOrDefault();
-                int unitPrice = specification?.UnitPrice ?? 0;
-
-                DessertsIndexDTO item = new DessertsIndexDTO
-                {
-                    DessertName = dessert.DessertName,
-                    UnitPrice = unitPrice,
-                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName
-                };
-                dvm.Add(item);
-            }
-
-            return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+            var service = new DessertService(_repo);
+            var snack = await service.GetSnack();
+            return Ok(snack);
         }
+
         // GET: api/Desserts/longCake
-        [HttpGet("longCake")]
-        public IActionResult GetLongCake()
+        [HttpGet("longCake")]    
+        public async Task<IActionResult> GetLongCake()
         {
-            var dvm = new List<DessertsIndexDTO>();
-
-            var desserts = _context.Desserts
-                .Include(d => d.Category)
-                .Include(d => d.DessertImages)
-                .Include(d => d.Specifications)
-                .Where(d => d.Status && d.CategoryId == 4)
-                .ToList();
-
-            foreach (var dessert in desserts)
-            {
-                // Fetching UnitPrice from Specifications
-                var specification = dessert.Specifications.FirstOrDefault();
-                int unitPrice = specification?.UnitPrice ?? 0;
-
-                DessertsIndexDTO item = new DessertsIndexDTO
-                {
-                    DessertName = dessert.DessertName,
-                    UnitPrice = unitPrice,
-                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName
-                };
-                dvm.Add(item);
-            }
-
-            return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+            var service = new DessertService(_repo);
+            var longCake = await service.GetLongCake();
+            return Ok(longCake);
         }
+
         // GET: api/Desserts/presents
         [HttpGet("presents")]
         public async Task<IActionResult> GetPresents()

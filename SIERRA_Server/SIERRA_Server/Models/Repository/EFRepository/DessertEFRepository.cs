@@ -8,32 +8,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
     public class DessertEFRepository : IDessertRepository
     {
         private readonly AppDbContext _context;
+        private readonly IDessertCategoryRepository _categoryRepo;
 
-        public DessertEFRepository(AppDbContext db)
+        public DessertEFRepository(AppDbContext db, IDessertCategoryRepository categoryRepo)
         {
             _context = db;
-        }
-        public async Task<List<DessertsIndexDTO>> GetPresents()
-        {
-            var dvm = new List<DessertsIndexDTO>();
-
-            var desserts = await _context.Desserts
-                .Include(d => d.Category)
-                .Include(d => d.DessertImages)
-                .Include(d => d.Specifications)
-                .Where(d => d.Status && d.CategoryId == 5)
-                .ToListAsync();
-
-            foreach (var dessert in desserts)
-            {
-                // Fetching UnitPrice from Specifications
-                var specification = dessert.Specifications.FirstOrDefault();
-                int unitPrice = specification?.UnitPrice ?? 0;
-
-                DessertsIndexDTO item = dessert.ToDIndexDto();         
-                dvm.Add(item);
-            }
-            return dvm;
+            _categoryRepo = categoryRepo;
         }
         public async Task<List<DessertListDTO>> GetHotProductsAsync()
         {
@@ -56,13 +36,107 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             var hotProductsDTO = hotProducts
                 .OrderBy(d => hotProductIds.IndexOf(d.DessertId)) // 在内存中进行排序
                 .Select(d => d.ToDListDto())
-               
+
                 .ToList();
 
             dvm.AddRange(hotProductsDTO);
             return dvm;
         }
+        public async Task<List<DessertsIndexDTO>> GetMoldCake()
+        {
+            var dvm = new List<DessertsIndexDTO>();
 
-      
+            var categoryId = 1; // Or any other value
+
+            var desserts = await _categoryRepo.GetDessertsByCategoryId(categoryId);
+
+            foreach (var dessert in desserts)
+            {
+                // Fetching UnitPrice from Specifications
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertsIndexDTO item = dessert.ToDIndexDto();
+                dvm.Add(item);
+            }
+            return dvm;
+        }
+        public async Task<List<DessertsIndexDTO>> GetRoomTemperature()
+        {
+            var dvm = new List<DessertsIndexDTO>();
+
+            var categoryId = 2; // Or any other value
+
+            var desserts = await _categoryRepo.GetDessertsByCategoryId(categoryId);
+
+            foreach (var dessert in desserts)
+            {
+                // Fetching UnitPrice from Specifications
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertsIndexDTO item = dessert.ToDIndexDto();
+                dvm.Add(item);
+            }
+            return dvm;
+        }
+        public async Task<List<DessertsIndexDTO>> GetSnack()
+        {
+            var dvm = new List<DessertsIndexDTO>();
+
+            var categoryId = 3; // Or any other value
+
+            var desserts = await _categoryRepo.GetDessertsByCategoryId(categoryId);
+
+            foreach (var dessert in desserts)
+            {
+                // Fetching UnitPrice from Specifications
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertsIndexDTO item = dessert.ToDIndexDto();
+                dvm.Add(item);
+            }
+            return dvm;
+        }
+        public async Task<List<DessertsIndexDTO>> GetLongCake()
+        {
+            var dvm = new List<DessertsIndexDTO>();
+
+            var categoryId = 4; // Or any other value
+
+            var desserts = await _categoryRepo.GetDessertsByCategoryId(categoryId);
+
+            foreach (var dessert in desserts)
+            {
+                // Fetching UnitPrice from Specifications
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertsIndexDTO item = dessert.ToDIndexDto();
+                dvm.Add(item);
+            }
+            return dvm;
+        }
+        public async Task<List<DessertsIndexDTO>> GetPresents()
+        {
+            var dvm = new List<DessertsIndexDTO>();
+
+            var categoryId = 5; // Or any other value
+
+            var desserts = await _categoryRepo.GetDessertsByCategoryId(categoryId);
+            foreach (var dessert in desserts)
+            {
+                // Fetching UnitPrice from Specifications
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertsIndexDTO item = dessert.ToDIndexDto();
+                dvm.Add(item);
+            }
+            return dvm;
+        }
+
     }
 }
+
