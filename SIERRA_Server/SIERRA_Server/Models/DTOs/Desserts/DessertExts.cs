@@ -8,7 +8,7 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         {
             int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
             return new DessertListDTO {            
-                
+                Dessert=entity,
                 DessertId = entity.DessertId,
                 DessertImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
                 DessertName = entity.DessertName,
