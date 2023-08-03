@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SIERRA_Server.Models.DTOs.Peomotions;
+using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
 using SIERRA_Server.Models.Interfaces;
@@ -40,15 +40,27 @@ namespace SIERRA_Server.Controllers
 			var coupons = await server.GetCouponCanNotUseNow(MemberId);
 			return coupons;
 		}
-		[HttpPost]
-		public async Task<string> GetCouponByCode(int? MemberId,string code)
+		[HttpGet("GetUsed")]
+		public async Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? MemberId)
 		{
-			if(MemberId == null)
+            if (MemberId == null)
+            {
+                return Enumerable.Empty<MemberCouponHasUsedDto>();
+            }
+			var server = new MemberCouponService(_repo);
+			var coupons = await server.GetCouponHasUsed(MemberId);
+			return coupons;
+        }
+		[HttpPost]
+		public async Task<string> GetCouponByCode(int? MemberId,string? code)
+		{
+			if(MemberId == null ||string.IsNullOrEmpty(code))
 			{
 				return "查無此優惠碼";
 			}
 			var server = new MemberCouponService(_repo);
-			return await server.GetCouponByCode(MemberId, code);
+			return await server.GetCouponByCode((int)MemberId, code);
 		}
+
 	}
 }

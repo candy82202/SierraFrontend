@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SIERRA_Server.Models.DTOs.Peomotions;
+using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
 using SIERRA_Server.Models.Infra;
@@ -23,6 +23,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 										   .Where(mc => mc.MemberId == MemberId)
 										   .Where(mc => mc.UseAt == null && mc.ExpireAt > DateTime.Now)
 										   .Where(mc => mc.Coupon.StartAt == null || mc.Coupon.StartAt <= DateTime.Now)
+                                           .OrderBy(mc=>mc.CreateAt)
 										   .Select(mc => mc.ToMemberCouponDto())
 										   .ToListAsync();
 			return coupons;
@@ -38,7 +39,9 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                            .Where(mc => mc.MemberId == MemberId)
                                            .Where(mc => mc.UseAt == null && mc.ExpireAt > DateTime.Now)
                                            .Where(mc => mc.Coupon.CouponCategoryId == 2 && mc.Coupon.StartAt > DateTime.Now)
-                                           .Select(mc => mc.ToMemberCouponCanNotUseDto()).ToListAsync();
+                                           .OrderBy(mc => mc.CreateAt)
+                                           .Select(mc => mc.ToMemberCouponCanNotUseDto())
+                                           .ToListAsync();
             return coupons;
         }
 
@@ -63,16 +66,32 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<string> GetCouponByCode(MemberCouponCreateDto dto)
         {
-            var newMemberCoupon = new MemberCoupon();
-            newMemberCoupon.MemberId = dto.MemberId;
-            newMemberCoupon.CouponId = dto.CouponId;
-            newMemberCoupon.CouponName = _db.Coupons.Find(dto.CouponId).CouponName;
-            newMemberCoupon.CreateAt = DateTime.Now;
-            newMemberCoupon.ExpireAt = DateTime.Now.AddDays((double)_db.Coupons.Find(dto.CouponId).Expiration);
-            _db.MemberCoupons.Add(newMemberCoupon);
-            await _db.SaveChangesAsync();
+            var coupon = _db.Coupons.Find(dto.CouponId);
+            if(coupon == null)
+            {
+                return "查無此優惠券";
+            }
+            else
+            {
+                var newMemberCoupon = new MemberCoupon();
+                newMemberCoupon.MemberId = dto.MemberId;
+                newMemberCoupon.CouponId = dto.CouponId;
+                newMemberCoupon.CouponName = coupon.CouponName;
+                newMemberCoupon.CreateAt = DateTime.Now;
+                newMemberCoupon.ExpireAt = DateTime.Now.AddDays((double)coupon.Expiration);
+                _db.MemberCoupons.Add(newMemberCoupon);
+                await _db.SaveChangesAsync();
+                return newMemberCoupon.CouponName;
+            }
+        }
 
-            return newMemberCoupon.CouponName;
+        public async Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId)
+        {
+            var coupons = _db.MemberCoupons.Where(mc => mc.MemberId == memberId)
+                                                .AsEnumerable()
+                                                .Where(mc => mc.UseAt != null && ((TimeSpan)(DateTime.Now - mc.UseAt)).TotalDays < 30)
+                                                .Select(mc=>mc.ToMemberCouponHasUsedDto());
+            return coupons;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using SIERRA_Server.Models.EFModels;
 
-namespace SIERRA_Server.Models.DTOs.Peomotions
+namespace SIERRA_Server.Models.DTOs.Promotions
 {
     public class MemberCouponDto
     {

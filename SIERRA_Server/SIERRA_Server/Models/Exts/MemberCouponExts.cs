@@ -1,4 +1,4 @@
-﻿using SIERRA_Server.Models.DTOs.Peomotions;
+﻿using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
 
 namespace SIERRA_Server.Models.Exts
@@ -47,6 +47,15 @@ namespace SIERRA_Server.Models.Exts
 				ApplyTo = applyTo
 			};
 		}
+        public static MemberCouponHasUsedDto ToMemberCouponHasUsedDto(this MemberCoupon entity)
+		{
+			return new MemberCouponHasUsedDto()
+			{
+				MemberCouponId = entity.MemberCouponId,
+				CouponName = entity.CouponName,
+				UsedAt = (DateTime)entity.UseAt
+			};
+		}
 
-	}
+    }
 }

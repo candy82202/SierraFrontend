@@ -1,4 +1,4 @@
-﻿using SIERRA_Server.Models.DTOs.Peomotions;
+﻿using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.Interfaces;
 
 namespace SIERRA_Server.Models.Services
@@ -12,19 +12,19 @@ namespace SIERRA_Server.Models.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<MemberCouponDto>> GetUsableCoupon(int? MemberId)
+        public async Task<IEnumerable<MemberCouponDto>> GetUsableCoupon(int? memberId)
         {
-            var coupons = await _repo.GetUsableCoupon(MemberId);
+            var coupons = await _repo.GetUsableCoupon(memberId);
             return coupons;
         }
 
-        public async Task<IEnumerable<MemberCouponCanNotUseDto>> GetCouponCanNotUseNow(int? MemberId)
+        public async Task<IEnumerable<MemberCouponCanNotUseDto>> GetCouponCanNotUseNow(int? memberId)
         {
-            var coupons = await _repo.GetCouponCanNotUseNow(MemberId);
+            var coupons = await _repo.GetCouponCanNotUseNow(memberId);
             return coupons;
         }
 
-        public async Task<string> GetCouponByCode(int? memberId, string code)
+        public async Task<string> GetCouponByCode(int memberId, string code)
         {
             var isExist = await _repo.CheckCouponExist(code);
             if (!isExist)
@@ -33,7 +33,7 @@ namespace SIERRA_Server.Models.Services
             }
             else
             {
-                var result =await _repo.CheckHaveSame((int)memberId, code);
+                var result =await _repo.CheckHaveSame(memberId, code);
                 if (result.HaveSame)
                 {
                     return "已領取過此優惠券";
@@ -42,11 +42,17 @@ namespace SIERRA_Server.Models.Services
                 {
                     MemberCouponCreateDto dto = new MemberCouponCreateDto();
                     dto.CouponId = result.CouponId;
-                    dto.MemberId = (int)memberId;
+                    dto.MemberId = memberId;
                     return await _repo.GetCouponByCode(dto);
                 }
             }
             
+        }
+
+        public async Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId)
+        {
+            var coupons = await _repo.GetCouponHasUsed(memberId);
+            return coupons;
         }
     }
 }

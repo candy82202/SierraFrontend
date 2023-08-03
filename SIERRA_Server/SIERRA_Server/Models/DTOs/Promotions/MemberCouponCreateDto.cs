@@ -1,4 +1,4 @@
-﻿namespace SIERRA_Server.Models.DTOs.Peomotions
+﻿namespace SIERRA_Server.Models.DTOs.Promotions
 {
     public class MemberCouponCreateDto
     {
