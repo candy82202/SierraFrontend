@@ -38,7 +38,7 @@ namespace SIERRA_Server.Controllers
         }
 
         [HttpPost("Login")]
-        public string Login(LoginDTO request)
+        public IActionResult Login(LoginDTO request)
         {
             var service = new MemberService(_repo, _hashUtility);
 
@@ -49,7 +49,7 @@ namespace SIERRA_Server.Controllers
             if (result.IsFail)
             {
                 var msg = result.ErrorMessage ?? "帳號或密碼錯誤";
-                return msg;
+                return BadRequest(msg);
             }
 
             // 設定使用者資訊
@@ -73,7 +73,7 @@ namespace SIERRA_Server.Controllers
 
             // 產生JWT Token
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return token;
+            return Ok(token);
         }
 
         // GET: api/Members
