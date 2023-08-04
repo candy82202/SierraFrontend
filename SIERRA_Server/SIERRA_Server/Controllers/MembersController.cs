@@ -29,14 +29,17 @@ namespace SIERRA_Server.Controllers
         private readonly MemberEFRepository _repo;
         private readonly IConfiguration _config;
         private readonly HashUtility _hashUtility;
+        private readonly EmailHelper _emailHelper;
 
-        public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility)
+        public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility, EmailHelper emailHelper)
         {
             _context = context;
             _repo = repo;
             _config = config;
             _hashUtility = hashUtility;
-        }
+            _emailHelper = emailHelper;
+
+		}
 
         [HttpPost("Login")]
         [AllowAnonymous]
@@ -82,14 +85,17 @@ namespace SIERRA_Server.Controllers
 		[AllowAnonymous]
 		public IActionResult Register(RegisterDTO request)
         {
-            var service = new MemberService(_repo);
+            var service = new MemberService(_repo, _hashUtility);
 			var result = service.Register(request);
 
 			if (result.IsFail)
 			{
 				return BadRequest(result.ErrorMessage);
 			}
-            return Ok("註冊完成,請至信箱收取驗證信");
+
+            _emailHelper.SendVerificationEmail(request.Email);
+
+			return Ok("註冊完成,請至信箱收取驗證信");
 		}
 		// GET: api/Members
 		[HttpGet]

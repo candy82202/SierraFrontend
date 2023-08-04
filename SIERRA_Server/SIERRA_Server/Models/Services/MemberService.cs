@@ -27,6 +27,8 @@ namespace SIERRA_Server.Models.Services
 			var member = _repo.GetMemberByUsername(dto.Username);
 			if (member == null) return Result.Fail("帳密有誤");
 
+			if (member.IsConfirmed.HasValue == false || member.IsConfirmed.Value == false) return Result.Fail("會員資格尚未確認");
+
 			var salt = _hashUtility.GetSalt();
 			var hashPassword = _hashUtility.ToSHA256(dto.Password, salt);
 

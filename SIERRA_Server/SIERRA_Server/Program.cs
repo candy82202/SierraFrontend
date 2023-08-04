@@ -39,6 +39,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
 builder.Services.AddScoped<HashUtility>();
+builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

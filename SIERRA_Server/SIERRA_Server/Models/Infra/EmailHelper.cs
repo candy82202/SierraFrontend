@@ -1,12 +1,18 @@
 ﻿using System.Net.Mail;
 using System.Net;
 using System.Text;
+using System.Net.Http;
 
 namespace SIERRA_Server.Models.Infra
 {
 	public class EmailHelper
 	{
 		private string senderEmail = "g01.webapp@gmail.com"; // 寄件者
+		private readonly IConfiguration _config;
+		public EmailHelper(IConfiguration config)
+		{
+			_config = config;
+		}
 
 		public void SendForgetPasswordEmail(string url, string name, string email)
 		{
@@ -36,10 +42,10 @@ namespace SIERRA_Server.Models.Infra
 
 		public virtual void SendFromGmail(string from, string to, string subject, string body)
 		{
-			// todo 以下是開發時,測試之用, 只是建立text file, 不真的寄出信
-			var path = HttpContext.Current.Server.MapPath("~/files/");
-			CreateTextFile(path, from, to, subject, body);
-			return;
+			//// todo 以下是開發時,測試之用, 只是建立text file, 不真的寄出信
+			//var path = HttpContext.Current.Server.MapPath("~/files/");
+			//CreateTextFile(path, from, to, subject, body);
+			//return;
 
 			// 以下是實作程式, 可以視需要真的寄出信, 或者只是單純建立text file,供開發時使用
 			// ref https://dotblogs.com.tw/chichiblog/2018/04/20/122816
@@ -79,4 +85,33 @@ subject:{subject}
 {body}";
 			File.WriteAllText(fullPath, contents, Encoding.UTF8);
 		}
+
+		public void SendVerificationEmail(string recipientEmail)
+		{
+			var senderEmail = _config["Gmail:Email"]; // 你的 Gmail 信箱
+			var password = _config["Gmail:Password"]; // 你的 Gmail 密碼
+
+			MailMessage mms = new MailMessage();
+			mms.From = new MailAddress(senderEmail);
+			mms.To.Add(recipientEmail);
+			mms.Subject = "帳號驗證信";
+			mms.Body = "這是一封驗證信，請點擊以下連結進行驗證：https://yourwebsite.com/verify"; // 可以自訂驗證連結
+
+			// 設定郵件主機
+			SmtpClient client = new SmtpClient("smtp.gmail.com");
+			client.Port = 587;
+			client.Credentials = new NetworkCredential(senderEmail, password);
+			client.EnableSsl = true;
+
+			// 寄出郵件
+			try
+			{
+				client.Send(mms);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
+			}
+		}
 	}
+}
