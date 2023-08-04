@@ -47,6 +47,7 @@ namespace SIERRA_Server.Models.DTOs.Promotions
             }
         }
         public string ApplyTo { get; set; }
+        public int CouponId { get; set; }
 
-    }
+	}
 }

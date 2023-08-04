@@ -1,4 +1,5 @@
-﻿using SIERRA_Server.Models.DTOs.Promotions;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.Interfaces;
 
 namespace SIERRA_Server.Models.Services
@@ -57,8 +58,13 @@ namespace SIERRA_Server.Models.Services
 
         public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
         {
-            var coupons = await _repo.GetCouponMeetCriteria(memberId);
-            return coupons;
+            var dessertsWithPrice = await _repo.GetCartItems(memberId);
+            var coupons = await _repo.GetCouponDetail(memberId);
+            var couponIds = coupons.Select(c => c.CouponId).ToArray();
+			for(int i = 0;i< couponIds.Length; i++)
+            {
+                
+			}
         }
     }
 }

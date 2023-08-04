@@ -95,7 +95,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             return coupons;
         }
 
-        public async Task<IEnumerable<DessertCartItem>> GetCartItems(int memberId)
+        public async Task<IEnumerable<DessertWithPriceDto>> GetCartItems(int memberId)
         {
             var member = await _db.Members.FindAsync(memberId);
             var memberName = member.MemberName;
@@ -103,13 +103,31 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             var cart = await _db.DessertCarts.FirstOrDefaultAsync(dc => dc.MemberName == memberName);
             if (cart == null)
             {
-                return Enumerable.Empty<DessertCartItem>();
+                return Enumerable.Empty<DessertWithPriceDto>();
             }
-            var cartItems = cart.DessertCartItems;
+            var cartItems = cart.DessertCartItems.Select(dci=>new DessertWithPriceDto()
+            {
+                DessertId = dci.DessertId,
+                DessertPriceNow = dci.Dessert.Discounts.Any(d=>d.StartAt<DateTime.Now&&d.EndAt>DateTime.Now)?(dci.Specification.UnitPrice)*(dci.Dessert.Discounts.First().DiscountPrice): dci.Specification.UnitPrice,
+            });
             return cartItems;
         }
+        public async Task<IEnumerable<MemberCouponAndCouponDetailDto>> GetCouponDetail(int memberId)
+        {
+			var coupons = await _db.MemberCoupons.Include(mc => mc.Coupon)
+										   .ThenInclude(c => c.DiscountGroup)
+										   .ThenInclude(dg => dg.DiscountGroupItems)
+										   .ThenInclude(dgi => dgi.Dessert)
+										   .Where(mc => mc.MemberId == memberId)
+										   .Where(mc => mc.UseAt == null && mc.ExpireAt > DateTime.Now)
+										   .Where(mc => mc.Coupon.CouponCategoryId == 2 && mc.Coupon.StartAt > DateTime.Now)
+                                           .Select(mc=> mc.ToMemberCouponAndCouponDetailDto())
+                                           .ToListAsync();
+            return coupons;
 
-        public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
+		}
+
+		public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
         {
             throw new NotImplementedException();
         }

@@ -23,7 +23,8 @@ namespace SIERRA_Server.Models.Exts
 				MemberCouponId = entity.MemberCouponId,
 				CouponName = entity.CouponName,
 				ExpireAt = entity.ExpireAt,
-				ApplyTo = applyTo
+				ApplyTo = applyTo,
+				CouponId = entity.MemberCouponId,
 			};
 		}
 		public static MemberCouponCanNotUseDto ToMemberCouponCanNotUseDto(this MemberCoupon entity)
@@ -56,6 +57,18 @@ namespace SIERRA_Server.Models.Exts
 				UsedAt = (DateTime)entity.UseAt
 			};
 		}
-
-    }
+		public static MemberCouponAndCouponDetailDto ToMemberCouponAndCouponDetailDto(this MemberCoupon entity)
+		{
+			return new MemberCouponAndCouponDetailDto()
+			{
+				MemberCouponId = entity.MemberCouponId,
+				CouponName = entity.CouponName,
+				CouponId = entity.CouponId,
+				DiscountGroup = entity.Coupon.DiscountGroup,
+				DiscountGroupId = entity.Coupon.DiscountGroupId,
+				LimitType = entity.Coupon.LimitType,
+				LimitValue = entity.Coupon.LimitValue,
+			};
+		}
+	}
 }

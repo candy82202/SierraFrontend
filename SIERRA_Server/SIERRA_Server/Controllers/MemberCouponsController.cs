@@ -48,7 +48,7 @@ namespace SIERRA_Server.Controllers
                 return Enumerable.Empty<MemberCouponHasUsedDto>();
             }
 			var server = new MemberCouponService(_repo);
-			var coupons = await server.GetCouponHasUsed(MemberId);
+			var coupons = await server.GetCouponHasUsed(MemberId); 
 			return coupons;
         }
 		[HttpPost]

@@ -51,8 +51,8 @@ namespace SIERRA_Server.Models.EFModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Sierra0801;Persist Security Info=True;User ID=sa5;Password=sa5");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Sierra0801;User ID=sa5;Password=sa5");
             }
         }
 
@@ -65,7 +65,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Coupon>(entity =>
             {
-                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D3490800950C98F1")
+                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D349080069258FBE")
                     .IsUnique();
 
                 entity.Property(e => e.CouponCode)
@@ -88,12 +88,12 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.Coupons)
                     .HasForeignKey(d => d.CouponCategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Coupons__CouponC__66603565");
+                    .HasConstraintName("FK__Coupons__CouponC__534D60F1");
 
                 entity.HasOne(d => d.DiscountGroup)
                     .WithMany(p => p.Coupons)
                     .HasForeignKey(d => d.DiscountGroupId)
-                    .HasConstraintName("FK__Coupons__Discoun__6754599E");
+                    .HasConstraintName("FK__Coupons__Discoun__5441852A");
             });
 
             modelBuilder.Entity<CouponCategory>(entity =>
@@ -112,7 +112,7 @@ namespace SIERRA_Server.Models.EFModels
                 entity.HasOne(d => d.Coupon)
                     .WithMany(p => p.CouponSettings)
                     .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__CouponSet__Coupo__6A30C649");
+                    .HasConstraintName("FK__CouponSet__Coupo__571DF1D5");
             });
 
             modelBuilder.Entity<Dessert>(entity =>
@@ -135,12 +135,12 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.Desserts)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Desserts__Catego__4F7CD00D");
+                    .HasConstraintName("FK__Desserts__Catego__3C69FB99");
             });
 
             modelBuilder.Entity<DessertCart>(entity =>
             {
-                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEF1884A54C")
+                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEFD0C3FCF8")
                     .IsUnique();
 
                 entity.Property(e => e.MemberName)
@@ -152,7 +152,7 @@ namespace SIERRA_Server.Models.EFModels
                     .HasPrincipalKey<Member>(p => p.MemberName)
                     .HasForeignKey<DessertCart>(d => d.MemberName)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Membe__17F790F9");
+                    .HasConstraintName("FK__DessertCa__Membe__04E4BC85");
             });
 
             modelBuilder.Entity<DessertCartItem>(entity =>
@@ -161,26 +161,32 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.DessertCartItems)
                     .HasForeignKey(d => d.DessertCartId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Desse__1AD3FDA4");
+                    .HasConstraintName("FK__DessertCa__Desse__07C12930");
 
                 entity.HasOne(d => d.Dessert)
                     .WithMany(p => p.DessertCartItems)
                     .HasForeignKey(d => d.DessertId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Desse__1BC821DD");
+                    .HasConstraintName("FK__DessertCa__Desse__08B54D69");
+
+                entity.HasOne(d => d.Specification)
+                    .WithMany(p => p.DessertCartItems)
+                    .HasForeignKey(d => d.SpecificationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__DessertCa__Speci__09A971A2");
             });
 
             modelBuilder.Entity<DessertImage>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
-                    .HasName("PK__DessertI__7516F70C592BDBBC");
+                    .HasName("PK__DessertI__7516F70C35483BAE");
 
                 entity.Property(e => e.DessertImageName).HasMaxLength(255);
 
                 entity.HasOne(d => d.Dessert)
                     .WithMany(p => p.DessertImages)
                     .HasForeignKey(d => d.DessertId)
-                    .HasConstraintName("FK__DessertIm__Desse__52593CB8");
+                    .HasConstraintName("FK__DessertIm__Desse__3F466844");
             });
 
             modelBuilder.Entity<DessertOrder>(entity =>
@@ -212,19 +218,19 @@ namespace SIERRA_Server.Models.EFModels
                 entity.HasOne(d => d.Coupon)
                     .WithMany(p => p.DessertOrders)
                     .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__DessertOr__Coupo__10566F31");
+                    .HasConstraintName("FK__DessertOr__Coupo__7D439ABD");
 
                 entity.HasOne(d => d.DessertOrderStatus)
                     .WithMany(p => p.DessertOrders)
                     .HasForeignKey(d => d.DessertOrderStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertOr__Desse__0F624AF8");
+                    .HasConstraintName("FK__DessertOr__Desse__7C4F7684");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.DessertOrders)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertOr__Membe__0E6E26BF");
+                    .HasConstraintName("FK__DessertOr__Membe__7B5B524B");
             });
 
             modelBuilder.Entity<DessertOrderDetail>(entity =>
@@ -237,13 +243,13 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.DessertOrderDetails)
                     .HasForeignKey(d => d.DessertId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertOr__Desse__14270015");
+                    .HasConstraintName("FK__DessertOr__Desse__01142BA1");
 
                 entity.HasOne(d => d.DessertOrder)
                     .WithMany(p => p.DessertOrderDetails)
                     .HasForeignKey(d => d.DessertOrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertOr__Desse__1332DBDC");
+                    .HasConstraintName("FK__DessertOr__Desse__00200768");
             });
 
             modelBuilder.Entity<DessertTag>(entity =>
@@ -255,7 +261,7 @@ namespace SIERRA_Server.Models.EFModels
                 entity.HasOne(d => d.Dessert)
                     .WithMany(p => p.DessertTags)
                     .HasForeignKey(d => d.DessertId)
-                    .HasConstraintName("FK__DessertTa__Desse__5535A963");
+                    .HasConstraintName("FK__DessertTa__Desse__4222D4EF");
             });
 
             modelBuilder.Entity<Discount>(entity =>
@@ -268,7 +274,7 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.Discounts)
                     .HasForeignKey(d => d.DessertId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Discounts__Desse__6D0D32F4");
+                    .HasConstraintName("FK__Discounts__Desse__59FA5E80");
             });
 
             modelBuilder.Entity<DiscountGroup>(entity =>
@@ -284,18 +290,18 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.DiscountGroupItems)
                     .HasForeignKey(d => d.DessertId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DiscountG__Desse__619B8048");
+                    .HasConstraintName("FK__DiscountG__Desse__4E88ABD4");
 
                 entity.HasOne(d => d.DiscountGroup)
                     .WithMany(p => p.DiscountGroupItems)
                     .HasForeignKey(d => d.DiscountGroupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DiscountG__Disco__60A75C0F");
+                    .HasConstraintName("FK__DiscountG__Disco__4D94879B");
             });
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42A008F143C")
+                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42A6333BC86")
                     .IsUnique();
 
                 entity.Property(e => e.CreateAt)
@@ -356,13 +362,13 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.Lessons)
                     .HasForeignKey(d => d.LessonCategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Lessons__LessonC__7B5B524B");
+                    .HasConstraintName("FK__Lessons__LessonC__68487DD7");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.Lessons)
                     .HasForeignKey(d => d.TeacherId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Lessons__Teacher__7C4F7684");
+                    .HasConstraintName("FK__Lessons__Teacher__693CA210");
             });
 
             modelBuilder.Entity<LessonCategory>(entity =>
@@ -382,7 +388,7 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.LessonImages)
                     .HasForeignKey(d => d.LessonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonIma__Lesso__7F2BE32F");
+                    .HasConstraintName("FK__LessonIma__Lesso__6C190EBB");
             });
 
             modelBuilder.Entity<LessonOrder>(entity =>
@@ -400,19 +406,19 @@ namespace SIERRA_Server.Models.EFModels
                 entity.HasOne(d => d.Coupon)
                     .WithMany(p => p.LessonOrders)
                     .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__LessonOrd__Coupo__06CD04F7");
+                    .HasConstraintName("FK__LessonOrd__Coupo__73BA3083");
 
                 entity.HasOne(d => d.LessonOrderStatus)
                     .WithMany(p => p.LessonOrders)
                     .HasForeignKey(d => d.LessonOrderStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Lesso__05D8E0BE");
+                    .HasConstraintName("FK__LessonOrd__Lesso__72C60C4A");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.LessonOrders)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Membe__04E4BC85");
+                    .HasConstraintName("FK__LessonOrd__Membe__71D1E811");
             });
 
             modelBuilder.Entity<LessonOrderDetail>(entity =>
@@ -425,18 +431,18 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.LessonOrderDetails)
                     .HasForeignKey(d => d.LessonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Lesso__0A9D95DB");
+                    .HasConstraintName("FK__LessonOrd__Lesso__778AC167");
 
                 entity.HasOne(d => d.LessonOrder)
                     .WithMany(p => p.LessonOrderDetails)
                     .HasForeignKey(d => d.LessonOrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LessonOrd__Lesso__09A971A2");
+                    .HasConstraintName("FK__LessonOrd__Lesso__76969D2E");
             });
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasIndex(e => e.MemberName, "UQ__Members__BE50FDEFA3D484CB")
+                entity.HasIndex(e => e.MemberName, "UQ__Members__BE50FDEF0E387EEC")
                     .IsUnique();
 
                 entity.Property(e => e.Address)
@@ -495,13 +501,13 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.MemberCoupons)
                     .HasForeignKey(d => d.CouponId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberCou__Coupo__70DDC3D8");
+                    .HasConstraintName("FK__MemberCou__Coupo__5DCAEF64");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.MemberCoupons)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberCou__Membe__71D1E811");
+                    .HasConstraintName("FK__MemberCou__Membe__5EBF139D");
             });
 
             modelBuilder.Entity<OrderStatus>(entity =>
@@ -543,7 +549,7 @@ namespace SIERRA_Server.Models.EFModels
                 entity.HasOne(d => d.Coupon)
                     .WithMany(p => p.Promotions)
                     .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__Promotion__Coupo__75A278F5");
+                    .HasConstraintName("FK__Promotion__Coupo__628FA481");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -577,7 +583,7 @@ namespace SIERRA_Server.Models.EFModels
                 entity.HasOne(d => d.Dessert)
                     .WithMany(p => p.Specifications)
                     .HasForeignKey(d => d.DessertId)
-                    .HasConstraintName("FK__Specifica__Desse__5812160E");
+                    .HasConstraintName("FK__Specifica__Desse__44FF419A");
             });
 
             modelBuilder.Entity<Teacher>(entity =>

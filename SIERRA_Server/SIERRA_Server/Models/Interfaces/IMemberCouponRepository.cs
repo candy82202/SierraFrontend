@@ -1,4 +1,5 @@
 ﻿using SIERRA_Server.Models.DTOs.Promotions;
+using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
 
 namespace SIERRA_Server.Models.Interfaces
@@ -11,6 +12,9 @@ namespace SIERRA_Server.Models.Interfaces
         Task<ResultForCheck> CheckHaveSame(int memberId, string code);
         Task<string> GetCouponByCode(MemberCouponCreateDto dto);
         Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId);
-        Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId);
-    }
+        Task<IEnumerable<DessertWithPriceDto>> GetCartItems(int memberId);
+
+		Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId);
+		Task<IEnumerable<MemberCouponAndCouponDetailDto>> GetCouponDetail(int memberId);
+	}
 }
