@@ -77,7 +77,7 @@ namespace SIERRA_Server.Controllers
         }
         // GET: api/Desserts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dessert>> GetDessert(int id=3)
+        public async Task<ActionResult<Dessert>> GetDessert(int id)
         {
             var dvm = new List<DessertDTO>();
 
