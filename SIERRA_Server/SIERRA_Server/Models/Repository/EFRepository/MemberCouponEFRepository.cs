@@ -129,7 +129,44 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
 		public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
         {
-            throw new NotImplementedException();
+            var coupons = await _db.MemberCoupons.Include(mc => mc.Coupon)
+                                           .ThenInclude(c => c.DiscountGroup)
+                                           .ThenInclude(dg => dg.DiscountGroupItems)
+                                           .ThenInclude(dgi => dgi.Dessert)
+                                           .Where(mc => mc.MemberId == memberId)
+                                           .Where(mc => mc.UseAt == null && mc.ExpireAt > DateTime.Now)
+                                           .Where(mc => mc.Coupon.CouponCategoryId == 2 && mc.Coupon.StartAt > DateTime.Now)
+                                           .ToListAsync();
+
+            var couponsMeetCriteria = coupons.Where(mc => mc.Coupon.DiscountGroupId == null&&mc.Coupon.LimitType==null).ToList();
+            var waitToCheck = coupons.Except(couponsMeetCriteria);
+            //取得該會員的購物車
+            var member = await _db.Members.FindAsync(memberId);
+            var memberName = member.MemberName;
+            var cart = await _db.DessertCarts.Include(dc=>dc.DessertCartItems)
+                                             .ThenInclude(dci=>dci.Specification)
+                                             .ThenInclude(dci=>dci.Dessert)
+                                             .ThenInclude(d=>d.Discounts)
+                                             .FirstOrDefaultAsync(dc => dc.MemberName == memberName);
+            var totalPrice = cart.DessertCartItems.Select(dci => new 
+            {
+                DessertPriceNow = dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now) ? Math.Round((decimal)(dci.Specification.UnitPrice) * ((dci.Dessert.Discounts.First().DiscountPrice)/100),0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice,
+            }).Select(x=>x.DessertPriceNow).Sum();
+            foreach (MemberCoupon coupon in waitToCheck)
+            {
+                if (coupon.Coupon.DiscountGroupId == null)
+                {
+                    if(totalPrice >= coupon.Coupon.LimitValue)
+                    {
+                        couponsMeetCriteria.Add(coupon);
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            return couponsMeetCriteria.Select(c=>c.ToMemberCouponDto());
         }
     }
 }
