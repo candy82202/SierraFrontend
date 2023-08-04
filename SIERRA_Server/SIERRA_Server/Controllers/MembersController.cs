@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using SIERRA_Server.Models.Repository.EFRepository;
 using SIERRA_Server.Models.Infra;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SIERRA_Server.Controllers
 {
@@ -38,6 +39,7 @@ namespace SIERRA_Server.Controllers
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginDTO request)
         {
             var service = new MemberService(_repo, _hashUtility);
@@ -67,8 +69,9 @@ namespace SIERRA_Server.Controllers
                 issuer: _config["JWT:Issuer"],
                 audience: _config["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(5),
-                signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
+				//expires: DateTime.Now.AddMinutes(30),
+				expires: DateTime.Now.AddSeconds(30),
+				signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
             );
 
             // 產生JWT Token
