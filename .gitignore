@@ -386,3 +386,4 @@ Debug/net6.0/
 /SIERRA_Server/.vs/SIERRA_Server/DesignTimeBuild/.dtbcache.v2
 /SIERRA_Server/SIERRA_Server/obj/Debug/net6.0/SIERRA_Server.csproj.FileListAbsolute.txt
 /SIERRA_Server/SIERRA_Server/obj/Debug/net6.0/SIERRA_Server.GeneratedMSBuildEditorConfig.editorconfig
+/SIERRA_Server/SIERRA_Server/efpt.config.json

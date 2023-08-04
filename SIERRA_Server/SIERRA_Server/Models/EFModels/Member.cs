@@ -15,17 +15,19 @@ namespace SIERRA_Server.Models.EFModels
         }
 
         public int Id { get; set; }
-        public string MemberName { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public string EncryptedPassword { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public DateTime CreateAt { get; set; }
-        public DateTime Birth { get; set; }
-        public bool Gender { get; set; }
+        public DateTime? Birth { get; set; }
+        public bool? Gender { get; set; }
         public string ImageName { get; set; }
-        public bool IsBan { get; set; }
+        public bool? IsBan { get; set; }
         public int CancelTimes { get; set; }
+        public bool? IsConfirmed { get; set; }
+        public string ConfirmCode { get; set; }
         public bool? DailyGamePlayed { get; set; }
         public bool? WeeklyGamePlayed { get; set; }
 

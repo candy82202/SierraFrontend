@@ -6,6 +6,6 @@ namespace SIERRA_Server.Models.Interfaces
 {
     public interface IMemberRepository
     {
-        Member? GetMemberByUsername(LoginDTO dto);
+        Member? GetMemberByUsername(string username);
     }
 }

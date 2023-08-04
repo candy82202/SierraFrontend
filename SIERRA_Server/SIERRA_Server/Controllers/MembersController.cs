@@ -50,8 +50,7 @@ namespace SIERRA_Server.Controllers
             // 驗證失敗
             if (result.IsFail)
             {
-                var msg = result.ErrorMessage ?? "帳號或密碼錯誤";
-                return BadRequest(msg);
+                return BadRequest(result.ErrorMessage);
             }
 
             // 設定使用者資訊
@@ -79,8 +78,21 @@ namespace SIERRA_Server.Controllers
             return Ok(token);
         }
 
-        // GET: api/Members
-        [HttpGet]
+        [HttpPost("Register")]
+		[AllowAnonymous]
+		public IActionResult Register(RegisterDTO request)
+        {
+            var service = new MemberService(_repo);
+			var result = service.Register(request);
+
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
+            return Ok("註冊完成,請至信箱收取驗證信");
+		}
+		// GET: api/Members
+		[HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
         {
             if (_context.Members == null)

@@ -16,9 +16,22 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             _db = db;
         }
 
-        public Member? GetMemberByUsername(LoginDTO dto)
+        public Member? GetMemberByUsername(string username)
         {
-            return _db.Members.FirstOrDefault(m => m.MemberName == dto.Username);
+            return _db.Members.FirstOrDefault(m => m.Username == username);
+        }
+
+        public void PostMember(RegisterDTO dto)
+        {
+            Member member = new Member
+            {
+                Username = dto.Username,
+                Email = dto.Email,
+                EncryptedPassword = dto.EncryptedPassword,
+                IsConfirmed = dto.IsConfirmed,
+                ConfirmCode = dto.ConfirmCode,
+            };
+            _db.Members.Add(member);
         }
     }
 }
