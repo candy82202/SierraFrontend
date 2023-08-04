@@ -25,6 +25,7 @@ Members 部分
 [v] - Login(with JWT Authentication & thress-layer Architecture)
 	- Modify Programs.cs 
 [working on] - Register
+[v] - EmailHelper.cs
 
 
 
