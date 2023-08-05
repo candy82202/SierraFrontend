@@ -140,17 +140,17 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<DessertCart>(entity =>
             {
-                entity.HasIndex(e => e.MemberName, "UQ__DessertC__BE50FDEFD0C3FCF8")
+                entity.HasIndex(e => e.UserName, "UQ__DessertC__BE50FDEFD0C3FCF8")
                     .IsUnique();
 
-                entity.Property(e => e.MemberName)
+                entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(50);
 
                 entity.HasOne(d => d.MemberNameNavigation)
                     .WithOne(p => p.DessertCart)
-                    .HasPrincipalKey<Member>(p => p.MemberName)
-                    .HasForeignKey<DessertCart>(d => d.MemberName)
+                    .HasPrincipalKey<Member>(p => p.UserName)
+                    .HasForeignKey<DessertCart>(d => d.UserName)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__DessertCa__Membe__04E4BC85");
             });
@@ -442,7 +442,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasIndex(e => e.MemberName, "UQ__Members__BE50FDEF0E387EEC")
+                entity.HasIndex(e => e.UserName, "UQ__Members__BE50FDEF0E387EEC")
                     .IsUnique();
 
                 entity.Property(e => e.Address)
@@ -469,7 +469,7 @@ namespace SIERRA_Server.Models.EFModels
 
                 entity.Property(e => e.ImageName).HasMaxLength(255);
 
-                entity.Property(e => e.MemberName)
+                entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(50);
 

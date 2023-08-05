@@ -13,7 +13,7 @@ namespace SIERRA_Server.Models.EFModels
         }
 
         public int Id { get; set; }
-        public string MemberName { get; set; }
+        public string UserName { get; set; }
 
         public virtual Member MemberNameNavigation { get; set; }
         public virtual ICollection<DessertCartItem> DessertCartItems { get; set; }

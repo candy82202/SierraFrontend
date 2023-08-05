@@ -62,7 +62,7 @@ namespace SIERRA_Server.Controllers
 			return await server.GetCouponByCode((int)MemberId, code);
 		}
 
-		[HttpPost]
+		[HttpGet("MeetCriteria")]
 		public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int? MemberId)
 		{
 			if (MemberId == null)

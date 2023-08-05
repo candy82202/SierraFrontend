@@ -89,43 +89,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         public async Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId)
         {
             var coupons = _db.MemberCoupons.Where(mc => mc.MemberId == memberId)
-                                                .AsEnumerable()
                                                 .Where(mc => mc.UseAt != null && ((TimeSpan)(DateTime.Now - mc.UseAt)).TotalDays < 30)
                                                 .Select(mc=>mc.ToMemberCouponHasUsedDto());
             return coupons;
         }
 
-        public async Task<IEnumerable<DessertWithPriceDto>> GetCartItems(int memberId)
-        {
-            var member = await _db.Members.FindAsync(memberId);
-            var memberName = member.MemberName;
-            //取得該會員的購物車
-            var cart = await _db.DessertCarts.FirstOrDefaultAsync(dc => dc.MemberName == memberName);
-            if (cart == null)
-            {
-                return Enumerable.Empty<DessertWithPriceDto>();
-            }
-            var cartItems = cart.DessertCartItems.Select(dci=>new DessertWithPriceDto()
-            {
-                DessertId = dci.DessertId,
-                DessertPriceNow = dci.Dessert.Discounts.Any(d=>d.StartAt<DateTime.Now&&d.EndAt>DateTime.Now)?(dci.Specification.UnitPrice)*(dci.Dessert.Discounts.First().DiscountPrice): dci.Specification.UnitPrice,
-            });
-            return cartItems;
-        }
-        public async Task<IEnumerable<MemberCouponAndCouponDetailDto>> GetCouponDetail(int memberId)
-        {
-			var coupons = await _db.MemberCoupons.Include(mc => mc.Coupon)
-										   .ThenInclude(c => c.DiscountGroup)
-										   .ThenInclude(dg => dg.DiscountGroupItems)
-										   .ThenInclude(dgi => dgi.Dessert)
-										   .Where(mc => mc.MemberId == memberId)
-										   .Where(mc => mc.UseAt == null && mc.ExpireAt > DateTime.Now)
-										   .Where(mc => mc.Coupon.CouponCategoryId == 2 && mc.Coupon.StartAt > DateTime.Now)
-                                           .Select(mc=> mc.ToMemberCouponAndCouponDetailDto())
-                                           .ToListAsync();
-            return coupons;
-
-		}
 
 		public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
         {
@@ -135,35 +103,82 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                            .ThenInclude(dgi => dgi.Dessert)
                                            .Where(mc => mc.MemberId == memberId)
                                            .Where(mc => mc.UseAt == null && mc.ExpireAt > DateTime.Now)
-                                           .Where(mc => mc.Coupon.CouponCategoryId == 2 && mc.Coupon.StartAt > DateTime.Now)
+                                           .Where(mc => mc.Coupon.StartAt == null || mc.Coupon.StartAt <= DateTime.Now)
                                            .ToListAsync();
 
             var couponsMeetCriteria = coupons.Where(mc => mc.Coupon.DiscountGroupId == null&&mc.Coupon.LimitType==null).ToList();
             var waitToCheck = coupons.Except(couponsMeetCriteria);
             //取得該會員的購物車
-            var member = await _db.Members.FindAsync(memberId);
-            var memberName = member.MemberName;
+            var member =await _db.Members.FindAsync(memberId);
+            var memberName = member.UserName;
             var cart = await _db.DessertCarts.Include(dc=>dc.DessertCartItems)
                                              .ThenInclude(dci=>dci.Specification)
                                              .ThenInclude(dci=>dci.Dessert)
                                              .ThenInclude(d=>d.Discounts)
-                                             .FirstOrDefaultAsync(dc => dc.MemberName == memberName);
-            var totalPrice = cart.DessertCartItems.Select(dci => new 
-            {
-                DessertPriceNow = dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now) ? Math.Round((decimal)(dci.Specification.UnitPrice) * ((dci.Dessert.Discounts.First().DiscountPrice)/100),0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice,
-            }).Select(x=>x.DessertPriceNow).Sum();
+                                             .FirstOrDefaultAsync(dc => dc.UserName == memberName);
+            var totalPrice = cart.DessertCartItems.Select(dci => dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now) 
+                                                  ? Math.Round((decimal)(dci.Specification.UnitPrice) * ((dci.Dessert.Discounts.First().DiscountPrice) / 100), 0, MidpointRounding.AwayFromZero) 
+                                                  : dci.Specification.UnitPrice)
+                                                  .Sum();
+            var cartItemsDessertIds = cart.DessertCartItems.Select(dci => dci.DessertId);
+            var dessertIdAndQtys = cart.DessertCartItems.Select(dci => new {
+                Id=dci.DessertId,
+                Qty = dci.Quantity
+            }).ToArray();
             foreach (MemberCoupon coupon in waitToCheck)
             {
                 if (coupon.Coupon.DiscountGroupId == null)
                 {
-                    if(totalPrice >= coupon.Coupon.LimitValue)
+                    if (totalPrice >= coupon.Coupon.LimitValue)
                     {
                         couponsMeetCriteria.Add(coupon);
                     }
+                    else continue;
                 }
                 else
                 {
+                    var discountGroupDessertIds = coupon.Coupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.DessertId);
 
+                    if (coupon.Coupon.LimitType == null)
+                    {
+                        var commonItems = cartItemsDessertIds.Intersect(discountGroupDessertIds);
+                        if (commonItems.Any())
+                        {
+                            couponsMeetCriteria.Add(coupon);
+                        }
+                        else continue;
+                        //這種方法執行效率較佳但上面的比較簡潔
+                        //for (int i = 0; i < discountGroupDessertIds.Length; i++)
+                        //{
+                        //    if (cartItemsDessertIds.Contains(discountGroupDessertIds[i]))
+                        //    {
+                        //        couponsMeetCriteria.Add(coupon);
+                        //        break;
+                        //    }
+                        //    else continue;
+                        //}
+                    }
+                    else
+                    {
+                        var neededCount = coupon.Coupon.LimitValue;
+                        var buyCount = 0;
+                        for (int i = 0;i< dessertIdAndQtys.Length; i++)
+                        {
+                            if (buyCount >= neededCount)
+                            {
+                                couponsMeetCriteria.Add(coupon);
+                                break;
+                            }
+                            else
+                            {
+                                if (discountGroupDessertIds.Contains(dessertIdAndQtys[i].Id))
+                                {
+                                    buyCount += dessertIdAndQtys[i].Qty;
+                                }
+                                else continue;
+                            }
+                        }
+                    }
                 }
             }
             return couponsMeetCriteria.Select(c=>c.ToMemberCouponDto());
