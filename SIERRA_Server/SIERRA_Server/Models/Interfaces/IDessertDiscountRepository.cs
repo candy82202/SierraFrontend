@@ -5,6 +5,7 @@ namespace SIERRA_Server.Models.Interfaces
 {
     public interface IDessertDiscountRepository
     {
-        Task<List<DessertDiscountDTO>> GetChocoDiscountGroups();
+
+        Task<List<DessertDiscountDTO>> GetDiscountGroupsByGroupId(int discountGroupId);
     }
 }

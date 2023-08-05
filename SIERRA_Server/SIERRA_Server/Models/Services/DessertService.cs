@@ -53,8 +53,32 @@ namespace SIERRA_Server.Models.Services
         }
         public async Task<List<DessertDiscountDTO>> GetChocoDiscountGroups()
         {
-            var chocoDiscount = await _discountrepo.GetChocoDiscountGroups();
+            var chocoDiscount = await _discountrepo.GetDiscountGroupsByGroupId(6);
             return chocoDiscount;
+        }
+        public async Task<List<DessertDiscountDTO>> GetStrawberryDiscountGroups()
+        {
+            // 呼叫 DiscountGroupId 是 7 的 repository 
+            var strawberryDiscount = await _discountrepo.GetDiscountGroupsByGroupId(7);
+            return strawberryDiscount;
+        }
+        public async Task<List<DessertDiscountDTO>> GetMochaDiscountGroups()
+        {
+            //  呼叫 DiscountGroupId 是 8 的 repository  
+            var mochaDiscount = await _discountrepo.GetDiscountGroupsByGroupId(8);
+            return mochaDiscount;
+        }
+        public async Task<List<DessertDiscountDTO>> GetTaroDiscountGroups()
+        {
+            //  呼叫 DiscountGroupId 是 9 的 repository  
+            var taroDiscount = await _discountrepo.GetDiscountGroupsByGroupId(9);
+            return taroDiscount;
+        }
+        public async Task<List<DessertDiscountDTO>> GetAlcoholDiscountGroups()
+        {
+            //  呼叫 DiscountGroupId 是  10 的 repository 
+            var alcoholDiscount = await _discountrepo.GetDiscountGroupsByGroupId(10);
+            return alcoholDiscount;
         }
     }
 }
