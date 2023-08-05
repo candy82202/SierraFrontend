@@ -46,33 +46,27 @@ builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFReposito
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // 所有API使用,需經過JWT驗證
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
 
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
+//            ValidateIssuer = true,
+//            ValidIssuer = builder.Configuration["JWT:Issuer"],
 
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["JWT:Audience"],
+//            ValidateAudience = true,
+//            ValidAudience = builder.Configuration["JWT:Audience"],
 
-            ValidateLifetime = true, // 預設是true
+//            ValidateLifetime = true, // 預設是true
 
-            ClockSkew = TimeSpan.Zero, // 預設會有偏差，把偏差設成0
+//            ClockSkew = TimeSpan.Zero, // 預設會有偏差，把偏差設成0
 
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
-        };
-    });
-//測試所有API都需登入才能使用?
-//builder.Services.AddAuthorization(options =>
-//{
-//	options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//		.RequireAuthenticatedUser()
-//		.Build();
-//});
+//            ValidateIssuerSigningKey = true,
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
+//        };
+//    });
+
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add(new AuthorizeFilter());

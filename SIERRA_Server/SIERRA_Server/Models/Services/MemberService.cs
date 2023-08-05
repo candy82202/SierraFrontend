@@ -12,6 +12,13 @@ namespace SIERRA_Server.Models.Services
 	{
 		private readonly MemberEFRepository _repo;
 		private readonly HashUtility _hashUtility;
+		private readonly EmailHelper _emailHelper;
+		public MemberService(MemberEFRepository repo, HashUtility hashUtility, EmailHelper emailHelper)
+		{
+			_repo = repo;
+			_hashUtility = hashUtility;
+			_emailHelper = emailHelper;
+		}
 		public MemberService(MemberEFRepository repo, HashUtility hashUtility)
 		{
 			_repo = repo;
@@ -48,6 +55,9 @@ namespace SIERRA_Server.Models.Services
 			dto.EncryptedPassword = _hashUtility.ToSHA256(dto.Password, salt);
 			dto.IsConfirmed = false;
 			dto.ConfirmCode = Guid.NewGuid().ToString("N");
+
+
+			_emailHelper.SendVerificationEmail(dto.Email);
 
 			// 新增會員資料
 			_repo.PostMember(dto);

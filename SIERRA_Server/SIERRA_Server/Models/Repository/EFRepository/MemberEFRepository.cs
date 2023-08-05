@@ -31,7 +31,9 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 IsConfirmed = dto.IsConfirmed,
                 ConfirmCode = dto.ConfirmCode,
             };
+
             _db.Members.Add(member);
+            _db.SaveChanges();
         }
     }
 }

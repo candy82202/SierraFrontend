@@ -88,14 +88,14 @@ subject:{subject}
 
 		public void SendVerificationEmail(string recipientEmail)
 		{
-			var senderEmail = _config["Gmail:Email"]; // 你的 Gmail 信箱
-			var password = _config["Gmail:Password"]; // 你的 Gmail 密碼
+			var senderEmail = _config["Gmail:Email"]; 
+			var password = _config["Gmail:ApplicationPassword"]; 
 
 			MailMessage mms = new MailMessage();
 			mms.From = new MailAddress(senderEmail);
 			mms.To.Add(recipientEmail);
 			mms.Subject = "帳號驗證信";
-			mms.Body = "這是一封驗證信，請點擊以下連結進行驗證：https://yourwebsite.com/verify"; // 可以自訂驗證連結
+			mms.Body = "這是一封驗證信，請點擊以下連結進行驗證：https://localhost:520/api/Members/ActiveRegister?token=123";
 
 			// 設定郵件主機
 			SmtpClient client = new SmtpClient("smtp.gmail.com");

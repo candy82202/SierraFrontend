@@ -7,5 +7,7 @@ namespace SIERRA_Server.Models.Interfaces
     public interface IMemberRepository
     {
         Member? GetMemberByUsername(string username);
-    }
+        void PostMember(RegisterDTO dto);
+
+	}
 }

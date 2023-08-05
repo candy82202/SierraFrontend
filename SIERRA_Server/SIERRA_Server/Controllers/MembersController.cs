@@ -85,7 +85,7 @@ namespace SIERRA_Server.Controllers
 		[AllowAnonymous]
 		public IActionResult Register(RegisterDTO request)
         {
-            var service = new MemberService(_repo, _hashUtility);
+            var service = new MemberService(_repo, _hashUtility,_emailHelper);
 			var result = service.Register(request);
 
 			if (result.IsFail)
@@ -93,10 +93,17 @@ namespace SIERRA_Server.Controllers
 				return BadRequest(result.ErrorMessage);
 			}
 
-            _emailHelper.SendVerificationEmail(request.Email);
-
 			return Ok("註冊完成,請至信箱收取驗證信");
 		}
+
+        [HttpGet("ActiveRegister")]
+        [AllowAnonymous]
+        public IActionResult ActiveRegister(string token)
+        {
+            if (token != "123") return BadRequest("錯誤");
+			return Ok(token);
+        }
+
 		// GET: api/Members
 		[HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
