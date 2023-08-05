@@ -18,7 +18,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public Member? GetMemberByUsername(LoginDTO dto)
         {
-            return _db.Members.FirstOrDefault(m => m.MemberName == dto.Username);
+            return _db.Members.FirstOrDefault(m => m.Username == dto.Username);
         }
     }
 }

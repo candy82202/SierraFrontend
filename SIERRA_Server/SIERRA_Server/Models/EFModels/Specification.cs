@@ -7,6 +7,11 @@ namespace SIERRA_Server.Models.EFModels
 {
     public partial class Specification
     {
+        public Specification()
+        {
+            DessertCartItems = new HashSet<DessertCartItem>();
+        }
+
         public int SpecificationId { get; set; }
         public int? DessertId { get; set; }
         public string Flavor { get; set; }
@@ -14,5 +19,6 @@ namespace SIERRA_Server.Models.EFModels
         public int UnitPrice { get; set; }
 
         public virtual Dessert Dessert { get; set; }
+        public virtual ICollection<DessertCartItem> DessertCartItems { get; set; }
     }
 }

@@ -15,5 +15,6 @@ namespace SIERRA_Server.Models.EFModels
 
         public virtual Dessert Dessert { get; set; }
         public virtual DessertCart DessertCart { get; set; }
+        public virtual Specification Specification { get; set; }
     }
 }
