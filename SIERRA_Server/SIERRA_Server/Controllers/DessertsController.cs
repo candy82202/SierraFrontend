@@ -18,11 +18,13 @@ namespace SIERRA_Server.Controllers
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
         private readonly IDessertRepository _repo;
-        public DessertsController(AppDbContext context, IConfiguration config,IDessertRepository repo)
+        private readonly IDessertDiscountRepository _discountrepo;
+        public DessertsController(AppDbContext context, IConfiguration config,IDessertRepository repo, IDessertDiscountRepository discountrepo)
         {
             _context = context;
             _configuration = config;
             _repo = repo;
+            _discountrepo = discountrepo;
         }
         // GET: api/Desserts/moldCake
         [HttpGet("moldCake")]   
@@ -111,61 +113,68 @@ namespace SIERRA_Server.Controllers
         [HttpGet("ChocoDiscountGroups")]
         public async Task<ActionResult<List<DessertDiscountDTO>>> GetChocoDiscountGroups()
         {
-            var dessertDiscountList = new List<DessertDiscountDTO>();
+            var service = new DessertService(_discountrepo);
+            var chocoDiscount = await service.GetChocoDiscountGroups();
 
-            // Get the connection string from configuration
-            var connectionString = _configuration.GetConnectionString("Sierra");
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                // Your SQL query goes here (use the one you provided)
-                string sqlQuery = @"
-                SELECT 
-                    D.DessertId,
-                    D.DessertName,
-                    S.UnitPrice,
-                    S.Flavor,
-                    S.Size,
-                    DG.DiscountGroupId,
-                    DI.DessertImageName
-                FROM 
-                    DiscountGroups DG
-                INNER JOIN 
-                    DiscountGroupItems DGI ON DG.DiscountGroupId = DGI.DiscountGroupId
-                INNER JOIN 
-                    Desserts D ON DGI.DessertId = D.DessertId
-                LEFT JOIN 
-                    DessertImages DI ON DI.DessertId = D.DessertId
-                LEFT JOIN 
-                    Specification S ON D.DessertId = S.DessertId 
-WHERE Dg.DiscountGroupId=6 
-                ORDER BY DG.DiscountGroupId";
-
-                await connection.OpenAsync();
-
-                var queryResult = await connection.QueryAsync(sqlQuery);
-
-                foreach (var row in queryResult)
-                {
-                    var dessertDiscountDTO = new DessertDiscountDTO
-                    {
-                        DessertId = row.DessertId,
-                        DessertName = row.DessertName,
-                        UnitPrice = row.UnitPrice,
-                        DessertImageName = row.DessertImageName,
-                        DiscountGroupId = row.DiscountGroupId,
-                        Specification = new Specification
-                        {
-                            UnitPrice = row.UnitPrice,
-                            Flavor = row.Flavor,
-                            Size = row.Size
-                        }
-                    };
-                    dessertDiscountList.Add(dessertDiscountDTO);
-                }
-            }
-
-            return Ok(dessertDiscountList);
+            return Ok(chocoDiscount);
         }
+//        public async Task<ActionResult<List<DessertDiscountDTO>>> GetChocoDiscountGroups()
+//        {
+//            var dessertDiscountList = new List<DessertDiscountDTO>();
+
+        //            // Get the connection string from configuration
+        //            var connectionString = _configuration.GetConnectionString("Sierra");
+
+        //            using (var connection = new SqlConnection(connectionString))
+        //            {
+        //                // Your SQL query goes here (use the one you provided)
+        //                string sqlQuery = @"
+        //                SELECT 
+        //                    D.DessertId,
+        //                    D.DessertName,
+        //                    S.UnitPrice,
+        //                    S.Flavor,
+        //                    S.Size,
+        //                    DG.DiscountGroupId,
+        //                    DI.DessertImageName
+        //                FROM 
+        //                    DiscountGroups DG
+        //                INNER JOIN 
+        //                    DiscountGroupItems DGI ON DG.DiscountGroupId = DGI.DiscountGroupId
+        //                INNER JOIN 
+        //                    Desserts D ON DGI.DessertId = D.DessertId
+        //                LEFT JOIN 
+        //                    DessertImages DI ON DI.DessertId = D.DessertId
+        //                LEFT JOIN 
+        //                    Specification S ON D.DessertId = S.DessertId 
+        //WHERE Dg.DiscountGroupId=6 
+        //                ORDER BY DG.DiscountGroupId";
+
+        //                await connection.OpenAsync();
+
+        //                var queryResult = await connection.QueryAsync(sqlQuery);
+
+        //                foreach (var row in queryResult)
+        //                {
+        //                    var dessertDiscountDTO = new DessertDiscountDTO
+        //                    {
+        //                        DessertId = row.DessertId,
+        //                        DessertName = row.DessertName,
+        //                        UnitPrice = row.UnitPrice,
+        //                        DessertImageName = row.DessertImageName,
+        //                        DiscountGroupId = row.DiscountGroupId,
+        //                        Specification = new Specification
+        //                        {
+        //                            UnitPrice = row.UnitPrice,
+        //                            Flavor = row.Flavor,
+        //                            Size = row.Size
+        //                        }
+        //                    };
+        //                    dessertDiscountList.Add(dessertDiscountDTO);
+        //                }
+        //            }
+
+        //            return Ok(dessertDiscountList);
+        //        }
     }
 }
