@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SIERRA_Server.Models.EFModels;
@@ -40,6 +42,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
 builder.Services.AddScoped<HashUtility>();
+//builder.Services.AddScoped<UrlHelper>();
 builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFRepository>();

@@ -98,10 +98,17 @@ namespace SIERRA_Server.Controllers
 
         [HttpGet("ActiveRegister")]
         [AllowAnonymous]
-        public IActionResult ActiveRegister(string token)
+        public IActionResult ActiveRegister([FromQuery]ActiveRegisterDTO request)
         {
-            if (token != "123") return BadRequest("錯誤");
-			return Ok(token);
+            var service = new MemberService(_repo);
+            var result = service.ActiveRegister(request);
+
+            if (result.IsFail)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok("註冊成功");
         }
 
 		// GET: api/Members
