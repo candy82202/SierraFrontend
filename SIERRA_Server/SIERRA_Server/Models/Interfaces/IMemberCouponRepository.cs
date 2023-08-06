@@ -13,6 +13,5 @@ namespace SIERRA_Server.Models.Interfaces
         Task<string> GetCouponByCode(MemberCouponCreateDto dto);
         Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId);
         Task<DessertCart> GetDessertCart(int memberId);
-
     }
 }

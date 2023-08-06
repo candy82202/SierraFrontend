@@ -10,15 +10,25 @@
 
 =========================================================
 Desserts 部分
-[V] - Get all Categories Desserts To Views
+[V] - Get all categories desserts to views
 [V] - Get Top Sales 3 Desserts
+[V] - Turn into Three Layers
+	- Add new IDessertRepository
+		- method Getpresents , GetMoldCake , GetLongCake , GetSnack , GetRoomTemperature ,TopSaleDesserts
+	- Add new IDessertCategoryRepository
+		- Select desserts base on different categoryId 
+		
+[V] - Get desserts in discount group (Except catagories)
+	- IDessertDiscountRepository GetDiscountGroupsByGroupId method
+	- DessertDiscountDPRepository interface  IDessertDiscountRepository
+	- DessertService call for different DiscountGroupId , To get different method
 
 
 
 
 =========================================================
 Members 部分
-[v] - test
+[v] - Login(return JWT)
 
 
 

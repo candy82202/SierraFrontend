@@ -24,7 +24,7 @@ namespace SIERRA_Server.Models.Exts
 				CouponName = entity.CouponName,
 				ExpireAt = entity.ExpireAt,
 				ApplyTo = applyTo,
-				CouponId = entity.MemberCouponId,
+				CouponId = entity.Coupon.CouponId,
 			};
 		}
 		public static MemberCouponCanNotUseDto ToMemberCouponCanNotUseDto(this MemberCoupon entity)

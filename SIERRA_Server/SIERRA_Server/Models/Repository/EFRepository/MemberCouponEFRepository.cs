@@ -94,12 +94,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         public async Task<DessertCart> GetDessertCart(int memberId)
         {
             var member = await _db.Members.FindAsync(memberId);
-            var memberName = member.UserName;
+            var memberName = member.Username;
             var cart = await _db.DessertCarts.Include(dc => dc.DessertCartItems)
                                              .ThenInclude(dci => dci.Specification)
                                              .ThenInclude(dci => dci.Dessert)
                                              .ThenInclude(d => d.Discounts)
-                                             .FirstOrDefaultAsync(dc => dc.UserName == memberName);
+                                             .FirstOrDefaultAsync(dc => dc.Username == memberName);
             return cart;
         }
     }

@@ -60,9 +60,22 @@ namespace SIERRA_Server.Models.Services
 
         public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int memberId)
         {
-            //var coupons = await _repo.GetCouponMeetCriteria(memberId);
-            //return coupons;
-            var coupons =await _repo.GetUsableCoupon(memberId);
+            var coupons = await DoThisToGetCouponMeetCriteria(memberId);
+            var result = coupons.Select(c => c.ToMemberCouponDto());
+            return result;
+        }
+
+        public async Task<IEnumerable<MemberCouponDto>> GetIneligibleCoupon(int memberId)
+        {
+            var coupons = await _repo.GetUsableCoupon(memberId);
+            var usableCoupons = await DoThisToGetCouponMeetCriteria(memberId);
+            var ineligibleCoupons = coupons.Except(usableCoupons).Select(mc => mc.ToMemberCouponDto());
+            return ineligibleCoupons;
+        }
+
+        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+        {
+            var coupons = await _repo.GetUsableCoupon(memberId);
             //先把一定可以用的優惠券加進來
             var couponsMeetCriteria = coupons.Where(mc => mc.Coupon.DiscountGroupId == null && mc.Coupon.LimitType == null).ToList();
             //列出需要檢查的
@@ -138,7 +151,7 @@ namespace SIERRA_Server.Models.Services
                     }
                 }
             }
-            return couponsMeetCriteria.Select(c => c.ToMemberCouponDto());
+            return couponsMeetCriteria;
         }
     }
 }
