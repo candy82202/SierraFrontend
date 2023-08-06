@@ -1,6 +1,8 @@
 ﻿
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Desserts;
 using SIERRA_Server.Models.EFModels;
@@ -16,11 +18,13 @@ namespace SIERRA_Server.Controllers
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
         private readonly IDessertRepository _repo;
-        public DessertsController(AppDbContext context, IConfiguration config,IDessertRepository repo)
+        private readonly IDessertDiscountRepository _discountrepo;
+        public DessertsController(AppDbContext context, IConfiguration config,IDessertRepository repo, IDessertDiscountRepository discountrepo)
         {
             _context = context;
             _configuration = config;
             _repo = repo;
+            _discountrepo = discountrepo;
         }
         // GET: api/Desserts/moldCake
         [HttpGet("moldCake")]   
@@ -75,7 +79,7 @@ namespace SIERRA_Server.Controllers
         }
         // GET: api/Desserts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dessert>> GetDessert(int id=3)
+        public async Task<ActionResult<Dessert>> GetDessert(int id)
         {
             var dvm = new List<DessertDTO>();
 
@@ -104,6 +108,49 @@ namespace SIERRA_Server.Controllers
             }
 
             return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+        }
+
+
+
+        /// <summary>
+        /// DiscountGroup Method
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ChocoDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetChocoDiscountGroups()
+        {
+            var service = new DessertService(_discountrepo);
+            var chocoDiscount = await service.GetChocoDiscountGroups();
+
+            return Ok(chocoDiscount);
+        }
+        [HttpGet("StrawberryDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetStrawberryDiscountGroups()
+        {
+            var service = new DessertService(_discountrepo);
+            var strawberryDiscount = await service.GetStrawberryDiscountGroups();
+            return Ok(strawberryDiscount);
+        }
+        [HttpGet("MochaDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetMochaDiscountGroups()
+        {
+            var service = new DessertService(_discountrepo);
+            var mochaDiscount = await service.GetMochaDiscountGroups();
+            return Ok(mochaDiscount);
+        }
+        [HttpGet("TaroDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetTaroDiscountGroups()
+        {
+            var service = new DessertService(_discountrepo);
+            var taroDiscount = await service.GetTaroDiscountGroups();
+            return Ok(taroDiscount);
+        }
+        [HttpGet("AlcoholDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetAlcoholDiscountGroups()
+        {
+            var service = new DessertService(_discountrepo);
+            var alcoholDiscount = await service.GetAlcoholDiscountGroups();
+            return Ok(alcoholDiscount);
         }
      
     }

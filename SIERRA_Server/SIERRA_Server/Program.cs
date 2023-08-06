@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
+using SIERRA_Server.Models.Repository.DPRepository;
 using SIERRA_Server.Models.Repository.EFRepository;
 using System.Configuration;
 using System.Text;
@@ -42,6 +43,7 @@ builder.Services.AddScoped<HashUtility>();
 builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFRepository>();
+builder.Services.AddScoped<IDessertDiscountRepository, DessertDiscountDPRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
