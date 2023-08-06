@@ -82,5 +82,15 @@ namespace SIERRA_Server.Controllers
             var server = new MemberCouponService(_repo);
             return await server.GetIneligibleCoupon((int)MemberId);
         }
+        [HttpGet("CanGet")]
+        public async Task<IEnumerable<CouponCanGetDto>> GetCouponCanGet(int? MemberId)
+        {
+            if (MemberId == null)
+            {
+                return Enumerable.Empty<CouponCanGetDto>();
+            }
+            var server = new MemberCouponService(_repo);
+            return await server.GetCouponCanGet((int)MemberId);
+        }
     }
 }

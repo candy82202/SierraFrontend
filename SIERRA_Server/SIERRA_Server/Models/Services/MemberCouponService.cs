@@ -72,7 +72,23 @@ namespace SIERRA_Server.Models.Services
             var ineligibleCoupons = coupons.Except(usableCoupons).Select(mc => mc.ToMemberCouponDto());
             return ineligibleCoupons;
         }
+        public async Task<IEnumerable<CouponCanGetDto>> GetCouponCanGet(int memberId)
+        {
+            var promotionCoupons = await _repo.GetPromotionCoupons();
+            var promotionCouponsId = promotionCoupons.Select(c => c.CouponId);
+            var memberCouponsId = await _repo.GetAllMemberPromotionCoupon(memberId);
+            var couponCanGet = promotionCoupons.ToList();
+            foreach (int couponId in memberCouponsId)
+            {
+                if (promotionCouponsId.Contains(couponId))
+                {
+                    var couponShouldBeRemove = couponCanGet.Find(c => c.CouponId == couponId);
+                    couponCanGet.Remove(couponShouldBeRemove);
+                }
+            }
 
+            return couponCanGet.Select(c=>c.ToCouponCanGetDto());
+        }
         private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
         {
             var coupons = await _repo.GetUsableCoupon(memberId);
@@ -153,5 +169,7 @@ namespace SIERRA_Server.Models.Services
             }
             return couponsMeetCriteria;
         }
+
+        
     }
 }

@@ -70,5 +70,25 @@ namespace SIERRA_Server.Models.Exts
 				LimitValue = entity.Coupon.LimitValue,
 			};
 		}
-	}
+        public static CouponCanGetDto ToCouponCanGetDto(this Coupon entity)
+        {
+            var dessertNames =  entity.DiscountGroup == null ? "所有商品" : entity.DiscountGroup.DiscountGroupItems.Count() > 0 ? string.Join(",", entity.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.Dessert.DessertName)) : "無";
+            int? itemsCount = entity.DiscountGroup == null ? null : entity.DiscountGroup.DiscountGroupItems.Count();
+            string applyTo;
+            if (itemsCount == null)
+            {
+                applyTo = dessertNames;
+            }
+            else
+            {
+                applyTo = $"{dessertNames},共{itemsCount}項";
+            }
+            return new CouponCanGetDto()
+            {
+                CouponName = entity.CouponName,
+                ExpireAt = ((DateTime)entity.EndAt).ToString("yyyy-MM-dd"),
+                ApplyTo = applyTo,
+            };
+        }
+    }
 }

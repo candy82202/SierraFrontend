@@ -5,6 +5,7 @@ using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
 using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
+using System.Linq;
 
 namespace SIERRA_Server.Models.Repository.EFRepository
 {
@@ -86,9 +87,10 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId)
         {
-            var coupons = _db.MemberCoupons.Where(mc => mc.MemberId == memberId)
+            var coupons =await _db.MemberCoupons.Where(mc => mc.MemberId == memberId)
                                                 .Where(mc => mc.UseAt != null && ((TimeSpan)(DateTime.Now - mc.UseAt)).TotalDays < 30)
-                                                .Select(mc=>mc.ToMemberCouponHasUsedDto());
+                                                .Select(mc=>mc.ToMemberCouponHasUsedDto())
+                                                .ToListAsync();
             return coupons;
         }
         public async Task<DessertCart> GetDessertCart(int memberId)
@@ -101,6 +103,28 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                              .ThenInclude(d => d.Discounts)
                                              .FirstOrDefaultAsync(dc => dc.Username == memberName);
             return cart;
+        }
+
+        public async Task<IEnumerable<Coupon>> GetPromotionCoupons()
+        {
+            var coupons =await _db.Promotions.Include(p=>p.Coupon)
+                                        .Where(p=>p.CouponId!=null)
+                                        .Where(p=>p.LaunchAt<DateTime.Now&&p.EndAt>DateTime.Now)
+                                        .Select (p=>p.Coupon)
+                                        .Distinct()
+                                        .ToListAsync();
+            return coupons;
+        }
+
+        public async Task<IEnumerable<int>> GetAllMemberPromotionCoupon(int memberId)
+        {
+            var coupons = await _db.MemberCoupons.Include(mc=>mc.Coupon)
+                                                 .ThenInclude(c=>c.Promotions)
+                                                 .Where(mc=>mc.MemberId==memberId)
+                                                 .Where(mc=>mc.Coupon.CouponCategoryId==2)
+                                                 .Select(mc=>mc.CouponId)
+                                                 .ToListAsync();
+            return coupons;
         }
     }
 }
