@@ -69,10 +69,10 @@ builder.Services.AddSwaggerGen();
 //        };
 //    });
 
-builder.Services.AddMvc(options =>
-{
-    options.Filters.Add(new AuthorizeFilter());
-});
+//builder.Services.AddMvc(options =>
+//{
+//    options.Filters.Add(new AuthorizeFilter());
+//});
 
 var app = builder.Build();
 
