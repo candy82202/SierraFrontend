@@ -24,7 +24,9 @@ Desserts 部分
 	- DessertService call for different DiscountGroupId , To get different method
 
 
+[V] - Desserts Add To Cart 
 
+[working on] - If DessertId Exist In Cart , then Quantity Plus 1
 
 =========================================================
 Members 部分

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SIERRA_Server.Models.DTOs.Carts;
 using SIERRA_Server.Models.DTOs.Orders;
 using SIERRA_Server.Models.EFModels;
 
@@ -130,8 +131,80 @@ namespace SIERRA_Server.Controllers
 
             return NoContent();
         }
+        [HttpGet("GetCart")]
+        public async Task<CartDTO> GetOrCreateCart(string username)
+        {
+            var cart = await _context.DessertCarts
+                .Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert)
+                .Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Specification)
+                .FirstOrDefaultAsync(dc => dc.Username == username);
 
-        private bool DessertCartExists(int id)
+            if (cart == null)
+            {
+                cart = new DessertCart
+                {
+                    Username = username
+                };
+                _context.DessertCarts.Add(cart);
+                await _context.SaveChangesAsync();
+            }
+
+            var cartDTO = new CartDTO
+            {
+                Id = cart.Id,
+                Username = cart.Username,
+                DessertCartItems = cart.DessertCartItems.Select(dci => new CartItemDTO
+                {
+                    Id = dci.Id,
+                    SpecificationId = dci.SpecificationId,
+                    DessertCartId = dci.DessertCartId,
+                    DessertId = dci.DessertId,
+                    Quantity = dci.Quantity,
+                    Dessert = dci.Dessert,
+                    Specification = dci.Specification
+                }).ToList()
+            };
+
+            return cartDTO;
+        }
+        [HttpPost("AddToCart")]
+        public async Task AddOrUpdateCartItem(string username, int dessertId, int specificationId, int quantity)
+        {
+            var cart = await GetOrCreateCart(username);
+            var existingItem = cart.DessertCartItems.FirstOrDefault(item => item.DessertId == dessertId && item.SpecificationId == specificationId);
+
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity;
+            }
+            else
+            {
+                var newItem = new DessertCartItem
+                {
+                    DessertCartId = cart.Id,
+                    DessertId = dessertId,
+                    SpecificationId = specificationId,
+                    Quantity = quantity
+                };
+                _context.DessertCartItems.Add(newItem);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+        [HttpGet("GetPrice")]
+        public async Task<int> GetCartTotalPrice(string username)
+        {
+            var cart = await GetOrCreateCart(username);
+            return cart.DessertCartItems.Sum(item => item.SubTotal);
+        }
+        [HttpGet("Checkout")]
+        public async Task<bool> CanCheckout(string username)
+        {
+            var cart = await GetOrCreateCart(username);
+            return cart.DessertCartItems.Any();
+        }
+   
+    private bool DessertCartExists(int id)
         {
             return (_context.DessertCarts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
