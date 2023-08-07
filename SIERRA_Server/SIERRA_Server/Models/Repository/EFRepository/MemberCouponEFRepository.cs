@@ -154,6 +154,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                                 .FirstAsync(mc=>mc.MemberCouponId== memberCouponId);
             return coupon.Coupon;
         }
+        public bool HasCouponBeenUsed(int memberCouponId)
+        {
+            var result = _db.MemberCoupons.Find(memberCouponId).UseAt==null? false: true;
+            return result;
+        }
 
-	}
+    }
 }

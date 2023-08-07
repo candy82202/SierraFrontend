@@ -108,6 +108,10 @@ namespace SIERRA_Server.Controllers
 			{
 				return string.Empty;
 			}
+			if (server.HasCouponBeenUsed((int)memberCouponId))
+			{
+                return string.Empty;
+            }
 			return await server.UseCouponAndCalculateDiscountPrice((int)memberId,(int)memberCouponId);
 		}
 

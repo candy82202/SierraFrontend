@@ -116,8 +116,12 @@ namespace SIERRA_Server.Models.Services
 			var price = coupon.Calculate(cartItems);
 			return price.ToString();
 		}
-
-		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+        public  bool HasCouponBeenUsed(int memberCouponId)
+        {
+			var result = _repo.HasCouponBeenUsed(memberCouponId);
+			return result;
+        }
+        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
 			//先把一定可以用的優惠券加進來
@@ -197,5 +201,7 @@ namespace SIERRA_Server.Models.Services
 			}
 			return couponsMeetCriteria;
 		}
-	}
+
+        
+    }
 }
