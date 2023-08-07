@@ -63,34 +63,48 @@ namespace SIERRA_Server.Controllers
         }
 
         // PUT: api/DessertOrders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDessertOrder(int id, DessertOrder dessertOrder)
+        
+        [HttpPut("{username}")]
+        public async Task<IActionResult> UpdateCustomerData(string username, [FromBody] MemberUpdateDTO memberUpdateDto)
         {
-            if (id != dessertOrder.Id)
+            if (string.IsNullOrEmpty(username))
             {
-                return BadRequest();
+                return BadRequest("Username cannot be null or empty.");
             }
 
-            _context.Entry(dessertOrder).State = EntityState.Modified;
+            // 從資料庫找到特定的會員
+            var memberToUpdate = await _context.Members.FirstOrDefaultAsync(m => m.Username == username);
 
+            if (memberToUpdate == null)
+            {
+                return NotFound($"Member with username {username} not found.");
+            }
+
+            // 更新Phone和Gender
+            // 在後端檢查Phone和Gender是否為null
+            if (!string.IsNullOrEmpty(memberUpdateDto.Phone))
+            {
+                memberToUpdate.Phone = memberUpdateDto.Phone;
+            }
+
+            if (memberUpdateDto.Gender.HasValue)
+            {
+                memberToUpdate.Gender = memberUpdateDto.Gender.Value;
+            }
+
+            // 儲存變更到資料庫
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!DessertOrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                // 可以進一步處理錯誤，例如檢查是否因為資料庫鎖定或其他原因而導致儲存失敗
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
 
-            return NoContent();
+            // 回傳成功訊息
+            return Ok($"Member with username {username} updated successfully.");
         }
 
         // POST: api/DessertOrders
