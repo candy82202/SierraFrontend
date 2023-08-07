@@ -22,13 +22,13 @@ namespace SIERRA_Server.Controllers
         }
         // GET: api/DessertCarts
         [HttpGet]
-        public async Task<IEnumerable<DessertCartItemsDto>> GetDessertCarts(string? memberName)
+        public async Task<IEnumerable<DessertCartItemsDto>> GetDessertCarts(string? username)
         {
-            if (_context.DessertCarts == null || memberName == null)
+            if (_context.DessertCarts == null || username == null)
             {
                 return Enumerable.Empty<DessertCartItemsDto>();
             }
-            var cart = await _context.DessertCarts.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.DessertImages).FirstOrDefaultAsync(dc => dc.MemberName == memberName);
+            var cart = await _context.DessertCarts.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.DessertImages).FirstOrDefaultAsync(dc => dc.Username == username);
             if (cart == null)
             {
                 return Enumerable.Empty<DessertCartItemsDto>();

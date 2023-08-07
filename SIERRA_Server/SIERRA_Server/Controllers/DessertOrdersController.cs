@@ -33,22 +33,22 @@ namespace SIERRA_Server.Controllers
         }
 
         // GET: api/DessertOrders/5
-        [HttpGet]
-        public async Task<IEnumerable<MemberItemDTO>> GetCustomerData(string? memberName)
-        {
-          if (_context.DessertOrders == null || memberName == null)
-          {
-                return Enumerable.Empty<MemberItemDTO>();
-            }
-            var customerData = await _context.DessertOrders.Include(c=>c.MemberId).Include(ci=>ci.)
+        //[HttpGet]
+        //public async Task<IEnumerable<MemberItemDTO>> GetCustomerData(string? memberName)
+        //{
+        //  if (_context.DessertOrders == null || memberName == null)
+        //  {
+        //        return Enumerable.Empty<MemberItemDTO>();
+        //    }
+        //    var customerData = await _context.DessertOrders.Include(c=>c.MemberId).Include(ci=>ci.)
 
-            if (dessertOrder == null)
-            {
-                return NotFound();
-            }
+        //    if (dessertOrder == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return dessertOrder;
-        }
+        //    return dessertOrder;
+        //}
 
         // PUT: api/DessertOrders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
