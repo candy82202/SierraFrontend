@@ -15,7 +15,7 @@ namespace SIERRA_Server.Models.EFModels
         public int Id { get; set; }
         public int MemberId { get; set; }
         public int DessertOrderStatusId { get; set; }
-        public int? CouponId { get; set; }
+        public int? MemberCouponId { get; set; }
         public DateTime CreateTime { get; set; }
         public string Recipient { get; set; }
         public string RecipientPhone { get; set; }
@@ -26,9 +26,9 @@ namespace SIERRA_Server.Models.EFModels
         public string Note { get; set; }
         public string DiscountInfo { get; set; }
 
-        public virtual Coupon Coupon { get; set; }
         public virtual OrderStatus DessertOrderStatus { get; set; }
         public virtual Member Member { get; set; }
+        public virtual MemberCoupon MemberCoupon { get; set; }
         public virtual ICollection<DessertOrderDetail> DessertOrderDetails { get; set; }
     }
 }

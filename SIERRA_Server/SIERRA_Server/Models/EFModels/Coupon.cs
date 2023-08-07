@@ -10,8 +10,6 @@ namespace SIERRA_Server.Models.EFModels
         public Coupon()
         {
             CouponSettings = new HashSet<CouponSetting>();
-            DessertOrders = new HashSet<DessertOrder>();
-            LessonOrders = new HashSet<LessonOrder>();
             MemberCoupons = new HashSet<MemberCoupon>();
             Promotions = new HashSet<Promotion>();
         }
@@ -34,8 +32,6 @@ namespace SIERRA_Server.Models.EFModels
         public virtual CouponCategory CouponCategory { get; set; }
         public virtual DiscountGroup DiscountGroup { get; set; }
         public virtual ICollection<CouponSetting> CouponSettings { get; set; }
-        public virtual ICollection<DessertOrder> DessertOrders { get; set; }
-        public virtual ICollection<LessonOrder> LessonOrders { get; set; }
         public virtual ICollection<MemberCoupon> MemberCoupons { get; set; }
         public virtual ICollection<Promotion> Promotions { get; set; }
     }

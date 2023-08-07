@@ -15,14 +15,12 @@ namespace SIERRA_Server.Models.EFModels
         public int Id { get; set; }
         public int MemberId { get; set; }
         public int LessonOrderStatusId { get; set; }
-        public int? CouponId { get; set; }
         public DateTime CreateTime { get; set; }
         public int LessonOrderTotal { get; set; }
         public string Note { get; set; }
         public string OrderCancellationReason { get; set; }
         public string DiscountInfo { get; set; }
 
-        public virtual Coupon Coupon { get; set; }
         public virtual OrderStatus LessonOrderStatus { get; set; }
         public virtual Member Member { get; set; }
         public virtual ICollection<LessonOrderDetail> LessonOrderDetails { get; set; }

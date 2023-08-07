@@ -7,6 +7,11 @@ namespace SIERRA_Server.Models.EFModels
 {
     public partial class MemberCoupon
     {
+        public MemberCoupon()
+        {
+            DessertOrders = new HashSet<DessertOrder>();
+        }
+
         public int MemberCouponId { get; set; }
         public int MemberId { get; set; }
         public int CouponId { get; set; }
@@ -17,5 +22,6 @@ namespace SIERRA_Server.Models.EFModels
 
         public virtual Coupon Coupon { get; set; }
         public virtual Member Member { get; set; }
+        public virtual ICollection<DessertOrder> DessertOrders { get; set; }
     }
 }
