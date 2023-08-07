@@ -126,5 +126,34 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                                  .ToListAsync();
             return coupons;
         }
-    }
+        public  bool IsMemberExist(int memberId)
+        {
+            var result =  _db.Members.Any(m=>m.Id==memberId);
+            return result;
+        }
+		public  bool IsMemberCouponExist(int memberCouponId)
+		{
+			var result =  _db.MemberCoupons.Any(m => m.MemberCouponId == memberCouponId);
+			return result;
+		}
+		public  bool IsThisMemberHaveThisCoupon(int memberId, int memberCouponId)
+		{
+            var coupon = _db.MemberCoupons.Find(memberCouponId);
+            if (coupon.MemberId == memberId)
+            {
+                return true;
+            }
+            else return false;
+		}
+        public async Task<Coupon> GetMemberCouponById(int memberCouponId)
+        {
+            var coupon = await _db.MemberCoupons.Include(mc=>mc.Coupon)
+                                                .ThenInclude(c=>c.DiscountGroup)
+                                                .ThenInclude(d=>d.DiscountGroupItems)
+                                                .ThenInclude(dgi=>dgi.Dessert)
+                                                .FirstAsync(mc=>mc.MemberCouponId== memberCouponId);
+            return coupon.Coupon;
+        }
+
+	}
 }

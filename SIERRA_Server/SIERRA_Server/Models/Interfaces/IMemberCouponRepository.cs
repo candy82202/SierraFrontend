@@ -15,5 +15,9 @@ namespace SIERRA_Server.Models.Interfaces
         Task<DessertCart> GetDessertCart(int memberId);
         Task<IEnumerable<Coupon>> GetPromotionCoupons();
         Task<IEnumerable<int>> GetAllMemberPromotionCoupon(int memberId);
-    }
+		bool IsMemberExist(int memberId);
+		bool IsMemberCouponExist(int memberCouponId);
+		bool IsThisMemberHaveThisCoupon(int memberId, int memberCouponId);
+		Task<Coupon> GetMemberCouponById(int memberCouponId);
+	}
 }
