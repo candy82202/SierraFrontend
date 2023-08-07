@@ -45,14 +45,19 @@ namespace SIERRA_Server.Controllers
             {
                 Username=mi.Username,
                 Email=mi.Email,
-                //Phone=mi.Phone,
-                //Gender=mi.Gender,
+                Phone=mi.Phone,
+                Gender = mi.Gender,
             }).FirstOrDefaultAsync();
             if (userData == null)
             {
                 return NotFound();
             }
-            
+            if (userData.Phone == null || userData.Gender == null)
+            {
+                // 如果 Phone 或 Gender 為 null，則設為 default 值
+                userData.Phone = string.Empty;
+                userData.Gender = false;
+            }
 
             return Ok(userData);
         }
