@@ -31,7 +31,7 @@ namespace SIERRA_Server.Models.EFModels
 
         public virtual LessonCategory LessonCategory { get; set; }
         public virtual Teacher Teacher { get; set; }
-        public virtual ICollection<LessonImage> LessonImages { get; set; }
+        public virtual IEnumerable<LessonImage> LessonImages { get; set; }
         public virtual ICollection<LessonOrderDetail> LessonOrderDetails { get; set; }
     }
 }

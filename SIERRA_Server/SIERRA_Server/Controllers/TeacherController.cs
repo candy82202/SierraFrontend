@@ -25,7 +25,9 @@ namespace SIERRA_Server.Controllers {
             {
                 return NotFound();
             }
-            var teachers = _context.Teachers.AsQueryable().Where(t => t.TeacherStatus == true);
+            var teachers = _context.Teachers.Include(l => l.Lessons)
+                                                                .Where(t => t.TeacherStatus == true)
+                                                                .AsQueryable();
 
             int totalCount = teachers.Count();
             int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
