@@ -1,8 +1,9 @@
 ﻿using SIERRA_Server.Models.EFModels;
+using SIERRA_Server.Models.Interfaces;
 
 namespace SIERRA_Server.Models.Infra.Promotions
 {
-	public class ReduceCoupon : ICoupon
+    public class ReduceCoupon : ICoupon
 	{
         public int ReducePrice { get; set; }
         public ReduceCoupon(int reducePrice)

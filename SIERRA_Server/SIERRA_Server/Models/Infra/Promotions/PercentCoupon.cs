@@ -1,8 +1,9 @@
 ﻿using SIERRA_Server.Models.EFModels;
+using SIERRA_Server.Models.Interfaces;
 
 namespace SIERRA_Server.Models.Infra.Promotions
 {
-	public class PercentCoupon:ICoupon
+    public class PercentCoupon:ICoupon
 	{
         public int Percent { get; set; }
         public PercentCoupon(int percent)
