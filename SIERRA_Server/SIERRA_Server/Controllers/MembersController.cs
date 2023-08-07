@@ -39,7 +39,7 @@ namespace SIERRA_Server.Controllers
             _hashUtility = hashUtility;
             _emailHelper = emailHelper;
 
-		}
+        }
 
         [HttpPost("Login")]
         [AllowAnonymous]
@@ -73,7 +73,7 @@ namespace SIERRA_Server.Controllers
                 claims: claims,
 				//expires: DateTime.Now.AddMinutes(30),
 				expires: DateTime.Now.AddSeconds(30),
-				signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
+                signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
             );
 
             // 產生JWT Token
@@ -111,8 +111,8 @@ namespace SIERRA_Server.Controllers
             return Ok("註冊成功");
         }
 
-		// GET: api/Members
-		[HttpGet]
+        // GET: api/Members
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
         {
             if (_context.Members == null)
