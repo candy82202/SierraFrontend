@@ -28,8 +28,10 @@ Desserts 部分
 
 =========================================================
 Members 部分
-[v] - Login(return JWT)
-
+[V] - Login(with JWT Authentication & thress-layer Architecture)
+	- Modify Programs.cs 
+[V] - Register
+[V] - EmailHelper.cs
 
 
 
