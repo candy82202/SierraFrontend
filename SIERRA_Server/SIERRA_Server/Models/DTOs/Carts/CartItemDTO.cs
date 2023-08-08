@@ -4,6 +4,7 @@ namespace SIERRA_Server.Models.DTOs.Carts
 {
     public class CartItemDTO
     {
+        public string Username { get; set; }
         public int Id { get; set; }
         public int SpecificationId { get; set; }
         public int DessertCartId { get; set; }
