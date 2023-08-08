@@ -176,6 +176,8 @@ namespace SIERRA_Server.Controllers
             if (existingItem != null)
             {
                 existingItem.Quantity += quantity;
+                _context.DessertCartItems.Find(existingItem.Id).Quantity=existingItem.Quantity;
+
             }
             else
             {
