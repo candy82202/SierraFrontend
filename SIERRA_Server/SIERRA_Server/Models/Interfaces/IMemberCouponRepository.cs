@@ -20,5 +20,6 @@ namespace SIERRA_Server.Models.Interfaces
 		bool IsThisMemberHaveThisCoupon(int memberId, int memberCouponId);
 		Task<Coupon> GetMemberCouponById(int memberCouponId);
         bool HasCouponBeenUsed(int memberCouponId);
-    }
+		bool IsPromotionCouponAndReady(int memberCouponId);
+	}
 }

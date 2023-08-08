@@ -4,6 +4,7 @@ using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
 using SIERRA_Server.Models.Infra.Promotions;
 using SIERRA_Server.Models.Interfaces;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace SIERRA_Server.Models.Services
 {
@@ -112,8 +113,76 @@ namespace SIERRA_Server.Models.Services
             var memberCoupon =await _repo.GetMemberCouponById(memberCouponId);
 			var cart = await _repo.GetDessertCart(memberId);
 			var cartItems = cart.DessertCartItems.ToList();
-			var dessertsInDiscountGroupId = memberCoupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.DessertId);
-			ICoupon coupon = new ReduceReachCountCoupon(dessertsInDiscountGroupId, (int)memberCoupon.DiscountValue, (int)memberCoupon.LimitValue);
+
+			ICoupon coupon;
+			//根據coupon中的欄位new不同的類別
+			if (memberCoupon.DiscountGroupId == null)
+			{
+				if(memberCoupon.LimitType ==null)
+				{
+					if (memberCoupon.DiscountType == 1)
+					{
+						 coupon = new ReduceCoupon((int)memberCoupon.DiscountValue);
+					}else if(memberCoupon.DiscountType == 2)
+					{
+						 coupon =new PercentCoupon((int)memberCoupon.DiscountValue);
+					}
+					else
+					{
+						 coupon = new FreightCoupon();
+					}
+				}
+				else
+				{
+					if (memberCoupon.DiscountType == 1)
+					{
+						 coupon = new ReduceReachPriceCoupon((int)memberCoupon.LimitValue, (int)memberCoupon.DiscountValue);
+					}
+					else if(memberCoupon.DiscountType == 2)
+					{
+						 coupon = new PercentReachPriceCoupon((int)memberCoupon.LimitValue, (int)memberCoupon.DiscountValue);
+					}
+					else
+					{
+						 coupon = new FreightReachPriceCoupon((int)memberCoupon.LimitValue);
+					}
+				}
+			}
+			else
+			{
+				var dessertsInDiscountGroupId = memberCoupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.DessertId);
+				if (memberCoupon.LimitType == null)
+				{
+					if (memberCoupon.DiscountType == 1)
+					{
+						 coupon = new ReduceDiscountGroupCoupon(dessertsInDiscountGroupId,(int)memberCoupon.DiscountValue);
+					}
+					else if (memberCoupon.DiscountType == 2)
+					{
+						 coupon = new PercentDiscountGroupCoupon(dessertsInDiscountGroupId, (int)memberCoupon.DiscountValue);
+					}
+					else
+					{
+						 coupon = new FreightDiscountGroupCoupon(dessertsInDiscountGroupId);
+					}
+				}
+				else
+				{
+					if (memberCoupon.DiscountType == 1)
+					{
+						 coupon = new ReduceReachCountCoupon(dessertsInDiscountGroupId,(int)memberCoupon.DiscountValue,(int)memberCoupon.LimitValue);
+					}
+					else if (memberCoupon.DiscountType == 2)
+					{
+						 coupon = new PercentReachCountCoupon(dessertsInDiscountGroupId,(int)memberCoupon.LimitValue, (int)memberCoupon.DiscountValue);
+					}
+					else
+					{
+						 coupon = new FreightReachCountCoupon(dessertsInDiscountGroupId, (int)memberCoupon.LimitValue);
+					}
+				}
+			}
+			//ICoupon coupon = new ReduceReachCountCoupon(dessertsInDiscountGroupId, (int)memberCoupon.DiscountValue, (int)memberCoupon.LimitValue);
 			var price = coupon.Calculate(cartItems);
 			return price;
 		}
@@ -122,7 +191,12 @@ namespace SIERRA_Server.Models.Services
 			var result = _repo.HasCouponBeenUsed(memberCouponId);
 			return result;
         }
-        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+		public bool IsPromotionCouponAndReady(int memberCouponId)
+		{
+			var result = _repo.IsPromotionCouponAndReady(memberCouponId);
+			return result;
+		}
+		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
 			//先把一定可以用的優惠券加進來
@@ -203,6 +277,6 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-        
-    }
+		
+	}
 }

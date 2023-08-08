@@ -104,6 +104,10 @@ namespace SIERRA_Server.Controllers
 			{
 				return 0;
 			}
+			if (!server.IsPromotionCouponAndReady((int)memberCouponId))
+			{
+				return 0;
+			}
 			if(!server.IsThisMemberHaveThisCoupon((int)memberId, (int)memberCouponId))
 			{
 				return 0;

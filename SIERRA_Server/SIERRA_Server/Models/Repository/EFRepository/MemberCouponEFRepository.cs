@@ -159,6 +159,23 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             var result = _db.MemberCoupons.Find(memberCouponId).UseAt==null? false: true;
             return result;
         }
+        public bool IsPromotionCouponAndReady(int memberCouponId)
+        {
+            var coupon = _db.MemberCoupons.Include(mc=>mc.Coupon).First(mc=>mc.MemberCouponId == memberCouponId);
+            if (coupon.Coupon.CouponCategoryId == 2)
+            {
+                if (coupon.Coupon.StartAt < DateTime.Now && coupon.Coupon.EndAt > DateTime.Now)
+                {
+                    return true;
+                }else return false;
+            }
+            else
+            {
+                return true;
+            }
+                                          
+        }
 
-    }
+
+	}
 }
