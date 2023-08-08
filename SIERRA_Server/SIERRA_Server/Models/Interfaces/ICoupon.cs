@@ -4,6 +4,6 @@ namespace SIERRA_Server.Models.Interfaces
 {
     public interface ICoupon
     {
-        string Calculate(IEnumerable<DessertCartItem> items);
+        int Calculate(IEnumerable<DessertCartItem> items);
     }
 }

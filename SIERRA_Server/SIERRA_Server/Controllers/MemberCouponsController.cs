@@ -93,24 +93,24 @@ namespace SIERRA_Server.Controllers
             return await server.GetCouponCanGet((int)MemberId);
         }
 		[HttpPut]
-		public async Task<string> UseCouponAndCalculateDiscountPrice(int? memberId, int? memberCouponId)
+		public async Task<int> UseCouponAndCalculateDiscountPrice(int? memberId, int? memberCouponId)
 		{
 			if(memberId == null || memberCouponId==null)
 			{
-				return string.Empty;
+				return 0;
 			}
 			var server = new MemberCouponService(_repo);
 			if (!server.IsMemberExist((int)memberId)||!server.IsMemberCouponExist((int)memberCouponId))
 			{
-				return string.Empty;
+				return 0;
 			}
 			if(!server.IsThisMemberHaveThisCoupon((int)memberId, (int)memberCouponId))
 			{
-				return string.Empty;
+				return 0;
 			}
 			if (server.HasCouponBeenUsed((int)memberCouponId))
 			{
-                return string.Empty;
+                return 0;
             }
 			return await server.UseCouponAndCalculateDiscountPrice((int)memberId,(int)memberCouponId);
 		}

@@ -107,14 +107,15 @@ namespace SIERRA_Server.Models.Services
 			var result = _repo.IsThisMemberHaveThisCoupon(memberId, memberCouponId);
 			return result;
 		}
-		public async Task<string> UseCouponAndCalculateDiscountPrice(int memberId,int memberCouponId)
+		public async Task<int> UseCouponAndCalculateDiscountPrice(int memberId,int memberCouponId)
 		{
             var memberCoupon =await _repo.GetMemberCouponById(memberCouponId);
 			var cart = await _repo.GetDessertCart(memberId);
 			var cartItems = cart.DessertCartItems.ToList();
-			ICoupon coupon = new ReduceCoupon((int)memberCoupon.DiscountValue);
+			var dessertsInDiscountGroupId = memberCoupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.DessertId);
+			ICoupon coupon = new ReduceReachCountCoupon(dessertsInDiscountGroupId, (int)memberCoupon.DiscountValue, (int)memberCoupon.LimitValue);
 			var price = coupon.Calculate(cartItems);
-			return price.ToString();
+			return price;
 		}
         public  bool HasCouponBeenUsed(int memberCouponId)
         {

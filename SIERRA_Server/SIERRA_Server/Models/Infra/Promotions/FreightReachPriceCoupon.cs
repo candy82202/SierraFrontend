@@ -11,15 +11,15 @@ namespace SIERRA_Server.Models.Infra.Promotions
             NeededPrice = neededPrice;
         }
 
-        public string Calculate(IEnumerable<DessertCartItem> items)
+        public int Calculate(IEnumerable<DessertCartItem> items)
         {
             var totalPrice = items.Select(i => i.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
             ? Math.Round((decimal)i.Specification.UnitPrice * ((decimal)i.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : i.Specification.UnitPrice).Sum();
             if (totalPrice >= this.NeededPrice)
             {
-                return "-60";
+                return -60;
             }
-            else return "無法使用此優惠券";
+            else return 0;
         }
     }
 }
