@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using SIERRA_Server.Models.Repository.EFRepository;
 using SIERRA_Server.Models.Infra;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SIERRA_Server.Controllers
 {
@@ -28,17 +29,21 @@ namespace SIERRA_Server.Controllers
         private readonly MemberEFRepository _repo;
         private readonly IConfiguration _config;
         private readonly HashUtility _hashUtility;
+        private readonly EmailHelper _emailHelper;
 
-        public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility)
+        public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility, EmailHelper emailHelper)
         {
             _context = context;
             _repo = repo;
             _config = config;
             _hashUtility = hashUtility;
+            _emailHelper = emailHelper;
+
         }
 
         [HttpPost("Login")]
-        public string Login(LoginDTO request)
+        [AllowAnonymous]
+        public IActionResult Login(LoginDTO request)
         {
             var service = new MemberService(_repo, _hashUtility);
 
@@ -48,8 +53,7 @@ namespace SIERRA_Server.Controllers
             // 驗證失敗
             if (result.IsFail)
             {
-                var msg = result.ErrorMessage ?? "帳號或密碼錯誤";
-                return msg;
+                return BadRequest(result.ErrorMessage);
             }
 
             // 設定使用者資訊
@@ -67,13 +71,44 @@ namespace SIERRA_Server.Controllers
                 issuer: _config["JWT:Issuer"],
                 audience: _config["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(5),
+				//expires: DateTime.Now.AddMinutes(30),
+				expires: DateTime.Now.AddSeconds(30),
                 signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
             );
 
             // 產生JWT Token
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return token;
+            return Ok(token);
+        }
+
+        [HttpPost("Register")]
+		[AllowAnonymous]
+		public IActionResult Register(RegisterDTO request)
+        {
+            var service = new MemberService(_repo, _hashUtility,_emailHelper);
+			var result = service.Register(request);
+
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
+
+			return Ok("註冊完成,請至信箱收取驗證信");
+		}
+
+        [HttpGet("ActiveRegister")]
+        [AllowAnonymous]
+        public IActionResult ActiveRegister([FromQuery]ActiveRegisterDTO request)
+        {
+            var service = new MemberService(_repo);
+            var result = service.ActiveRegister(request);
+
+            if (result.IsFail)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok("註冊成功");
         }
 
         // GET: api/Members

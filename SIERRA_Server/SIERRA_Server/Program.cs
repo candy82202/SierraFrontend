@@ -1,10 +1,17 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
 using SIERRA_Server.Models.Repository.DPRepository;
 using SIERRA_Server.Models.Repository.EFRepository;
 using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,12 +42,40 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
 builder.Services.AddScoped<HashUtility>();
+//builder.Services.AddScoped<UrlHelper>();
+builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFRepository>();
 builder.Services.AddScoped<IDessertDiscountRepository, DessertDiscountDPRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// 所有API使用,需經過JWT驗證
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+
+//            ValidateIssuer = true,
+//            ValidIssuer = builder.Configuration["JWT:Issuer"],
+
+//            ValidateAudience = true,
+//            ValidAudience = builder.Configuration["JWT:Audience"],
+
+//            ValidateLifetime = true, // 預設是true
+
+//            ClockSkew = TimeSpan.Zero, // 預設會有偏差，把偏差設成0
+
+//            ValidateIssuerSigningKey = true,
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
+//        };
+//    });
+
+//builder.Services.AddMvc(options =>
+//{
+//    options.Filters.Add(new AuthorizeFilter());
+//});
 
 var app = builder.Build();
 
@@ -56,8 +91,9 @@ app.UseRouting();
 app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 
+// 啟用Cookie
+// app.UseCookiePolicy();
 // 驗證(登入所需加的)
-app.UseCookiePolicy();
 app.UseAuthentication();
 // 授權(原本就有)
 app.UseAuthorization();
