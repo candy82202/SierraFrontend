@@ -184,7 +184,10 @@ namespace SIERRA_Server.Models.Services
 			}
 			//ICoupon coupon = new ReduceReachCountCoupon(dessertsInDiscountGroupId, (int)memberCoupon.DiscountValue, (int)memberCoupon.LimitValue);
 			var price = coupon.Calculate(cartItems);
-			return price;
+			var totalPrice = cartItems.Select(i => i.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+			? Math.Round(i.Specification.UnitPrice * ((decimal)i.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : i.Specification.UnitPrice).Sum();
+			var result = Math.Abs(price)> totalPrice? (int)-totalPrice:price;
+			return result;
 		}
         public  bool HasCouponBeenUsed(int memberCouponId)
         {

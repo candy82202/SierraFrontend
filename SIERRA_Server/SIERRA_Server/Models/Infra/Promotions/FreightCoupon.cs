@@ -7,7 +7,6 @@ namespace SIERRA_Server.Models.Infra.Promotions
     {
         public int Calculate(IEnumerable<DessertCartItem> items)
         {
-            
             return -60;
         }
     }
