@@ -5,14 +5,17 @@ using SIERRA_Server.Models.EFModels;
 using System.Diagnostics;
 
 namespace SIERRA_Server.Controllers {
-    public class LessonController : Controller {
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LessonController : ControllerBase {
 
         private readonly AppDbContext _context;
         public LessonController(AppDbContext context)
         {
             _context = context;
         }
-        [Route("api/[controller]")]
+        
         [HttpGet]
         public async Task<ActionResult<LessonDTO>> GetLessons(string? categoryName)
         {
