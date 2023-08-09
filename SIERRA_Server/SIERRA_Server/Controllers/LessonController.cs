@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Lessons;
 using SIERRA_Server.Models.EFModels;
+using System.Diagnostics;
 
 namespace SIERRA_Server.Controllers {
     public class LessonController : Controller {
@@ -13,22 +14,24 @@ namespace SIERRA_Server.Controllers {
         }
         [Route("api/[controller]")]
         [HttpGet]
-        public async Task<ActionResult<LessonDTO>> GetLessons(string? keyword)
+        public async Task<ActionResult<LessonDTO>> GetLessons(string? categoryName)
         {
-            if(_context == null)
+            if (_context == null)
             {
                 return NotFound();
             }
 
             var lessons =  _context.Lessons.Include(t => t.Teacher)
                                                               .Include(lm => lm.LessonImages)
-                                                              .Where(l => l.Teacher.TeacherStatus == true)
+                                                              .Include(lc => lc.LessonCategory)
+                                                              .Where(l => l.Teacher.TeacherStatus == true && l.LessonStatus == true)
                                                               .AsQueryable();
+          
 
-            if (!string.IsNullOrEmpty(keyword))
+            if (!string.IsNullOrEmpty(categoryName))
             {
                 lessons = lessons.Include(l => l.LessonCategory)
-                                            .Where(lc => lc.LessonCategory.LessonCategoryName.Contains(keyword));
+                                            .Where(lc => lc.LessonCategory.LessonCategoryName.Contains(categoryName));
             }
 
             LessonDTO lessondto = new LessonDTO();
@@ -36,5 +39,61 @@ namespace SIERRA_Server.Controllers {
 
             return lessondto;
         }
+
+        // GET:category
+      
+        [HttpGet("category")]
+        public async Task<ActionResult<LessonCategoryDTO>> GetLessonCategories()
+        {
+            if (_context == null)
+            {
+                return NotFound();
+            }
+
+            var lessonCategories = _context.LessonCategories.Include(l => l.Lessons);
+                                                                               
+
+            var lessonCategoryDTO = new LessonCategoryDTO();
+            lessonCategoryDTO.Categories = await lessonCategories.Select(lc => new LessonCategoryDTOItem
+                                                                                                                                   {
+                                                                                                                                        LessonCategoryId = lc.LessonCategoryId,
+                                                                                                                                        LessonCategoryName = lc.LessonCategoryName
+                                                                                                                                    }).ToListAsync();
+
+            return lessonCategoryDTO;
+        }
+
+        [HttpGet("lessonId")]
+        public async Task<ActionResult<UnitLessonDTO>> GetLessonById(int lessonId)
+        {
+            if (_context == null)
+            {
+                return NotFound();
+            }
+
+            var lesson = await _context.Lessons.Include(t => t.Teacher)
+                                                                    .Include(lm => lm.LessonImages)
+                                                                    .Include(lc => lc.LessonCategory)
+                                                                    .FirstOrDefaultAsync(l =>l.LessonId == lessonId);
+
+            if(lesson == null)
+            {
+                return NotFound();
+            }
+
+            var lessonDTO = new UnitLessonDTO
+            {
+                LessonId = lesson.LessonId,
+                LessonDessert = lesson.LessonDessert,
+                LessonImages = lesson.LessonImages,
+                LessonTitle = lesson.LessonTitle,
+                LessonDetail = lesson.LessonDetail,
+                LessonInfo = lesson.LessonInfo,
+                LessonPrice = lesson.LessonPrice,
+            };
+
+            return lessonDTO;
+        }
+
     }
 }
