@@ -99,7 +99,7 @@ subject:{subject}
             var password = _config["Gmail:ApplicationPassword"];
             var IdToString = memberId.ToString();
             //var confrimLink = _urlHelper.Action("ActiveRegister", "Members", new { IdToString, confirmCode });
-            var confrimUrl = $"http://127.0.0.1:5501/RegisterSuccessful.html?memberId={memberId}&confirmCode={confirmCode}";
+            var confrimUrl = $"http://127.0.0.1:5501/RegisterActive.html?memberId={memberId}&confirmCode={confirmCode}";
 
             MailMessage mms = new MailMessage();
             mms.From = new MailAddress(senderEmail);
