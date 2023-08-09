@@ -125,20 +125,20 @@ namespace SIERRA_Server.Controllers
                     // 為會員創建並新增主訂單
                     var order = new DessertOrder
                     {
-                        Id=orderDto.Id,
+                        Id = orderDto.Id,
                         MemberId = member.Id,
                         //Username = orderDto.Username,
-                        DessertOrderStatusId= orderDto.DessertOrderStatusId,
+                        DessertOrderStatusId = orderDto.DessertOrderStatusId,
                         //MemberCouponId= orderDto.MemberCouponId,
                         CreateTime = DateTime.Now,
                         Recipient = orderDto.Recipient,
                         RecipientPhone = orderDto.RecipientPhone,
                         RecipientAddress = orderDto.RecipientAddress,
-                        ShippingFee= orderDto.ShippingFee,
-                        DessertOrderTotal= orderDto.DessertOrderTotal,
+                        ShippingFee = orderDto.ShippingFee,
+                        DessertOrderTotal = orderDto.DessertOrderTotal,
                         DeliveryMethod = orderDto.DeliveryMethod,
                         Note = orderDto.Note,
-                        DiscountInfo= orderDto.DiscountInfo,
+                        DiscountInfo = orderDto.DiscountInfo,
                         //PayMethod = orderDto.PaymentMethod,
 
                     };
@@ -157,7 +157,7 @@ namespace SIERRA_Server.Controllers
                             Quantity = item.Quantity,
                             UnitPrice = item.UnitPrice,
                             Subtotal = item.Subtotal
-                            
+
                         };
 
                         _context.DessertOrderDetails.Add(orderDetail);
