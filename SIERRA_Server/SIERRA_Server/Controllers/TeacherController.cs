@@ -15,7 +15,11 @@ namespace SIERRA_Server.Controllers {
             _context = context;
         }
 
+<<<<<<< HEAD
 
+=======
+       
+>>>>>>> b9dd25e372834b548041611a37762b58e8fa160d
         [HttpGet]
         public async Task<ActionResult<TeacherDTO>> GetTeachers(int page = 1, int pageSize = 3)
         {

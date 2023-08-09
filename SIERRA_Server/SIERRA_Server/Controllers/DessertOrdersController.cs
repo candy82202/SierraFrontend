@@ -108,18 +108,72 @@ namespace SIERRA_Server.Controllers
         }
 
         // POST: api/DessertOrders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DessertOrder>> PostDessertOrder(DessertOrder dessertOrder)
+        public async Task<ActionResult> PostDessertOrder([FromBody] CreateDessertOrderDTO orderDto)
         {
-          if (_context.DessertOrders == null)
-          {
-              return Problem("Entity set 'AppDbContext.DessertOrders'  is null.");
-          }
-            _context.DessertOrders.Add(dessertOrder);
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // 根据username查找会员
+                    var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == orderDto.MemberId);
+                    if (member == null)
+                    {
+                        return NotFound($"找不到用戶為 {orderDto.MemberId} 的會員。");
+                    }
 
-            return CreatedAtAction("GetDessertOrder", new { id = dessertOrder.Id }, dessertOrder);
+                    // 為會員創建並新增主訂單
+                    var order = new DessertOrder
+                    {
+                        Id = orderDto.Id,
+                        MemberId = member.Id,
+                        //Username = orderDto.Username,
+                        DessertOrderStatusId = orderDto.DessertOrderStatusId,
+                        //MemberCouponId= orderDto.MemberCouponId,
+                        CreateTime = DateTime.Now,
+                        Recipient = orderDto.Recipient,
+                        RecipientPhone = orderDto.RecipientPhone,
+                        RecipientAddress = orderDto.RecipientAddress,
+                        ShippingFee = orderDto.ShippingFee,
+                        DessertOrderTotal = orderDto.DessertOrderTotal,
+                        DeliveryMethod = orderDto.DeliveryMethod,
+                        Note = orderDto.Note,
+                        DiscountInfo = orderDto.DiscountInfo,
+                        //PayMethod = orderDto.PaymentMethod,
+
+                    };
+
+                    _context.DessertOrders.Add(order);
+                    await _context.SaveChangesAsync();
+
+                    // 建立訂單明細
+                    foreach (var item in orderDto.Items)
+                    {
+                        var orderDetail = new DessertOrderDetail
+                        {
+                            DessertOrderId = order.Id, // 引用新創建的訂單
+                            //DessertId = item.DessertId,
+                            DessertName = item.DessertName,
+                            Quantity = item.Quantity,
+                            UnitPrice = item.UnitPrice,
+                            Subtotal = item.Subtotal
+
+                        };
+
+                        _context.DessertOrderDetails.Add(orderDetail);
+                    }
+
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    return Ok($" {orderDto.MemberId} 成功建立訂單。");
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return StatusCode(500, $"內部伺服器錯誤: {ex.Message}");
+                }
+            }
         }
 
         // DELETE: api/DessertOrders/5
