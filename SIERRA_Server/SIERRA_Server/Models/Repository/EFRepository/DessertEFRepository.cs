@@ -55,7 +55,8 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 // Fetching UnitPrice from Specifications
                 var specification = dessert.Specifications.FirstOrDefault();
                 int unitPrice = specification?.UnitPrice ?? 0;
-
+                //string Size = specification?.Size ?? "";
+                //string Flavor = specification?.Flavor ?? "";
                 DessertsIndexDTO item = dessert.ToDIndexDto();
                 dvm.Add(item);
             }

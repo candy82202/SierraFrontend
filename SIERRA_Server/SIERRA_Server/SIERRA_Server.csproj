@@ -27,4 +27,8 @@
     <None Include="C:\SierraCore\SIERRA_Server\SIERRA_Server\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\DTOs\NewFolder\" />
+  </ItemGroup>
+
 </Project>
