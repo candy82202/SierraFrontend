@@ -18,6 +18,7 @@ using System.Text;
 using SIERRA_Server.Models.Repository.EFRepository;
 using SIERRA_Server.Models.Infra;
 using Microsoft.AspNetCore.Authorization;
+using System.Xml.Serialization;
 
 namespace SIERRA_Server.Controllers
 {
@@ -45,7 +46,7 @@ namespace SIERRA_Server.Controllers
         [AllowAnonymous]
         public IActionResult Login(LoginDTO request)
         {
-            var service = new MemberService(_repo, _hashUtility);
+            var service = new MemberService(_repo, _hashUtility, _config);
 
             // 驗證帳密
             var result = service.ValidLogin(request);
@@ -56,28 +57,7 @@ namespace SIERRA_Server.Controllers
                 return BadRequest(result.ErrorMessage);
             }
 
-            // 設定使用者資訊
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name,request.Username)
-            };
-
-            // 取出appsettings.json中的KEY
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:KEY"]));
-
-            // 設定 JWT 相關資訊
-            var jwt = new JwtSecurityToken
-            (
-                issuer: _config["JWT:Issuer"],
-                audience: _config["JWT:Audience"],
-                claims: claims,
-				//expires: DateTime.Now.AddMinutes(30),
-				expires: DateTime.Now.AddSeconds(30),
-                signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
-            );
-
-            // 產生JWT Token
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = service.CreateJwtToken(request.Username);
             return Ok(token);
         }
 
@@ -108,7 +88,7 @@ namespace SIERRA_Server.Controllers
                 return BadRequest(result.ErrorMessage);
             }
 
-            return Ok("註冊成功");
+            return Ok("驗證成功");
         }
 
         // GET: api/Members

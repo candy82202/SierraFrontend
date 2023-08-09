@@ -1,5 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop.Infrastructure;
 using SIERRA_Server.Models.DTOs.Members;
 using SIERRA_Server.Models.EFModels;
@@ -7,6 +8,9 @@ using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
 using SIERRA_Server.Models.Repository.EFRepository;
 using System.Diagnostics.Metrics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace SIERRA_Server.Models.Services
 {
@@ -15,13 +19,20 @@ namespace SIERRA_Server.Models.Services
         private readonly MemberEFRepository _repo;
         private readonly HashUtility _hashUtility;
         private readonly EmailHelper _emailHelper;
-        public MemberService(MemberEFRepository repo, HashUtility hashUtility, EmailHelper emailHelper)
+		private readonly IConfiguration _config;
+		public MemberService(MemberEFRepository repo, HashUtility hashUtility, EmailHelper emailHelper)
         {
             _repo = repo;
             _hashUtility = hashUtility;
             _emailHelper = emailHelper;
         }
-        public MemberService(MemberEFRepository repo, HashUtility hashUtility)
+		public MemberService(MemberEFRepository repo, HashUtility hashUtility, IConfiguration config)
+		{
+			_repo = repo;
+			_hashUtility = hashUtility;
+			_config = config;
+		}
+		public MemberService(MemberEFRepository repo, HashUtility hashUtility)
         {
             _repo = repo;
             _hashUtility = hashUtility;
@@ -85,5 +96,33 @@ namespace SIERRA_Server.Models.Services
             return Result.Success();
             
         }
-    }
+
+        public string? CreateJwtToken(string username)
+        {
+            var memberId = _repo.GetMemberIdByUsername(username).ToString();
+			// 設定使用者資訊
+			var claims = new List<Claim>
+			{
+                new Claim("username",username),
+				new Claim("memberId",memberId)
+			};
+
+			// 取出appsettings.json中的KEY
+			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:KEY"]));
+
+			// 設定 JWT 相關資訊
+			var jwt = new JwtSecurityToken
+			(
+				issuer: _config["JWT:Issuer"],
+				audience: _config["JWT:Audience"],
+				claims: claims,
+				//expires: DateTime.Now.AddMinutes(30),
+				expires: DateTime.Now.AddSeconds(30),
+				signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
+			);
+
+			// 產生JWT Token
+			return new JwtSecurityTokenHandler().WriteToken(jwt);
+		}
+	}
 }
