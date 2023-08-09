@@ -34,7 +34,7 @@ Members 部分
 	- Modify Programs.cs 
 [V] - Register
 [V] - EmailHelper.cs
-
+[working on] - ForgotPassword
 
 
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop.Infrastructure;
+using NuGet.DependencyResolver;
 using SIERRA_Server.Models.DTOs.Members;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
@@ -63,8 +64,11 @@ namespace SIERRA_Server.Models.Services
             var memberInDb = _repo.GetMemberByUsername(dto.Username);
             if (memberInDb != null) return Result.Fail("帳號重複");
 
-            // 填入剩餘欄位的值
-            var salt = _hashUtility.GetSalt();
+            // 判斷email是否重複
+			if (_repo.isEmailExist(dto.Email)) return Result.Fail("信箱已註冊");
+
+			// 填入剩餘欄位的值
+			var salt = _hashUtility.GetSalt();
             dto.EncryptedPassword = _hashUtility.ToSHA256(dto.Password, salt);
 
             dto.IsConfirmed = false;
@@ -77,7 +81,9 @@ namespace SIERRA_Server.Models.Services
 
             // 寄驗證信
             var memberId = _repo.GetMemberIdByUsername(dto.Username);
-            _emailHelper.SendVerificationEmail(dto.Email, memberId, confirmCode);
+			//var confirmLink = _urlHelper.Action("ActiveRegister", "Members", new { IdToString, confirmCode });
+			var confirmUrl = $"http://127.0.0.1:5501/RegisterActive.html?memberId={memberId}&confirmCode={confirmCode}";
+			_emailHelper.SendVerificationEmail(dto.Email, confirmUrl);
 
             return Result.Success();
 
@@ -90,12 +96,32 @@ namespace SIERRA_Server.Models.Services
 
             memberInDb.IsConfirmed = true;
             memberInDb.ConfirmCode = null;
-            _repo.ActiveRegister(memberInDb);
+            _repo.SaveChanges();
             
-
             return Result.Success();
-            
         }
+
+        public Result ProccessForgotPassword(ForgotPasswordDTO dto)
+        {
+            // 檢查該帳號和Email是否正確
+            var memberInDb = _repo.GetMemberByUsername(dto.Username);
+            if (memberInDb == null || string.Compare(dto.Email, memberInDb.Email, StringComparison.CurrentCultureIgnoreCase) != 0) return Result.Fail("帳號或Email錯誤");
+
+            // 已啟用的帳號才能重設密碼
+            if (memberInDb.IsConfirmed == false) return Result.Fail("您還沒有啟用本帳號，請先完成才能重設密碼");
+
+            // 填入 confirmCode，更新資料
+            var confirmCode = Guid.NewGuid().ToString("N");
+            memberInDb.ConfirmCode = confirmCode;
+            _repo.SaveChanges();
+
+			// 寄驗證信
+			var memberId = _repo.GetMemberIdByUsername(dto.Username);
+			var confirmUrl = $"http://127.0.0.1:5501/ForgotPassword.html?memberId={memberId}&confirmCode={confirmCode}";
+			_emailHelper.SendVerificationEmail(dto.Email, confirmUrl);
+
+			return Result.Success();
+		}
 
         public string? CreateJwtToken(string username)
         {
