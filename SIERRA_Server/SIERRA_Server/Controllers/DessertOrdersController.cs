@@ -100,7 +100,7 @@ namespace SIERRA_Server.Controllers
             catch (Exception ex)
             {
                 // 可以進一步處理錯誤，例如檢查是否因為資料庫鎖定或其他原因而導致儲存失敗
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.ToString()}");
             }
 
             // 回傳成功訊息
