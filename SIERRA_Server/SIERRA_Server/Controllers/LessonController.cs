@@ -5,6 +5,7 @@ using SIERRA_Server.Models.EFModels;
 using System.Diagnostics;
 
 namespace SIERRA_Server.Controllers {
+
     public class LessonController : Controller {
 
         private readonly AppDbContext _context;
