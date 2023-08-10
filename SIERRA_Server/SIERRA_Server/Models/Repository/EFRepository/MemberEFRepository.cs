@@ -17,11 +17,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             _db = db;
         }
 
-        public Member? GetMemberByUsername(string username)
+        public Member GetMemberByUsername(string username)
         {
             return _db.Members.FirstOrDefault(m => m.Username == username);
         }
-        public Member? GetMemberById(int memberId)
+        public Member GetMemberById(int memberId)
         {
             return _db.Members.FirstOrDefault(m => m.Id == memberId);
         }
