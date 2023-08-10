@@ -10,7 +10,8 @@ namespace SIERRA_Server.Models.DTOs.Carts
         public int DessertCartId { get; set; }
         public int DessertId { get; set; }
         public int Quantity { get; set; }
-
+        public string DessertImageName { get; set; }
+        public int UnitPrice { get; set; }
         public Dessert Dessert { get; set; }
         public Specification Specification { get; set; }
         public int SubTotal => Specification.UnitPrice * Quantity;

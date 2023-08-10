@@ -27,8 +27,10 @@ Desserts 部分
 [V] - Desserts Add To Cart 
 	- Desserts Delete From DessertCartItems
 	- SpecificationId add in DiscountGroup(GetDiscountGroup)
+	- Update DessertCartItems
 
-[V] - Get DiscountGroup select by params DessertId , return different discountGroup suggest
+[working on] - Get DiscountGroup select by params DessertId , return different discountGroup suggest
+[working on] - Get Desserts by id , Add DessertImageName
 
 =========================================================
 Members 部分
