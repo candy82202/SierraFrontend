@@ -76,9 +76,9 @@ namespace SIERRA_Server.Controllers
 			return Ok("註冊完成,請至信箱收取驗證信");
 		}
 
-        [HttpGet("ActiveRegister")]
+        [HttpPost("ActiveRegister")]
         [AllowAnonymous]
-        public IActionResult ActiveRegister([FromQuery]ActiveRegisterDTO request)
+        public IActionResult ActiveRegister(ActiveRegisterDTO request)
         {
             var service = new MemberService(_repo);
             var result = service.ActiveRegister(request);
