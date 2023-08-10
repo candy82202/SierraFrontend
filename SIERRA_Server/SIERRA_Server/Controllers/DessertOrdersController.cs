@@ -108,70 +108,74 @@ namespace SIERRA_Server.Controllers
         }
 
         // POST: api/DessertOrders
-        [HttpPost]
+        [HttpPost("DessertOrders")]
         public async Task<ActionResult> PostDessertOrder([FromBody] CreateDessertOrderDTO orderDto)
         {
+            // 開始事務
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    // 根据username查找会员
-                    var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == orderDto.MemberId);
-                    if (member == null)
-                    {
-                        return NotFound($"找不到用戶為 {orderDto.MemberId} 的會員。");
-                    }
+                    // 根據標識符(username)找到購物車
+                    var cart = await _context.DessertCarts
+                        .Include(c => c.DessertCartItems).ThenInclude(ci=>ci.Dessert).ThenInclude(x=>x.Specifications)
+                        .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
+                    if (cart == null) throw new Exception("Cart not found");
 
-                    // 為會員創建並新增主訂單
+                    // 創建訂單
                     var order = new DessertOrder
                     {
-                        Id = orderDto.Id,
-                        MemberId = member.Id,
-                        //Username = orderDto.Username,
-                        DessertOrderStatusId = orderDto.DessertOrderStatusId,
-                        //MemberCouponId= orderDto.MemberCouponId,
+                        Id= (int)orderDto.Id,
+                        MemberId= orderDto.MemberId,
+                        Username = orderDto.Username,
+                        DessertOrderStatusId= orderDto.DessertOrderStatusId,
+                        MemberCouponId= orderDto.MemberCouponId,
                         CreateTime = DateTime.Now,
                         Recipient = orderDto.Recipient,
                         RecipientPhone = orderDto.RecipientPhone,
                         RecipientAddress = orderDto.RecipientAddress,
-                        ShippingFee = orderDto.ShippingFee,
+                        ShippingFee= orderDto.ShippingFee,
                         DessertOrderTotal = orderDto.DessertOrderTotal,
                         DeliveryMethod = orderDto.DeliveryMethod,
                         Note = orderDto.Note,
-                        DiscountInfo = orderDto.DiscountInfo,
-                        //PayMethod = orderDto.PaymentMethod,
+                        PayMethod = orderDto.PayMethod,
+                        DiscountInfo= orderDto.DiscountInfo,
+
 
                     };
-
                     _context.DessertOrders.Add(order);
                     await _context.SaveChangesAsync();
 
-                    // 建立訂單明細
-                    foreach (var item in orderDto.Items)
+                    // 創建訂單明細
+                    foreach (var item in cart.DessertCartItems)
                     {
                         var orderDetail = new DessertOrderDetail
                         {
-                            DessertOrderId = order.Id, // 引用新創建的訂單
-                            //DessertId = item.DessertId,
-                            DessertName = item.DessertName,
+                            DessertOrderId = order.Id,
+                            DessertId = item.DessertId,
+                            DessertName = item.Dessert.DessertName, 
                             Quantity = item.Quantity,
-                            UnitPrice = item.UnitPrice,
-                            Subtotal = item.Subtotal
-
+                            UnitPrice = item.Specification.UnitPrice,
+                            Subtotal = item.Quantity * item.Specification.UnitPrice
                         };
-
                         _context.DessertOrderDetails.Add(orderDetail);
                     }
-
                     await _context.SaveChangesAsync();
+
+                    // 清空購物車
+                    _context.DessertCartItems.RemoveRange(cart.DessertCartItems);
+                    await _context.SaveChangesAsync();
+
+                    // 提交事務
                     await transaction.CommitAsync();
 
-                    return Ok($" {orderDto.MemberId} 成功建立訂單。");
+                    return Ok(new { message = "Order created successfully" });
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
+                    // 發生錯誤
                     await transaction.RollbackAsync();
-                    return StatusCode(500, $"內部伺服器錯誤: {ex.Message}");
+                    return BadRequest(new { message = e.Message });
                 }
             }
         }
