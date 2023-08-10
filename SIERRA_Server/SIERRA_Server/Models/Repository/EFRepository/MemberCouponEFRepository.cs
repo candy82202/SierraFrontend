@@ -87,11 +87,18 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId)
         {
-            var coupons =await _db.MemberCoupons.Where(mc => mc.MemberId == memberId)
-                                                .Where(mc => mc.UseAt != null && ((TimeSpan)(DateTime.Now - mc.UseAt)).TotalDays < 30)
-                                                .Select(mc=>mc.ToMemberCouponHasUsedDto())
+            var coupons =await _db.MemberCoupons.Include(mc=>mc.Coupon)
+                                                .ThenInclude(c=>c.DiscountGroup)
+										        .ThenInclude(dg => dg.DiscountGroupItems)
+										        .ThenInclude(dgi => dgi.Dessert)
+												.Where(mc => mc.MemberId == memberId)
+                                                .Where(mc=>mc.UseAt!=null)
                                                 .ToListAsync();
-            return coupons;
+                                                
+            var result = coupons.Where(mc =>((TimeSpan)(DateTime.Now - mc.UseAt)).TotalDays < 30)
+								.Select(mc => mc.ToMemberCouponHasUsedDto());
+
+			return result;
         }
         public async Task<DessertCart> GetDessertCart(int memberId)
         {
