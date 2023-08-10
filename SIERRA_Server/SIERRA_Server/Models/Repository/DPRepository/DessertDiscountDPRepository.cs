@@ -35,7 +35,8 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                     D.DessertName,
                     S.UnitPrice,
                     S.Flavor,
-                    S.Size,
+                    S.Size,S.SpecificationId,
+
                     DG.DiscountGroupId,
                     DI.DessertImageName
                 FROM 
@@ -69,6 +70,7 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                         DiscountGroupId = row.DiscountGroupId,
                         Specification = new Specification
                         {
+                            SpecificationId=row.SpecificationId,
                             UnitPrice = row.UnitPrice,
                             Flavor = row.Flavor,
                             Size = row.Size
