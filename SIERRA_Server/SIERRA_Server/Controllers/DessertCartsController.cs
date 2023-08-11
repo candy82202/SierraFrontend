@@ -165,15 +165,17 @@ namespace SIERRA_Server.Controllers
         public async Task<CartDTO> GetOrCreateCart(string username)
         {
             var cart = await _context.DessertCarts
-                .Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.DessertImages)
-                .Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Specification)
+                .Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d=>d.Discounts)
+				.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.DessertImages)
+				.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Specification)
                 .FirstOrDefaultAsync(dc => dc.Username == username);
 
             if (cart == null)
             {
                 cart = new DessertCart
                 {
-                    Username = username
+                    Username = username,
+                    MemberCouponId = null
                 };
                 _context.DessertCarts.Add(cart);
                 await _context.SaveChangesAsync();
@@ -191,9 +193,9 @@ namespace SIERRA_Server.Controllers
                     DessertId = dci.DessertId,
                     Quantity = dci.Quantity,
                     DessertImageName = dci.Dessert.DessertImages.FirstOrDefault()?.DessertImageName,
-                    Dessert = dci.Dessert,
-                    Specification = dci.Specification
-                }).ToList()
+                    DessertName = dci.Dessert.DessertName,
+                    UnitPrice = (int)(dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)? Math.Round((decimal)dci.Specification.UnitPrice * ((decimal)dci.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice)
+				}).ToList()
             };
 
             return cartDTO;

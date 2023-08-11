@@ -187,6 +187,10 @@ namespace SIERRA_Server.Models.Services
 			var totalPrice = cartItems.Select(i => i.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
 			? Math.Round(i.Specification.UnitPrice * ((decimal)i.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : i.Specification.UnitPrice).Sum();
 			var result = Math.Abs(price)> totalPrice? (int)-totalPrice:price;
+			if (result != 0)
+			{
+				_repo.RecordCouponInCart(cart, memberCouponId);
+			}
 			return result;
 		}
         public  bool HasCouponBeenUsed(int memberCouponId)
