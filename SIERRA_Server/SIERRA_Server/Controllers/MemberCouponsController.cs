@@ -116,16 +116,7 @@ namespace SIERRA_Server.Controllers
 			{
                 return 0;
             }
-			var result = await server.UseCouponAndCalculateDiscountPrice((int)memberId, (int)memberCouponId);
-			if (result == 0)
-			{
-				return 0;
-			}
-			else
-			{
-				return result;
-			}
-			
+			return await server.UseCouponAndCalculateDiscountPrice((int)memberId, (int)memberCouponId);
 		}
 
 		
