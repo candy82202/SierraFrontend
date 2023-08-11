@@ -108,10 +108,10 @@ namespace SIERRA_Server.Controllers
         }
 
         // POST: api/DessertOrders
-        [HttpPost("DessertOrders")]
+        [HttpPost]
         public async Task<ActionResult> PostDessertOrder([FromBody] CreateDessertOrderDTO orderDto)
         {
-            // 開始事務
+            
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -121,14 +121,14 @@ namespace SIERRA_Server.Controllers
                         .Include(c => c.DessertCartItems).ThenInclude(ci=>ci.Dessert).ThenInclude(x=>x.Specifications)
                         .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
                     if (cart == null) throw new Exception("Cart not found");
-
+                    
                     // 創建訂單
                     var order = new DessertOrder
                     {
                         Id= (int)orderDto.Id,
                         MemberId= orderDto.MemberId,
                         Username = orderDto.Username,
-                        DessertOrderStatusId= orderDto.DessertOrderStatusId,
+                        DessertOrderStatusId= 2,
                         MemberCouponId= orderDto.MemberCouponId,
                         CreateTime = DateTime.Now,
                         Recipient = orderDto.Recipient,
@@ -152,6 +152,7 @@ namespace SIERRA_Server.Controllers
                         var orderDetail = new DessertOrderDetail
                         {
                             DessertOrderId = order.Id,
+                            SpecificationId=item.SpecificationId,
                             DessertId = item.DessertId,
                             DessertName = item.Dessert.DessertName, 
                             Quantity = item.Quantity,
@@ -166,7 +167,7 @@ namespace SIERRA_Server.Controllers
                     _context.DessertCartItems.RemoveRange(cart.DessertCartItems);
                     await _context.SaveChangesAsync();
 
-                    // 提交事務
+                    
                     await transaction.CommitAsync();
 
                     return Ok(new { message = "Order created successfully" });
