@@ -185,7 +185,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
 		public void RecordCouponInCart(DessertCart cart, int memberCouponId)
 		{
-            var findCart = _db.DessertCarts.Find(cart);
+            var findCart = _db.DessertCarts.Find(cart.Id);
             findCart.MemberCouponId = memberCouponId;
             _db.SaveChanges();
 		}

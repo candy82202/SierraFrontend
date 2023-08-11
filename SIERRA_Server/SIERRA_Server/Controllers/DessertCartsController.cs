@@ -231,6 +231,8 @@ namespace SIERRA_Server.Controllers
         {
             
             var cartItem = _context.DessertCartItems.FirstOrDefault(item => item.Id == id);
+            var cart = _context.DessertCarts.Find(cartItem.DessertCartId);
+            
 
             if (cartItem != null)
             {
@@ -244,10 +246,13 @@ namespace SIERRA_Server.Controllers
                 {
                     _context.DessertCartItems.Update(cartItem);
                 }
-
-                await _context.SaveChangesAsync();
             }
-        }
+            if(cart.MemberCouponId!=null)
+            {
+                cart.MemberCouponId = null;
+            }
+			await _context.SaveChangesAsync();
+		}
         [HttpGet("GetPrice")]
         public async Task<int> GetCartTotalPrice(string username)
         {

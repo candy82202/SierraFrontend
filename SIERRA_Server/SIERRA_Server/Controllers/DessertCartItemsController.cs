@@ -104,11 +104,13 @@ namespace SIERRA_Server.Controllers
                 return NotFound();
             }
             var dessertCartItem = await _context.DessertCartItems.FindAsync(id);
+            var cart = await _context.DessertCarts.FindAsync(dessertCartItem.DessertCartId);
             if (dessertCartItem == null)
             {
                 return NotFound();
             }
 
+            cart.MemberCouponId = null;
             _context.DessertCartItems.Remove(dessertCartItem);
             await _context.SaveChangesAsync();
 
