@@ -11,6 +11,13 @@ namespace SIERRA_Server.Models.DTOs.Lessons {
 
         public string LessonDetail { get; set; }
 
+        public DateTime LessonTime { get; set; }
+        public int LessonHours { get; set; }
+        public int MaximumCapacity { get; set; }
+        public bool LessonStatus { get; set; }
+        public int ActualCapacity { get; set; }
+        public DateTime LessonEndTime { get; set; }
+        public DateTime CreateTime { get; set; }
         public virtual IEnumerable<LessonImage> LessonImages { get; set; }
     }
 }

@@ -58,7 +58,8 @@ Lessons 部分
 =======0809======
 [working on]新增抓取課程分類和單獨抓取課程id ，api都可抓取到資料，但抓課程ID頁面轉換尚未完成
 
-
+=======0811=======
+feat:修改UnitLessonDTO和GetLessonById，新增抓取資料量
 
 
 
