@@ -7,5 +7,6 @@ namespace SIERRA_Server.Models.Interfaces
     {
 
         Task<List<DessertDiscountDTO>> GetDiscountGroupsByGroupId(int discountGroupId);
+        Task<List<DessertDiscountDTO>> GetDiscountGroups();
     }
 }
