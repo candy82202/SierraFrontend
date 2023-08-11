@@ -4,7 +4,9 @@ using SIERRA_Server.Models.DTOs.Lessons;
 using SIERRA_Server.Models.EFModels;
 
 namespace SIERRA_Server.Controllers {
-    public class TeacherController : Controller {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TeacherController : ControllerBase {
 
         private readonly AppDbContext _context;
 
@@ -12,12 +14,7 @@ namespace SIERRA_Server.Controllers {
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
-        [Route("api/[controller]")]
         [HttpGet]
         public async Task<ActionResult<TeacherDTO>> GetTeachers(int page = 1, int pageSize = 3)
         {
@@ -25,7 +22,9 @@ namespace SIERRA_Server.Controllers {
             {
                 return NotFound();
             }
-            var teachers = _context.Teachers.AsQueryable().Where(t => t.TeacherStatus == true);
+            var teachers = _context.Teachers.Include(l => l.Lessons)
+                                                                .Where(t => t.TeacherStatus == true)
+                                                                .AsQueryable();
 
             int totalCount = teachers.Count();
             int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);

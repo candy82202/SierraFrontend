@@ -25,6 +25,9 @@ namespace SIERRA_Server.Models.DTOs.Desserts
                 DessertImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
                 DessertName = entity.DessertName,
                 UnitPrice = unitPrice,
+                Specification = entity.Specifications.FirstOrDefault(),
+                Size = entity.Specifications.FirstOrDefault().Size,
+                Flavor = entity.Specifications.FirstOrDefault().Flavor,
             };
         }
         public static DessertDiscountDTO ToDDiscountDto(this DiscountGroup entity)

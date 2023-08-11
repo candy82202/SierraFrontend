@@ -14,6 +14,7 @@ namespace SIERRA_Server.Models.EFModels
 
         public int Id { get; set; }
         public int MemberId { get; set; }
+        public string Username { get; set; }
         public int DessertOrderStatusId { get; set; }
         public int? MemberCouponId { get; set; }
         public DateTime CreateTime { get; set; }
@@ -22,6 +23,7 @@ namespace SIERRA_Server.Models.EFModels
         public string RecipientAddress { get; set; }
         public int ShippingFee { get; set; }
         public int DessertOrderTotal { get; set; }
+        public string PayMethod { get; set; }
         public string DeliveryMethod { get; set; }
         public string Note { get; set; }
         public string DiscountInfo { get; set; }

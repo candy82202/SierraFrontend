@@ -24,7 +24,13 @@ Desserts 部分
 	- DessertService call for different DiscountGroupId , To get different method
 
 
+[V] - Desserts Add To Cart 
+	- Desserts Delete From DessertCartItems
+	- SpecificationId add in DiscountGroup(GetDiscountGroup)
+	- Update DessertCartItems
 
+[working on] - Get DiscountGroup select by params DessertId , return different discountGroup suggest
+[working on] - Get Desserts by id , Add DessertImageName
 
 =========================================================
 Members 部分
@@ -32,7 +38,8 @@ Members 部分
 	- Modify Programs.cs 
 [V] - Register
 [V] - EmailHelper.cs
-
+[V] - ForgotPassword
+[V] - Modify EmailHelper.cs
 
 
 
@@ -47,8 +54,9 @@ Lessons 部分
 
 =======0807======
 [V]師資介紹
-[working on]課程介紹
-
+[working on]課程介紹 API讀取到資料有課程、師資、課程照片 ，前端還沒好
+=======0809======
+[working on]新增抓取課程分類和單獨抓取課程id ，api都可抓取到資料，但抓課程ID頁面轉換尚未完成
 
 
 

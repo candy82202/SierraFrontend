@@ -93,16 +93,27 @@ namespace SIERRA_Server.Controllers
             foreach (var dessert in desserts)
             {
                 // Fetching UnitPrice from Specifications
-                var specification = dessert.Specifications.FirstOrDefault();
-                int unitPrice = specification?.UnitPrice ?? 0;
-
+                //var specification = dessert.Specifications.FirstOrDefault();
+                //int unitPrice = specification?.UnitPrice ?? 0;
+                List<SpecificationDTO> specifications = dessert.Specifications.Select(spec =>
+           new SpecificationDTO
+           {
+               SpecificationId=spec.SpecificationId,
+               UnitPrice = spec.UnitPrice,
+               Size = spec.Size,
+               Flavor = spec.Flavor,
+               // Include other properties here
+           }
+       ).ToList();
                 DessertDTO item = new DessertDTO
                 {
                     DessertId = dessert.DessertId,
                     DessertName = dessert.DessertName,
-                    UnitPrice = unitPrice,
+                    //UnitPrice = specifications.Select(spec => spec.UnitPrice).ToList(),
                     Description = dessert.Description,
-                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName
+                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName,
+                    Specifications = specifications,
+                 
                 };
                 dvm.Add(item);
             }
