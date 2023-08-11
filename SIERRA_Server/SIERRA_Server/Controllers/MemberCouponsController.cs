@@ -63,11 +63,11 @@ namespace SIERRA_Server.Controllers
 		}
 
 		[HttpGet("MeetCriteria")]
-		public async Task<IEnumerable<MemberCouponDto>> GetCouponMeetCriteria(int? MemberId)
+		public async Task<IEnumerable<MemberCouponCanUseDto>> GetCouponMeetCriteria(int? MemberId)
 		{
 			if (MemberId == null)
 			{
-				return Enumerable.Empty<MemberCouponDto>();
+				return Enumerable.Empty<MemberCouponCanUseDto>();
 			}
 			var server = new MemberCouponService(_repo);
 			return await server.GetCouponMeetCriteria((int)MemberId);
@@ -116,7 +116,16 @@ namespace SIERRA_Server.Controllers
 			{
                 return 0;
             }
-			return await server.UseCouponAndCalculateDiscountPrice((int)memberId,(int)memberCouponId);
+			var result = await server.UseCouponAndCalculateDiscountPrice((int)memberId, (int)memberCouponId);
+			if (result == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				return result;
+			}
+			
 		}
 
 		

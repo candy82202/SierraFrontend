@@ -51,7 +51,7 @@ namespace SIERRA_Server.Models.EFModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Sierra0801;Persist Security Info=True;User ID=sa5;Password=sa5");
             }
         }
@@ -65,7 +65,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Coupon>(entity =>
             {
-                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D3490800427E46B2")
+                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D34908006B64CCB0")
                     .IsUnique();
 
                 entity.Property(e => e.CouponCode)
@@ -140,12 +140,17 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<DessertCart>(entity =>
             {
-                entity.HasIndex(e => e.Username, "UQ__DessertC__536C85E452DCF215")
+                entity.HasIndex(e => e.Username, "UQ__DessertC__536C85E4825004AC")
                     .IsUnique();
 
                 entity.Property(e => e.Username)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.HasOne(d => d.MemberCoupon)
+                    .WithMany(p => p.DessertCarts)
+                    .HasForeignKey(d => d.MemberCouponId)
+                    .HasConstraintName("FK__DessertCa__Membe__1CBC4616");
 
                 entity.HasOne(d => d.UsernameNavigation)
                     .WithOne(p => p.DessertCart)
@@ -161,25 +166,25 @@ namespace SIERRA_Server.Models.EFModels
                     .WithMany(p => p.DessertCartItems)
                     .HasForeignKey(d => d.DessertCartId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Desse__1EA48E88");
+                    .HasConstraintName("FK__DessertCa__Desse__1F98B2C1");
 
                 entity.HasOne(d => d.Dessert)
                     .WithMany(p => p.DessertCartItems)
                     .HasForeignKey(d => d.DessertId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Desse__1F98B2C1");
+                    .HasConstraintName("FK__DessertCa__Desse__208CD6FA");
 
                 entity.HasOne(d => d.Specification)
                     .WithMany(p => p.DessertCartItems)
                     .HasForeignKey(d => d.SpecificationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DessertCa__Speci__208CD6FA");
+                    .HasConstraintName("FK__DessertCa__Speci__2180FB33");
             });
 
             modelBuilder.Entity<DessertImage>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
-                    .HasName("PK__DessertI__7516F70C11DF46DE");
+                    .HasName("PK__DessertI__7516F70CC87AAEC4");
 
                 entity.Property(e => e.DessertImageName).HasMaxLength(255);
 
@@ -309,7 +314,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42AF2242A99")
+                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42AE2DA2BE7")
                     .IsUnique();
 
                 entity.Property(e => e.CreateAt)
@@ -453,10 +458,10 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasIndex(e => e.Username, "UQ__Members__536C85E4D9E33AF5")
+                entity.HasIndex(e => e.Username, "UQ__Members__536C85E485856AC4")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Members__A9D10534BA831FC0")
+                entity.HasIndex(e => e.Email, "UQ__Members__A9D10534163D5379")
                     .IsUnique();
 
                 entity.Property(e => e.Address).HasMaxLength(50);

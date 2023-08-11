@@ -14,5 +14,6 @@
             }
         }
         public string ApplyTo { get; set; }
+        public int CouponType { get; set; }
     }
 }
