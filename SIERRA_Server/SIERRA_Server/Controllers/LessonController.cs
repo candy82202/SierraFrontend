@@ -4,8 +4,13 @@ using SIERRA_Server.Models.DTOs.Lessons;
 using SIERRA_Server.Models.EFModels;
 using System.Diagnostics;
 
+<<<<<<< HEAD
+namespace SIERRA_Server.Controllers {
+
+=======
 namespace SIERRA_Server.Controllers
 {
+>>>>>>> b9dd25e372834b548041611a37762b58e8fa160d
     [Route("api/[controller]")]
     [ApiController]
     public class LessonController : ControllerBase {
