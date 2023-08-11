@@ -9,6 +9,7 @@ namespace SIERRA_Server.Models.EFModels
     {
         public MemberCoupon()
         {
+            DessertCarts = new HashSet<DessertCart>();
             DessertOrders = new HashSet<DessertOrder>();
         }
 
@@ -22,6 +23,7 @@ namespace SIERRA_Server.Models.EFModels
 
         public virtual Coupon Coupon { get; set; }
         public virtual Member Member { get; set; }
+        public virtual ICollection<DessertCart> DessertCarts { get; set; }
         public virtual ICollection<DessertOrder> DessertOrders { get; set; }
     }
 }
