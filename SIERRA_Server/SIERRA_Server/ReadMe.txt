@@ -38,7 +38,8 @@ Members 部分
 	- Modify Programs.cs 
 [V] - Register
 [V] - EmailHelper.cs
-
+[V] - ForgotPassword
+[V] - Modify EmailHelper.cs
 
 
 

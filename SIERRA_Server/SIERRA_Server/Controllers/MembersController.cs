@@ -76,9 +76,9 @@ namespace SIERRA_Server.Controllers
 			return Ok("註冊完成,請至信箱收取驗證信");
 		}
 
-        [HttpGet("ActiveRegister")]
+        [HttpPost("ActiveRegister")]
         [AllowAnonymous]
-        public IActionResult ActiveRegister([FromQuery]ActiveRegisterDTO request)
+        public IActionResult ActiveRegister(ActiveRegisterDTO request)
         {
             var service = new MemberService(_repo);
             var result = service.ActiveRegister(request);
@@ -91,104 +91,133 @@ namespace SIERRA_Server.Controllers
             return Ok("驗證成功");
         }
 
-        // GET: api/Members
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+		[HttpPost("ForgotPassword")]
+		[AllowAnonymous]
+		public IActionResult ForgotPassword(ForgotPasswordDTO request)
         {
-            if (_context.Members == null)
-            {
-                return NotFound();
-            }
-            return await _context.Members.ToListAsync();
-        }
+            var service = new MemberService(_repo, _hashUtility, _emailHelper);
+            var result = service.ProccessResetPassword(request);
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
 
-        // GET: api/Members/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Member>> GetMember(int id)
-        {
-            if (_context.Members == null)
-            {
-                return NotFound();
-            }
-            var member = await _context.Members.FindAsync(id);
+			return Ok("已寄發信件，請至信箱收取驗證信");
 
-            if (member == null)
-            {
-                return NotFound();
-            }
+		}
 
-            return member;
-        }
+		[HttpPost("ResetPassword")]
+		[AllowAnonymous]
+		public IActionResult ResetPassword(ResetPasswordDTO request)
+		{
+			var service = new MemberService(_repo, _hashUtility);
+			var result = service.ProccessChangePassword(request);
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
 
-        // PUT: api/Members/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(int id, Member member)
-        {
-            if (id != member.Id)
-            {
-                return BadRequest();
-            }
+			return Ok("已更新您重設的密碼, 以後請用新密碼登入");
+		}
+		//// 以下是精靈生成的
+		//// GET: api/Members
+		//[HttpGet]
+		//public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+		//{
+		//    if (_context.Members == null)
+		//    {
+		//        return NotFound();
+		//    }
+		//    return await _context.Members.ToListAsync();
+		//}
 
-            _context.Entry(member).State = EntityState.Modified;
+		//// GET: api/Members/5
+		//[HttpGet("{id}")]
+		//public async Task<ActionResult<Member>> GetMember(int id)
+		//{
+		//    if (_context.Members == null)
+		//    {
+		//        return NotFound();
+		//    }
+		//    var member = await _context.Members.FindAsync(id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MemberExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+		//    if (member == null)
+		//    {
+		//        return NotFound();
+		//    }
 
-            return NoContent();
-        }
+		//    return member;
+		//}
 
-        // POST: api/Members
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Member>> PostMember(Member member)
-        {
-            if (_context.Members == null)
-            {
-                return Problem("Entity set 'AppDbContext.Members'  is null.");
-            }
-            _context.Members.Add(member);
-            await _context.SaveChangesAsync();
+		//// PUT: api/Members/5
+		//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		//[HttpPut("{id}")]
+		//public async Task<IActionResult> PutMember(int id, Member member)
+		//{
+		//    if (id != member.Id)
+		//    {
+		//        return BadRequest();
+		//    }
 
-            return CreatedAtAction("GetMember", new { id = member.Id }, member);
-        }
+		//    _context.Entry(member).State = EntityState.Modified;
 
-        // DELETE: api/Members/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMember(int id)
-        {
-            if (_context.Members == null)
-            {
-                return NotFound();
-            }
-            var member = await _context.Members.FindAsync(id);
-            if (member == null)
-            {
-                return NotFound();
-            }
+		//    try
+		//    {
+		//        await _context.SaveChangesAsync();
+		//    }
+		//    catch (DbUpdateConcurrencyException)
+		//    {
+		//        if (!MemberExists(id))
+		//        {
+		//            return NotFound();
+		//        }
+		//        else
+		//        {
+		//            throw;
+		//        }
+		//    }
 
-            _context.Members.Remove(member);
-            await _context.SaveChangesAsync();
+		//    return NoContent();
+		//}
 
-            return NoContent();
-        }
+		//// POST: api/Members
+		//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		//[HttpPost]
+		//public async Task<ActionResult<Member>> PostMember(Member member)
+		//{
+		//    if (_context.Members == null)
+		//    {
+		//        return Problem("Entity set 'AppDbContext.Members'  is null.");
+		//    }
+		//    _context.Members.Add(member);
+		//    await _context.SaveChangesAsync();
 
-        private bool MemberExists(int id)
-        {
-            return (_context.Members?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-    }
+		//    return CreatedAtAction("GetMember", new { id = member.Id }, member);
+		//}
+
+		//// DELETE: api/Members/5
+		//[HttpDelete("{id}")]
+		//public async Task<IActionResult> DeleteMember(int id)
+		//{
+		//    if (_context.Members == null)
+		//    {
+		//        return NotFound();
+		//    }
+		//    var member = await _context.Members.FindAsync(id);
+		//    if (member == null)
+		//    {
+		//        return NotFound();
+		//    }
+
+		//    _context.Members.Remove(member);
+		//    await _context.SaveChangesAsync();
+
+		//    return NoContent();
+		//}
+
+		//private bool MemberExists(int id)
+		//{
+		//    return (_context.Members?.Any(e => e.Id == id)).GetValueOrDefault();
+		//}
+	}
 }

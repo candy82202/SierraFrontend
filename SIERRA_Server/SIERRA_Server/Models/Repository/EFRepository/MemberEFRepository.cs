@@ -5,6 +5,7 @@ using SIERRA_Server.Models.DTOs.Members;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
+using System.Diagnostics.Eventing.Reader;
 
 namespace SIERRA_Server.Models.Repository.EFRepository
 {
@@ -16,11 +17,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             _db = db;
         }
 
-        public Member? GetMemberByUsername(string username)
+        public Member GetMemberByUsername(string username)
         {
             return _db.Members.FirstOrDefault(m => m.Username == username);
         }
-        public Member? GetMemberById(int memberId)
+        public Member GetMemberById(int memberId)
         {
             return _db.Members.FirstOrDefault(m => m.Id == memberId);
         }
@@ -32,6 +33,10 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             return -1;
         }
 
+        public bool isEmailExist(string email)
+        {
+            return _db.Members.Any(m => m.Email == email);
+        }
         public bool isAccountExist(string username)
         {
             return _db.Members.Any(m => m.Username == username);
@@ -57,7 +62,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             _db.SaveChanges();
         }
 
-        public void ActiveRegister(Member member)
+        public void SaveChanges()
         {
             _db.SaveChanges();
         }
