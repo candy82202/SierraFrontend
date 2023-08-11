@@ -115,7 +115,9 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                 LEFT JOIN 
                     DessertImages DI ON DI.DessertId = D.DessertId
                 LEFT JOIN 
-                    Specification S ON D.DessertId = S.DessertId ";
+                    Specification S ON D.DessertId = S.DessertId 
+  WHERE DGI.DiscountGroupId >5
+";
 
                 await connection.OpenAsync();
 

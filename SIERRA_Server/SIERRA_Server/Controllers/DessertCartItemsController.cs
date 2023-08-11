@@ -117,7 +117,7 @@ namespace SIERRA_Server.Controllers
 
         private bool DessertCartItemExists(int id)
         {
-            return (_context.DessertCartItems?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.DessertCartItems?.Any(e => e.Id == id)).GetValueOrDefault(); 
         }
     }
 }
