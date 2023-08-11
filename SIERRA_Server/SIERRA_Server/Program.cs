@@ -70,7 +70,11 @@ builder.Services.AddSwaggerGen();
 //            ValidateIssuerSigningKey = true,
 //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
 //        };
-//    });
+//    }).AddGoogle(options =>
+//	{
+//		options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+//		options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+//	});
 
 //builder.Services.AddMvc(options =>
 //{
