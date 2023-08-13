@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
 //DIª`¤J
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
+builder.Services.AddScoped<PromotionEFRepository>();
 builder.Services.AddScoped<HashUtility>();
 //builder.Services.AddScoped<UrlHelper>();
 builder.Services.AddScoped<EmailHelper>();

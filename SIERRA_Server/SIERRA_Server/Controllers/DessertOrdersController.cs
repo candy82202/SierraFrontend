@@ -140,8 +140,6 @@ namespace SIERRA_Server.Controllers
                         Note = orderDto.Note,
                         PayMethod = orderDto.PayMethod,
                         DiscountInfo= orderDto.DiscountInfo,
-
-
                     };
                     _context.DessertOrders.Add(order);
                     await _context.SaveChangesAsync();
