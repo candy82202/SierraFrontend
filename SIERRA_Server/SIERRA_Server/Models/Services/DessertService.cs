@@ -80,5 +80,24 @@ namespace SIERRA_Server.Models.Services
             var alcoholDiscount = await _discountrepo.GetDiscountGroupsByGroupId(10);
             return alcoholDiscount;
         }
+
+        public async Task<List<DessertDiscountDTO>> GetSuggestDiscountGroups(int dessertId)
+        {
+            var discountGroups = await _discountrepo.GetDiscountGroups();
+
+            foreach (var discountGroup in discountGroups)
+            {
+                var dessertsInGroup = await _discountrepo.GetDiscountGroupsByGroupId(discountGroup.DiscountGroupId);
+
+                if (dessertsInGroup.Any(dessert => dessert.DessertId == dessertId))
+                {
+                    return dessertsInGroup;
+                }
+            }
+
+            // Default behavior if no matching dessert is found in any discount group
+            // You might want to handle this case differently based on your requirements
+            return await _discountrepo.GetCategory();
+        }
     }
 }

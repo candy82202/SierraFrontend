@@ -163,6 +163,12 @@ namespace SIERRA_Server.Controllers
             var alcoholDiscount = await service.GetAlcoholDiscountGroups();
             return Ok(alcoholDiscount);
         }
-     
+        [HttpGet("SuggestDiscountGroups")]
+        public async Task<ActionResult<List<DessertDiscountDTO>>> GetSuggestDiscountGroups(int dessertId)
+        {
+            var service = new DessertService(_discountrepo);
+            var suggestDiscount = await service.GetSuggestDiscountGroups(dessertId);
+            return Ok(suggestDiscount);
+        }
     }
 }

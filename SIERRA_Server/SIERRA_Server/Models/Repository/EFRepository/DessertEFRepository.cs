@@ -36,12 +36,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             var hotProductsDTO = hotProducts
                 .OrderBy(d => hotProductIds.IndexOf(d.DessertId)) // 在内存中进行排序
                 .Select(d => d.ToDListDto())
-
                 .ToList();
 
             dvm.AddRange(hotProductsDTO);
             return dvm;
         }
+       
         public async Task<List<DessertsIndexDTO>> GetMoldCake()
         {
             var dvm = new List<DessertsIndexDTO>();
