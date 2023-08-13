@@ -97,7 +97,7 @@ namespace SIERRA_Server.Models.Services
 
             // Default behavior if no matching dessert is found in any discount group
             // You might want to handle this case differently based on your requirements
-            return await _discountrepo.GetDiscountGroupsByGroupId(8);
+            return await _discountrepo.GetCategory();
         }
     }
 }
