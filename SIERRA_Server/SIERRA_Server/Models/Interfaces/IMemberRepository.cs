@@ -7,7 +7,7 @@ namespace SIERRA_Server.Models.Interfaces
     public interface IMemberRepository
     {
         Member? GetMemberByUsername(string username);
-        bool isAccountExist(string username);
+        bool IsAccountExist(string username);
         void PostMember(RegisterDTO dto);
 
 

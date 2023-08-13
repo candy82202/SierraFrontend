@@ -19,6 +19,9 @@ using SIERRA_Server.Models.Repository.EFRepository;
 using SIERRA_Server.Models.Infra;
 using Microsoft.AspNetCore.Authorization;
 using System.Xml.Serialization;
+using Google.Apis.Auth;
+using System.Net;
+using System.Text.Json.Nodes;
 
 namespace SIERRA_Server.Controllers
 {
@@ -119,105 +122,261 @@ namespace SIERRA_Server.Controllers
 
 			return Ok("已更新您重設的密碼, 以後請用新密碼登入");
 		}
-		//// 以下是精靈生成的
-		//// GET: api/Members
-		//[HttpGet]
-		//public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
-		//{
-		//    if (_context.Members == null)
-		//    {
-		//        return NotFound();
-		//    }
-		//    return await _context.Members.ToListAsync();
-		//}
 
-		//// GET: api/Members/5
-		//[HttpGet("{id}")]
-		//public async Task<ActionResult<Member>> GetMember(int id)
-		//{
-		//    if (_context.Members == null)
-		//    {
-		//        return NotFound();
-		//    }
-		//    var member = await _context.Members.FindAsync(id);
+        [HttpPost("IsEmailExist")]
+        [AllowAnonymous]
+        public bool IsEmailExist(string email)
+        {
+           // return Ok();
+            return _repo.IsEmailExist(email);
+        }
 
-		//    if (member == null)
-		//    {
-		//        return NotFound();
-		//    }
+        [HttpPost("GoogleLogin")]
+        [AllowAnonymous]
+        public IActionResult ValidGoogleLogin()
+        {
 
-		//    return member;
-		//}
+            string? formCredential = Request.Form["credential"]; //回傳憑證
+            string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
+            string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
 
-		//// PUT: api/Members/5
-		//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		//[HttpPut("{id}")]
-		//public async Task<IActionResult> PutMember(int id, Member member)
-		//{
-		//    if (id != member.Id)
-		//    {
-		//        return BadRequest();
-		//    }
+            //// 驗證 Google Token
+            GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+            if (payload == null)
+            {
+                // 驗證失敗
+                return BadRequest("驗證 Google 授權失敗");
+            }
+            else
+            {
+                // 驗證成功，構造回傳的物件
+                var result = new
+                {
+                    Msg = "驗證 Google 授權成功",
+                    Email = payload.Email,
+                    Name = payload.Name,
+                    Picture = payload.Picture
+                };
+                return Ok(result);
+                //return Redirect("http://localhost:5501/index.html");
+            }
+        }
+        private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
+        {
+            // 檢查空值
+            if (formCredential == null || formToken == null && cookiesToken == null)
+            {
+                return null;
+            }
 
-		//    _context.Entry(member).State = EntityState.Modified;
+            GoogleJsonWebSignature.Payload? payload;
+            try
+            {
+                // 驗證 token
+                if (formToken != cookiesToken)
+                {
+                    return null;
+                }
 
-		//    try
-		//    {
-		//        await _context.SaveChangesAsync();
-		//    }
-		//    catch (DbUpdateConcurrencyException)
-		//    {
-		//        if (!MemberExists(id))
-		//        {
-		//            return NotFound();
-		//        }
-		//        else
-		//        {
-		//            throw;
-		//        }
-		//    }
+                // 驗證憑證
+                //IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+                string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { GoogleApiClientId }
+                };
+                payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+                if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+                {
+                    return null;
+                }
+                if (payload.ExpirationTimeSeconds == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    DateTime now = DateTime.Now.ToUniversalTime();
+                    DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+                    if (now > expiration)
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return payload;
+        }
 
-		//    return NoContent();
-		//}
+        //[HttpPost("GoogleLogin")]
+        //[AllowAnonymous]
+        //public IActionResult ValidGoogleLogin(string credential)
+        //{
+        //    //// 驗證 Google Token
+        //    GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(credential).Result;
+        //    if (payload == null)
+        //    {
+        //        // 驗證失敗
+        //        return BadRequest("驗證 Google 授權失敗");
+        //    }
+        //    else
+        //    {
+        //        // 驗證成功，構造回傳的物件
+        //        var result = new
+        //        {
+        //            Msg = "驗證 Google 授權成功",
+        //            Email = payload.Email,
+        //            Name = payload.Name,
+        //            Picture = payload.Picture
+        //        };
+        //        return Ok(result);
+        //        //return Redirect("http://localhost:5501/index.html");
+        //    }
+        //}
 
-		//// POST: api/Members
-		//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		//[HttpPost]
-		//public async Task<ActionResult<Member>> PostMember(Member member)
-		//{
-		//    if (_context.Members == null)
-		//    {
-		//        return Problem("Entity set 'AppDbContext.Members'  is null.");
-		//    }
-		//    _context.Members.Add(member);
-		//    await _context.SaveChangesAsync();
+        //private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential)
+        //{
 
-		//    return CreatedAtAction("GetMember", new { id = member.Id }, member);
-		//}
+        //    GoogleJsonWebSignature.Payload? payload;
+        //    try
+        //    {
 
-		//// DELETE: api/Members/5
-		//[HttpDelete("{id}")]
-		//public async Task<IActionResult> DeleteMember(int id)
-		//{
-		//    if (_context.Members == null)
-		//    {
-		//        return NotFound();
-		//    }
-		//    var member = await _context.Members.FindAsync(id);
-		//    if (member == null)
-		//    {
-		//        return NotFound();
-		//    }
+        //        // 驗證憑證
+        //        //IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+        //        string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
+        //        var settings = new GoogleJsonWebSignature.ValidationSettings()
+        //        {
+        //            Audience = new List<string>() { GoogleApiClientId }
+        //        };
+        //        payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+        //        if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+        //        {
+        //            return null;
+        //        }
+        //        if (payload.ExpirationTimeSeconds == null)
+        //        {
+        //            return null;
+        //        }
+        //        else
+        //        {
+        //            DateTime now = DateTime.Now.ToUniversalTime();
+        //            DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+        //            if (now > expiration)
+        //            {
+        //                return null;
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return null;
+        //    }
+        //    return payload;
+        //}
 
-		//    _context.Members.Remove(member);
-		//    await _context.SaveChangesAsync();
 
-		//    return NoContent();
-		//}
+        //// 以下是精靈生成的
+        //// GET: api/Members
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+        //{
+        //    if (_context.Members == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return await _context.Members.ToListAsync();
+        //}
 
-		//private bool MemberExists(int id)
-		//{
-		//    return (_context.Members?.Any(e => e.Id == id)).GetValueOrDefault();
-		//}
-	}
+        //// GET: api/Members/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Member>> GetMember(int id)
+        //{
+        //    if (_context.Members == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var member = await _context.Members.FindAsync(id);
+
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return member;
+        //}
+
+        //// PUT: api/Members/5
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutMember(int id, Member member)
+        //{
+        //    if (id != member.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(member).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!MemberExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
+
+        //// POST: api/Members
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<Member>> PostMember(Member member)
+        //{
+        //    if (_context.Members == null)
+        //    {
+        //        return Problem("Entity set 'AppDbContext.Members'  is null.");
+        //    }
+        //    _context.Members.Add(member);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetMember", new { id = member.Id }, member);
+        //}
+
+        //// DELETE: api/Members/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteMember(int id)
+        //{
+        //    if (_context.Members == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var member = await _context.Members.FindAsync(id);
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.Members.Remove(member);
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
+
+        //private bool MemberExists(int id)
+        //{
+        //    return (_context.Members?.Any(e => e.Id == id)).GetValueOrDefault();
+        //}
+    }
 }

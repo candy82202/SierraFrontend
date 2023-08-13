@@ -60,12 +60,13 @@ namespace SIERRA_Server.Models.Services
 		}
 		public string? CreateJwtToken(string username)
 		{
-			var memberId = _repo.GetMemberIdByUsername(username).ToString();
+			var memberInDb = _repo.GetMemberByUsername(username);
+			var memberId=  memberInDb.Id;
 			// 設定使用者資訊
 			var claims = new List<Claim>
 			{
 				new Claim("username",username),
-				new Claim("memberId",memberId)
+				new Claim("memberId",memberId.ToString())
 			};
 
 			// 取出appsettings.json中的KEY
@@ -92,7 +93,7 @@ namespace SIERRA_Server.Models.Services
 			if (memberInDb != null) return Result.Fail("帳號重複");
 
 			// 判斷email是否重複
-			if (_repo.isEmailExist(dto.Email)) return Result.Fail("信箱已註冊");
+			if (_repo.IsEmailExist(dto.Email)) return Result.Fail("信箱已註冊");
 
 			// 填入剩餘欄位的值
 			var salt = _hashUtility.GetSalt();
