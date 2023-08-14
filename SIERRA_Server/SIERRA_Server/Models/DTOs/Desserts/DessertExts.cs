@@ -19,7 +19,10 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         public static DessertsIndexDTO ToDIndexDto(this Dessert entity)
         {
             int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
-            return new DessertsIndexDTO
+            decimal dessertDiscountPrice = entity.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+    ? Math.Round((decimal)unitPrice * ((decimal)entity.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero)
+    : (decimal)unitPrice;
+            return new DessertsIndexDTO((dessertDiscountPrice))
             {
                 DessertId = entity.DessertId,
                 DessertImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
@@ -28,18 +31,19 @@ namespace SIERRA_Server.Models.DTOs.Desserts
                 Specification = entity.Specifications.FirstOrDefault(),
                 Size = entity.Specifications.FirstOrDefault().Size,
                 Flavor = entity.Specifications.FirstOrDefault().Flavor,
+             
             };
         }
         public static DessertDiscountDTO ToDDiscountDto(this DiscountGroup entity)
         {
             var dessertDiscountDTO = new DessertDiscountDTO
             {
-                DessertId = 0, // Dummy value, as it's not directly available in DiscountGroup
-                DessertImageName = "", // Dummy value, as it's not directly available in DiscountGroup
-                DessertName = entity.DiscountGroupName, // Assuming DiscountGroupName maps to DessertName
-                UnitPrice = 0, // Dummy value, as it's not directly available in DiscountGroup
+                DessertId = 0,
+                DessertImageName = "", 
+                DessertName = entity.DiscountGroupName, 
+                UnitPrice = 0, 
                 DiscountGroupId = entity.DiscountGroupId,
-                Specification = null // Placeholder for Specification, we'll fill it later
+                Specification = null 
             };
 
             // Assuming there's only one DiscountGroupItem per DiscountGroup for simplicity
