@@ -10,8 +10,21 @@ namespace SIERRA_Server.Models.DTOs.Desserts
 
         public string CategoryName { get; set; }
 
-        //public int? UnitPrice { get; set; }
+        public int UnitPrice { get; set; }
+        public decimal DiscountedPrice { get; }
+        public decimal DessertDiscountPrice { get; }  // Define as private set
+        public DessertDTO(decimal dessertDiscountPrice, int unitPrice)
+        {
+            DessertDiscountPrice = dessertDiscountPrice;
+            DiscountedPrice = CalculateDiscountedPrice(unitPrice, dessertDiscountPrice);
+        }
 
+        private decimal CalculateDiscountedPrice(int unitPrice, decimal dessertDiscountPrice)
+        {
+            return dessertDiscountPrice != 0
+                ? Math.Round(unitPrice * (dessertDiscountPrice / 100), 0, MidpointRounding.AwayFromZero)
+                : UnitPrice;
+        }
         public string Description { get; set; }
 
         public List<DessertImage> DessertImages { get; set; } // Change this line

@@ -93,30 +93,28 @@ namespace SIERRA_Server.Controllers
 
             foreach (var dessert in desserts)
             {
-                // Fetching UnitPrice from Specifications
-                //var specification = dessert.Specifications.FirstOrDefault();
-                //int unitPrice = specification?.UnitPrice ?? 0;
-                List<SpecificationDTO> specifications = dessert.Specifications.Select(spec =>
-           new SpecificationDTO
-           {
-               SpecificationId=spec.SpecificationId,
-               UnitPrice = spec.UnitPrice,
-               Size = spec.Size,
-               Flavor = spec.Flavor,
-               // Include other properties here
-           }
-       ).ToList();
-                DessertDTO item = new DessertDTO
+                decimal dessertDiscountPrice = dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+             ? dessert.Discounts.First().DiscountPrice
+             : 0;
+
+                DessertDTO item = new DessertDTO(dessertDiscountPrice, dessert.Specifications.First().UnitPrice)
                 {
                     DessertId = dessert.DessertId,
                     DessertName = dessert.DessertName,
                     CategoryName = dessert.Category.CategoryName,
-                    //UnitPrice = specifications.Select(spec => spec.UnitPrice).ToList(),
+                    UnitPrice = dessert.Specifications.First().UnitPrice,
                     Description = dessert.Description,
-                    DessertImages = dessert.DessertImages?.ToList(), // Add this line
-
-                    Specifications = specifications,
-                 
+                    DessertImages = dessert.DessertImages?.ToList(),
+                    Specifications = dessert.Specifications.Select(spec =>
+                        new SpecificationDTO
+                        {
+                            SpecificationId = spec.SpecificationId,
+                            UnitPrice = spec.UnitPrice,
+                            Size = spec.Size,
+                            Flavor = spec.Flavor,
+                            // Include other properties here
+                        }
+                    ).ToList()
                 };
                 dvm.Add(item);
             }

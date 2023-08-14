@@ -38,12 +38,12 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         {
             var dessertDiscountDTO = new DessertDiscountDTO
             {
-                DessertId = 0, // Dummy value, as it's not directly available in DiscountGroup
-                DessertImageName = "", // Dummy value, as it's not directly available in DiscountGroup
-                DessertName = entity.DiscountGroupName, // Assuming DiscountGroupName maps to DessertName
-                UnitPrice = 0, // Dummy value, as it's not directly available in DiscountGroup
+                DessertId = 0,
+                DessertImageName = "", 
+                DessertName = entity.DiscountGroupName, 
+                UnitPrice = 0, 
                 DiscountGroupId = entity.DiscountGroupId,
-                Specification = null // Placeholder for Specification, we'll fill it later
+                Specification = null 
             };
 
             // Assuming there's only one DiscountGroupItem per DiscountGroup for simplicity
