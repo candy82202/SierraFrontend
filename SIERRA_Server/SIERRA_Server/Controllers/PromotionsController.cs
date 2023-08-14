@@ -23,6 +23,15 @@ namespace SIERRA_Server.Controllers
             var promotions = await server.GetPromotionsNow();
             return promotions;
         }
-
+        [HttpPost]
+        public async Task<AddCouponResult> GetCouponByPromotion(int? memberId ,int? couponId)
+        {
+            if (memberId == null || couponId == null)
+            {
+                return AddCouponResult.Fail("查無此優惠券");
+            }
+            var server = new PromotionService(_repo);
+            var result = await server.GetCouponByPromotion((int)memberId, (int)couponId);
+        }
     }
 }

@@ -21,5 +21,23 @@ namespace SIERRA_Server.Models.Services
             var result = promotions.Select(p => p.ToPromotionDto());
             return result;
         }
+
+        public async Task<AddCouponResult> GetCouponByPromotion(int memberId, int couponId)
+        {
+            //檢查484 promotion coupon
+            if (!await _repo.IsPromotionCoupon(couponId))
+            {
+                return AddCouponResult.Fail("查無此優惠券");
+            }
+            //檢查有沒有領取過
+            if (await _repo.HasGottenCoupon(memberId,couponId))
+            {
+                return AddCouponResult.Fail("您已經領取過此優惠券囉");
+            }
+            //領取
+            var result=await _repo.GetPromotionCoupon(memberId, couponId);
+            return result;
+
+        }
     }
 }

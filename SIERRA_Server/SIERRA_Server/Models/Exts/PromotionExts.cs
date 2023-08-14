@@ -9,6 +9,7 @@ namespace SIERRA_Server.Models.Exts
         {
             return new PromotionDto()
             {
+                PromotionId = entity.PromotionId,
                 CouponId = entity.CouponId,
                 PromotionName = entity.PromotionName,
                 PromotionImage = entity.PromotionImage,

@@ -2,6 +2,7 @@
 {
     public class PromotionDto
     {
+        public int PromotionId { get; set; }
         public int? CouponId { get; set; }
         public string PromotionName { get; set; }
         public string PromotionImage { get; set; }
