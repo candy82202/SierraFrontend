@@ -19,7 +19,10 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         public static DessertsIndexDTO ToDIndexDto(this Dessert entity)
         {
             int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
-            return new DessertsIndexDTO
+            decimal dessertDiscountPrice = entity.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+    ? Math.Round((decimal)unitPrice * ((decimal)entity.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero)
+    : (decimal)unitPrice;
+            return new DessertsIndexDTO((dessertDiscountPrice))
             {
                 DessertId = entity.DessertId,
                 DessertImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
@@ -28,6 +31,7 @@ namespace SIERRA_Server.Models.DTOs.Desserts
                 Specification = entity.Specifications.FirstOrDefault(),
                 Size = entity.Specifications.FirstOrDefault().Size,
                 Flavor = entity.Specifications.FirstOrDefault().Flavor,
+             
             };
         }
         public static DessertDiscountDTO ToDDiscountDto(this DiscountGroup entity)

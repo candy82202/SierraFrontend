@@ -14,10 +14,7 @@ namespace SIERRA_Server.Models.DTOs.Desserts
 
         public string Description { get; set; }
 
-        public string DessertImageName { get; set; }
-        //public Specification Specification { get; set; }
-        //public string Flavor { get; set; }
-        //public string Size { get; set; }
+        public List<DessertImage> DessertImages { get; set; } // Change this line
         public List<SpecificationDTO> Specifications { get; set; } // List of SpecificationDTO objects
      
     }

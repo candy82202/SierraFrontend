@@ -19,6 +19,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 .Include(d => d.Category)
                 .Include(d => d.DessertImages)
                 .Include(d => d.Specifications)
+                .Include(d=> d.Discounts)
                 .Where(d => d.Status && d.CategoryId == categoryId)
                 .ToListAsync();
         }

@@ -194,7 +194,9 @@ namespace SIERRA_Server.Controllers
                     Quantity = dci.Quantity,
                     DessertImageName = dci.Dessert.DessertImages.FirstOrDefault()?.DessertImageName,
                     DessertName = dci.Dessert.DessertName,
-                    UnitPrice = (int)(dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)? Math.Round((decimal)dci.Specification.UnitPrice * ((decimal)dci.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice)
+                    //dci.Dessert.Discounts.First().DiscountPrice 這是折扣的折扣率 / 100 百分比切換為小數
+                    UnitPrice = (int)(dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+                    ? Math.Round((decimal)dci.Specification.UnitPrice * ((decimal)dci.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice)
 				}).ToList()
             };
 

@@ -87,6 +87,7 @@ namespace SIERRA_Server.Controllers
                 .Include(d => d.Category)
                 .Include(d => d.DessertImages)
                 .Include(d => d.Specifications)
+                .Include(d => d.Discounts)
                 .Where(d => d.DessertId == id)
                 .ToList();
 
@@ -109,9 +110,11 @@ namespace SIERRA_Server.Controllers
                 {
                     DessertId = dessert.DessertId,
                     DessertName = dessert.DessertName,
+                    CategoryName = dessert.Category.CategoryName,
                     //UnitPrice = specifications.Select(spec => spec.UnitPrice).ToList(),
                     Description = dessert.Description,
-                    DessertImageName = dessert.DessertImages.FirstOrDefault()?.DessertImageName,
+                    DessertImages = dessert.DessertImages?.ToList(), // Add this line
+
                     Specifications = specifications,
                  
                 };

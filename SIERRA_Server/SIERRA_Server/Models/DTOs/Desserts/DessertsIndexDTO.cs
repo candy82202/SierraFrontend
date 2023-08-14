@@ -11,5 +11,12 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         public Specification Specification { get; set; }
         public string Flavor { get; set; }
         public string Size { get; set; }
+        public int DiscountPrice { get; set; }
+        public decimal DessertDiscountPrice { get; }  // Define as private set
+        public DessertsIndexDTO(decimal dessertDiscountPrice)
+        {
+            DessertDiscountPrice = dessertDiscountPrice;
+        }
+
     }
 }
