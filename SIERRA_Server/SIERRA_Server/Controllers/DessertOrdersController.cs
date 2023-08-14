@@ -167,10 +167,10 @@ namespace SIERRA_Server.Controllers
                     _context.DessertCartItems.RemoveRange(cart.DessertCartItems);
                     await _context.SaveChangesAsync();
 
-                    
                     await transaction.CommitAsync();
 
                     return Ok(new { message = "Order created successfully" });
+                   
                 }
                 catch (Exception e)
                 {
@@ -180,6 +180,9 @@ namespace SIERRA_Server.Controllers
                 }
             }
         }
+        
+
+
 
         // DELETE: api/DessertOrders/5
         [HttpDelete("{id}")]
