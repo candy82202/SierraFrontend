@@ -25,8 +25,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         {
             return _db.Members.FirstOrDefault(m => m.Id == memberId);
         }
+		public Member GetMemberByEmail(string email)
+		{
+			return _db.Members.FirstOrDefault(m => m.Email == email);
+		}
 
-        public int GetMemberIdByUsername(string username)
+		public int GetMemberIdByUsername(string username)
         {
             var member = _db.Members.FirstOrDefault(m => m.Username == username);
             if (member != null) return member.Id;

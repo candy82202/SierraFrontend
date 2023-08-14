@@ -36,7 +36,7 @@ Members 部分
 [V] - EmailHelper.cs
 [V] - ForgotPassword
 [V] - Modify EmailHelper.cs
-[working on] - GoogleLogin
+[V] - GoogleLogin
 
 
 

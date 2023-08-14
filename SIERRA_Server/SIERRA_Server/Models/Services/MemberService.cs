@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop.Infrastructure;
+using NuGet.Common;
 using NuGet.DependencyResolver;
 using SIERRA_Server.Models.DTOs.Members;
 using SIERRA_Server.Models.EFModels;
@@ -39,6 +40,12 @@ namespace SIERRA_Server.Models.Services
 			_repo = repo;
 			_hashUtility = hashUtility;
 		}
+
+		public MemberService(MemberEFRepository repo, IConfiguration config)
+		{
+			_repo = repo;
+			_config = config;
+		}
 		public MemberService(MemberEFRepository repo)
 		{
 			_repo = repo;
@@ -57,6 +64,31 @@ namespace SIERRA_Server.Models.Services
 			return string.Compare(member.EncryptedPassword, hashPassword) == 0
 				? Result.Success()
 				: Result.Fail("帳密有誤");
+		}
+		//public Result ExistMemberLogin(string email)
+		//{
+		//	var memberInDb = _repo.GetMemberByEmail(email);
+		//	CreateJwtToken
+		//}
+		public Result GoogleRegister(RegisterDTO dto)
+		{
+			// 判斷username是否重複
+			var memberInDb = _repo.GetMemberByUsername(dto.Username);
+			if (memberInDb != null) return Result.Fail("帳號重複");
+
+			// 因在GoogleLogin()時就已經檢查過email了，故不再檢查
+
+			// 填入剩餘欄位的值
+			var salt = _hashUtility.GetSalt();
+			dto.EncryptedPassword = _hashUtility.ToSHA256(dto.Password, salt);
+
+			dto.IsConfirmed = true;
+			dto.ConfirmCode = null;
+
+			// 新增會員資料
+			_repo.PostMember(dto);
+
+			return Result.Success();
 		}
 		public string? CreateJwtToken(string username)
 		{
