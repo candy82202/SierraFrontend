@@ -25,24 +25,28 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         {
             return _db.Members.FirstOrDefault(m => m.Id == memberId);
         }
+		public Member GetMemberByEmail(string email)
+		{
+			return _db.Members.FirstOrDefault(m => m.Email == email);
+		}
 
-        public int GetMemberIdByUsername(string username)
+		public int GetMemberIdByUsername(string username)
         {
             var member = _db.Members.FirstOrDefault(m => m.Username == username);
             if (member != null) return member.Id;
             return -1;
         }
 
-        public bool isEmailExist(string email)
+        public bool IsEmailExist(string email)
         {
             return _db.Members.Any(m => m.Email == email);
         }
-        public bool isAccountExist(string username)
+        public bool IsAccountExist(string username)
         {
             return _db.Members.Any(m => m.Username == username);
         }
 
-        public bool isAccountExist(int memberId)
+        public bool IsAccountExist(int memberId)
         {
             return _db.Members.Any(m => m.Id == memberId);
         }

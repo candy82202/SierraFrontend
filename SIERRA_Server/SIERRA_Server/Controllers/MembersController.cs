@@ -19,53 +19,57 @@ using SIERRA_Server.Models.Repository.EFRepository;
 using SIERRA_Server.Models.Infra;
 using Microsoft.AspNetCore.Authorization;
 using System.Xml.Serialization;
+using Google.Apis.Auth;
+using System.Net;
+using System.Text.Json.Nodes;
+using System.Reflection;
 
 namespace SIERRA_Server.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MembersController : ControllerBase
-    {
-        private readonly AppDbContext _context;
-        private readonly MemberEFRepository _repo;
-        private readonly IConfiguration _config;
-        private readonly HashUtility _hashUtility;
-        private readonly EmailHelper _emailHelper;
+	[Route("api/[controller]")]
+	[ApiController]
+	public class MembersController : ControllerBase
+	{
+		private readonly AppDbContext _context;
+		private readonly MemberEFRepository _repo;
+		private readonly IConfiguration _config;
+		private readonly HashUtility _hashUtility;
+		private readonly EmailHelper _emailHelper;
 
-        public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility, EmailHelper emailHelper)
-        {
-            _context = context;
-            _repo = repo;
-            _config = config;
-            _hashUtility = hashUtility;
-            _emailHelper = emailHelper;
+		public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility, EmailHelper emailHelper)
+		{
+			_context = context;
+			_repo = repo;
+			_config = config;
+			_hashUtility = hashUtility;
+			_emailHelper = emailHelper;
 
-        }
+		}
 
-        [HttpPost("Login")]
-        [AllowAnonymous]
-        public IActionResult Login(LoginDTO request)
-        {
-            var service = new MemberService(_repo, _hashUtility, _config);
+		[HttpPost("Login")]
+		[AllowAnonymous]
+		public IActionResult Login(LoginDTO request)
+		{
+			var service = new MemberService(_repo, _hashUtility, _config);
 
-            // 驗證帳密
-            var result = service.ValidLogin(request);
+			// 驗證帳密
+			var result = service.ValidLogin(request);
 
-            // 驗證失敗
-            if (result.IsFail)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
+			// 驗證失敗
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
 
-            var token = service.CreateJwtToken(request.Username);
-            return Ok(token);
-        }
+			var token = service.CreateJwtToken(request.Username);
+			return Ok(token);
+		}
 
-        [HttpPost("Register")]
+		[HttpPost("Register")]
 		[AllowAnonymous]
 		public IActionResult Register(RegisterDTO request)
-        {
-            var service = new MemberService(_repo, _hashUtility,_emailHelper);
+		{
+			var service = new MemberService(_repo, _hashUtility, _emailHelper);
 			var result = service.Register(request);
 
 			if (result.IsFail)
@@ -76,27 +80,27 @@ namespace SIERRA_Server.Controllers
 			return Ok("註冊完成,請至信箱收取驗證信");
 		}
 
-        [HttpPost("ActiveRegister")]
-        [AllowAnonymous]
-        public IActionResult ActiveRegister(ActiveRegisterDTO request)
-        {
-            var service = new MemberService(_repo);
-            var result = service.ActiveRegister(request);
+		[HttpPost("ActiveRegister")]
+		[AllowAnonymous]
+		public IActionResult ActiveRegister(ActiveRegisterDTO request)
+		{
+			var service = new MemberService(_repo);
+			var result = service.ActiveRegister(request);
 
-            if (result.IsFail)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
 
-            return Ok("驗證成功");
-        }
+			return Ok("驗證成功");
+		}
 
 		[HttpPost("ForgotPassword")]
 		[AllowAnonymous]
 		public IActionResult ForgotPassword(ForgotPasswordDTO request)
-        {
-            var service = new MemberService(_repo, _hashUtility, _emailHelper);
-            var result = service.ProccessResetPassword(request);
+		{
+			var service = new MemberService(_repo, _hashUtility, _emailHelper);
+			var result = service.ProccessResetPassword(request);
 			if (result.IsFail)
 			{
 				return BadRequest(result.ErrorMessage);
@@ -119,6 +123,190 @@ namespace SIERRA_Server.Controllers
 
 			return Ok("已更新您重設的密碼, 以後請用新密碼登入");
 		}
+
+		[HttpPost("IsEmailExist")]
+		[AllowAnonymous]
+		public bool IsEmailExist(string email)
+		{
+			return _repo.IsEmailExist(email);
+		}
+
+		[HttpPost("GoogleLogin")]
+		[AllowAnonymous]
+		public IActionResult GoogleLogin(string email)
+		{
+			if (_repo.IsEmailExist(email) == false)
+			{
+				return BadRequest("請填入使用者名稱和密碼後，成為Sierra會員");
+			}
+
+			var memberInDb = _repo.GetMemberByEmail(email);
+			var service = new MemberService(_repo, _config);
+			var token = service.CreateJwtToken(memberInDb.Username);
+			return Ok(token);
+		}
+
+		[HttpPost("GoogleRegister")]
+		[AllowAnonymous]
+		public IActionResult GoogleRegister(RegisterDTO request)
+		{
+			var service = new MemberService(_repo, _hashUtility, _config);
+			var result = service.GoogleRegister(request);
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
+			var token = service.CreateJwtToken(request.Username);
+			return Ok(token);
+		}
+
+		[HttpPost("ValidGoogleLogin")]
+		[AllowAnonymous]
+		public IActionResult ValidGoogleLogin()
+		{
+
+			string? formCredential = Request.Form["credential"]; //回傳憑證
+			string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
+			string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
+
+			//// 驗證 Google Token
+			GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+			if (payload == null)
+			{
+				// 驗證失敗
+				return BadRequest("驗證 Google 授權失敗");
+			}
+			else
+			{
+				// 驗證成功，構造回傳的物件
+				var result = new
+				{
+					Msg = "驗證 Google 授權成功",
+					Email = payload.Email,
+					Name = payload.Name,
+					Picture = payload.Picture
+				};
+				return Ok(result);
+				//return Redirect("http://localhost:5501/index.html");
+			}
+		}
+		private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
+		{
+			// 檢查空值
+			if (formCredential == null || formToken == null && cookiesToken == null)
+			{
+				return null;
+			}
+
+			GoogleJsonWebSignature.Payload? payload;
+			try
+			{
+				// 驗證 token
+				if (formToken != cookiesToken)
+				{
+					return null;
+				}
+
+				// 驗證憑證
+				//IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+				string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
+				var settings = new GoogleJsonWebSignature.ValidationSettings()
+				{
+					Audience = new List<string>() { GoogleApiClientId }
+				};
+				payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+				if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+				{
+					return null;
+				}
+				if (payload.ExpirationTimeSeconds == null)
+				{
+					return null;
+				}
+				else
+				{
+					DateTime now = DateTime.Now.ToUniversalTime();
+					DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+					if (now > expiration)
+					{
+						return null;
+					}
+				}
+			}
+			catch
+			{
+				return null;
+			}
+			return payload;
+		}
+
+		//[HttpPost("GoogleLogin")]
+		//[AllowAnonymous]
+		//public IActionResult ValidGoogleLogin(string credential)
+		//{
+		//    //// 驗證 Google Token
+		//    GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(credential).Result;
+		//    if (payload == null)
+		//    {
+		//        // 驗證失敗
+		//        return BadRequest("驗證 Google 授權失敗");
+		//    }
+		//    else
+		//    {
+		//        // 驗證成功，構造回傳的物件
+		//        var result = new
+		//        {
+		//            Msg = "驗證 Google 授權成功",
+		//            Email = payload.Email,
+		//            Name = payload.Name,
+		//            Picture = payload.Picture
+		//        };
+		//        return Ok(result);
+		//        //return Redirect("http://localhost:5501/index.html");
+		//    }
+		//}
+
+		//private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential)
+		//{
+
+		//    GoogleJsonWebSignature.Payload? payload;
+		//    try
+		//    {
+
+		//        // 驗證憑證
+		//        //IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+		//        string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
+		//        var settings = new GoogleJsonWebSignature.ValidationSettings()
+		//        {
+		//            Audience = new List<string>() { GoogleApiClientId }
+		//        };
+		//        payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+		//        if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+		//        {
+		//            return null;
+		//        }
+		//        if (payload.ExpirationTimeSeconds == null)
+		//        {
+		//            return null;
+		//        }
+		//        else
+		//        {
+		//            DateTime now = DateTime.Now.ToUniversalTime();
+		//            DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+		//            if (now > expiration)
+		//            {
+		//                return null;
+		//            }
+		//        }
+		//    }
+		//    catch
+		//    {
+		//        return null;
+		//    }
+		//    return payload;
+		//}
+
+
 		//// 以下是精靈生成的
 		//// GET: api/Members
 		//[HttpGet]

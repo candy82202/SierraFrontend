@@ -40,6 +40,7 @@ Members 部分
 [V] - EmailHelper.cs
 [V] - ForgotPassword
 [V] - Modify EmailHelper.cs
+[V] - GoogleLogin
 
 
 
