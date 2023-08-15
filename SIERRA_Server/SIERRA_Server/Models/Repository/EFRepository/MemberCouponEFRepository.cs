@@ -189,5 +189,40 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             findCart.MemberCouponId = memberCouponId;
             _db.SaveChanges();
 		}
+
+		public async Task<IEnumerable<CouponSetting>> GetPrizes()
+		{
+            var prizes = await _db.CouponSettings.Where(cs => cs.Qty != null)
+                                                 .ToListAsync();
+            return prizes;
+		}
+
+		public async Task<bool> HasPlayedGame(int memberId)
+		{
+            var member = await _db.Members.FindAsync(memberId);
+            return (bool)member.DailyGamePlayed;
+		}
+		public async Task<string> AddCouponAndRecordMemberPlay(int memberId, int resultCouponId)
+		{
+			using (var transaction = _db.Database.BeginTransaction())
+            {
+				var coupon = await _db.Coupons.FindAsync(resultCouponId);
+				var member = await _db.Members.FindAsync(memberId);
+				var newMemberCoupon = new MemberCoupon()
+				{
+					MemberId = memberId,
+					CouponId = coupon.CouponId,
+					CouponName = coupon.CouponName,
+					CreateAt = DateTime.Now,
+					ExpireAt = DateTime.Now.AddDays((double)coupon.Expiration)
+				};
+				_db.MemberCoupons.Add(newMemberCoupon);
+				member.DailyGamePlayed = true;
+				await _db.SaveChangesAsync();
+				await transaction.CommitAsync();
+				return newMemberCoupon.CouponName;
+			}
+			
+		}
 	}
 }

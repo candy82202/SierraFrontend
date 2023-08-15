@@ -119,6 +119,17 @@ namespace SIERRA_Server.Controllers
 			return await server.UseCouponAndCalculateDiscountPrice((int)memberId, (int)memberCouponId);
 		}
 
+		[HttpPost("DailyGame")]
+		public async Task<AddCouponResult> PlayDailyGame(int? memberId)
+		{
+			if (memberId == null)
+			{
+				return AddCouponResult.Fail("查無此優惠券");
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.PlayDailyGame((int)memberId);
+			return result;
+		}
 		
 	}
 }

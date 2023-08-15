@@ -32,6 +32,7 @@ namespace SIERRA_Server.Controllers
             }
             var server = new PromotionService(_repo);
             var result = await server.GetCouponByPromotion((int)memberId, (int)couponId);
+            return result;
         }
     }
 }
