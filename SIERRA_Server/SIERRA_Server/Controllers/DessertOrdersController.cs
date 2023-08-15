@@ -22,17 +22,17 @@ namespace SIERRA_Server.Controllers
         }
 
         // GET: api/DessertOrders
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<DessertOrder>>> GetDessertOrders()
-        {
-          if (_context.DessertOrders == null)
-          {
-              return NotFound();
-          }
-            return await _context.DessertOrders.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<DessertOrder>>> GetDessertOrders()
+        //{
+        //  if (_context.DessertOrders == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    return await _context.DessertOrders.ToListAsync();
+        //}
 
-        //GET: api/DessertOrders/5
+        //GET: api/DessertOrders/GetCustomerData
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberItemDTO>> GetCustomerData(string? username)
         {
@@ -62,8 +62,8 @@ namespace SIERRA_Server.Controllers
             return Ok(userData);
         }
 
-        // PUT: api/DessertOrders/5
-        
+        // PUT: api/DessertOrders/ UpdateCustomerData
+
         [HttpPut("{username}")]
         public async Task<IActionResult> UpdateCustomerData(string username, [FromBody] MemberUpdateDTO memberUpdateDto)
         {
@@ -178,9 +178,50 @@ namespace SIERRA_Server.Controllers
                 }
             }
         }
-        
 
+        //GET: api/DessertOrders
+        [HttpPost("GetCustomerOrder")]
+        public async Task<IActionResult> GetCustomerOrder(GetCustomerOrderDTO dto)
+        {
+            
+            //根據username找到所有的訂單及訂單狀態
+            //最新訂單排最前
+            if (dto.Username == null)
+            {
+                return NotFound();
+            }
+            var userOrder = await _context.DessertOrders.Include(od => od.DessertOrderDetails).Include(o => o.DessertOrderStatus)
+        .Where(o => o.Username == dto.Username)
+        .Select(x => new GetCustomerOrderDTO
+        {
+            Id = x.Id,
+            Username = x.Username,
+            CreateTime = x.CreateTime,
+            StatusName = x.DessertOrderStatus.StatusName,
+            DeliveryMethod = x.DeliveryMethod,
+            DessertOrderTotal = x.DessertOrderTotal,
+            Recipient = x.Recipient,
+            RecipientPhone = x.RecipientPhone,
+            RecipientAddress = x.RecipientAddress,
+            ShippingFee = x.ShippingFee,
+            PayMethod = x.PayMethod,
+            Note = x.Note,
+            DiscountInfo = x.DiscountInfo,
+            DessertOrderDetails = (List<ItemDto>)x.DessertOrderDetails.Select(n => new ItemDto
+            { DessertName = n.DessertName,
+                Quantity = n.Quantity,
+                UnitPrice = n.UnitPrice,
+                Subtotal = n.Subtotal,
+            })
 
+        }).OrderByDescending(o => o.CreateTime).ToListAsync();
+
+            if (userOrder == null)
+            {
+                return NotFound();
+            }
+            return Ok(userOrder);
+        }
 
         // DELETE: api/DessertOrders/5
         [HttpDelete("{id}")]
