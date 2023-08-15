@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
 using SIERRA_Server.Models.Infra.Promotions;
 using SIERRA_Server.Models.Interfaces;
+using System.Linq;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace SIERRA_Server.Models.Services
@@ -11,11 +13,10 @@ namespace SIERRA_Server.Models.Services
     public class MemberCouponService
 	{
 		private IMemberCouponRepository _repo;
-
-        public MemberCouponService(IMemberCouponRepository repo)
+		public MemberCouponService(IMemberCouponRepository repo)
         {
             _repo = repo;
-        }
+		}
 
         public async Task<IEnumerable<MemberCouponDto>> GetUsableCoupon(int? memberId)
         {
@@ -202,6 +203,32 @@ namespace SIERRA_Server.Models.Services
 		{
 			var result = _repo.IsPromotionCouponAndReady(memberCouponId);
 			return result;
+		}
+		public async Task<AddCouponResult> PlayDailyGame(int memberId)
+		{
+			if(!_repo.IsMemberExist(memberId))
+			{
+				return AddCouponResult.Fail("查無此優惠券");
+			}
+			if (await _repo.HasPlayedGame(memberId))
+			{
+				return AddCouponResult.Fail("今天已經領取過囉");
+			}
+			var prizes =await _repo.GetPrizes();
+			List<int> prizesList=new List<int>();
+			foreach (var prize in prizes)
+			{
+				for(int i=0;i<prize.Qty;i++)
+				{
+					prizesList.Add((int)prize.CouponId);
+				}
+			}
+			Random random = new Random();
+			int randomIndex = random.Next(prizesList.Count());
+			int resultCouponId = prizesList[randomIndex];
+			var resultCouponName =await _repo.AddCouponAndRecordMemberPlay(memberId, resultCouponId);
+			return AddCouponResult.Success(resultCouponName);
+
 		}
 		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{

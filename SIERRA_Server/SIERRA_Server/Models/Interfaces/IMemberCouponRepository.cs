@@ -22,5 +22,8 @@ namespace SIERRA_Server.Models.Interfaces
         bool HasCouponBeenUsed(int memberCouponId);
 		bool IsPromotionCouponAndReady(int memberCouponId);
 		void RecordCouponInCart(DessertCart cart, int memberCouponId);
+		Task<IEnumerable<CouponSetting>> GetPrizes();
+		Task<bool> HasPlayedGame(int memberId);
+		Task<string> AddCouponAndRecordMemberPlay(int memberId, int resultCouponId);
 	}
 }
