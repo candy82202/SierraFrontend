@@ -22,7 +22,7 @@ namespace SIERRA_Server.Controllers
         {
             _context = context;
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> EcPayCheckOut()
         {
@@ -41,28 +41,28 @@ namespace SIERRA_Server.Controllers
             }
             var dessertName = firstDessert.DessertName;
 
-           
+
 
             var orderId = Guid.NewGuid().ToString("N").Substring(0, 5);
             //需填入你的網址
             var website = "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io ";
             var order = new Dictionary<string, string>
-        {
+            {
                 //{"HashKey","pwFHCqoQZGmho4w6"},
                 //{"HashIV" ,"EkRm7iFT261dpevs"},
                 {"MerchantID","3002607" },
-            {"MerchantTradeNo",orderId},
-            {"MerchantTradeDate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
+                {"MerchantTradeNo",orderId},
+                {"MerchantTradeDate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
                 {"TotalAmount",dessertOrderTotal.ToString() },
                 {"TradeDesc", "香草輕乳酪選用的是馬達加斯加的天然香草籽切開蛋糕後會清晰地看到香草籽佈滿其中"},
                 {"ItemName",dessertName },
                 {"ReturnURL", "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io"},
-                 //{ "OrderResultURL", ""},
-                 { "EncryptType",  "1"},
+                { "ClientBackURL", "http://localhost:5502/Order.html"},
+                { "EncryptType",  "1"},
                 {"ChoosePayment" ,"Credit"},
-            {"PaymentType", "aio"},
+                {"PaymentType", "aio"},
 
-        };
+            };
             // 檢查碼計算
             string hashKey = "pwFHCqoQZGmho4w6";
             string hashIV = "EkRm7iFT261dpevs";
@@ -75,7 +75,7 @@ namespace SIERRA_Server.Controllers
             return Ok(order);
         }
 
-      
+
 
     }
 }
