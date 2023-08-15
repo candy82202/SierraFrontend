@@ -57,7 +57,7 @@ namespace SIERRA_Server.Controllers
                 {"TradeDesc", "香草輕乳酪選用的是馬達加斯加的天然香草籽切開蛋糕後會清晰地看到香草籽佈滿其中"},
                 {"ItemName",dessertName },
                 {"ReturnURL", "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io"},
-                { "ClientBackURL", "http://localhost:5502/Order.html"},
+                { "ClientBackURL", "http://localhost:5501/Order.html"},
                 { "EncryptType",  "1"},
                 {"ChoosePayment" ,"Credit"},
                 {"PaymentType", "aio"},
