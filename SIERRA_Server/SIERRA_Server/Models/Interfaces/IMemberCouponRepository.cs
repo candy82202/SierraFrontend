@@ -25,5 +25,6 @@ namespace SIERRA_Server.Models.Interfaces
 		Task<IEnumerable<CouponSetting>> GetPrizes();
 		Task<bool> HasPlayedGame(int memberId);
 		Task<string> AddCouponAndRecordMemberPlay(int memberId, int resultCouponId);
-	}
+        Task<Coupon> FindCoupon(int couponId);
+    }
 }

@@ -230,7 +230,25 @@ namespace SIERRA_Server.Models.Services
 			return AddCouponResult.Success(resultCouponName);
 
 		}
-		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+        public async Task<IEnumerable<DailyGameRateDto>> GetDailyGameRate()
+        {
+            var prizes = await _repo.GetPrizes();
+			var allPrizesCount = prizes.Select(p => p.Qty).Sum();
+			List<DailyGameRateDto> result = new List<DailyGameRateDto>();
+			foreach(var prize in prizes)
+			{
+				var coupon =await _repo.FindCoupon((int)prize.CouponId);
+				decimal rate = (decimal)((decimal)prize.Qty / allPrizesCount)*100;
+				DailyGameRateDto dto = new DailyGameRateDto()
+				{
+					PrizeName = coupon.CouponName,
+					Rate = rate
+				};
+				result.Add(dto);
+            }
+			return result;
+        }
+        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
 			//先把一定可以用的優惠券加進來
@@ -311,6 +329,6 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-		
-	}
+       
+    }
 }
