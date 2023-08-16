@@ -128,7 +128,7 @@ namespace SIERRA_Server.Controllers
                         Id= (int)orderDto.Id,
                         MemberId= orderDto.MemberId,
                         Username = orderDto.Username,
-                        DessertOrderStatusId= 2,
+                        DessertOrderStatusId= 1,
                         MemberCouponId= orderDto.MemberCouponId,
                         CreateTime = DateTime.Now,
                         Recipient = orderDto.Recipient,
