@@ -29,7 +29,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 CouponId = couponId,
                 CouponName = coupon.CouponName,
                 CreateAt = DateTime.Now,
-                ExpireAt = DateTime.Now.AddDays((double)coupon.Expiration)
+                ExpireAt = (DateTime)coupon.EndAt
             };
             _db.MemberCoupons.Add(memberCoupon);
             await _db.SaveChangesAsync();
@@ -50,7 +50,8 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<bool> IsPromotionCoupon(int couponId)
         {
-            var coupon =await _db.Coupons.FirstOrDefaultAsync(c=>c.CouponId == couponId);
+            var coupon =await _db.Coupons.Include(c=>c.Promotions)
+                                         .FirstOrDefaultAsync(c=>c.CouponId == couponId);
             if(coupon==null || coupon.CouponCategoryId!=2 ||coupon.Promotions.First().LaunchAt>DateTime.Now || coupon.Promotions.First().EndAt < DateTime.Now)
             {
                 return false;
