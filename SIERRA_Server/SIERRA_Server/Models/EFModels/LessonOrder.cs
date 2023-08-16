@@ -21,7 +21,6 @@ namespace SIERRA_Server.Models.EFModels
         public string PayMethod { get; set; }
         public string Note { get; set; }
         public string OrderCancellationReason { get; set; }
-        public string DiscountInfo { get; set; }
 
         public virtual OrderStatus LessonOrderStatus { get; set; }
         public virtual Member Member { get; set; }

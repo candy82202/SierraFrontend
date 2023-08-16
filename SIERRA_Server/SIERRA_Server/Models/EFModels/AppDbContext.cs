@@ -65,7 +65,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Coupon>(entity =>
             {
-                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D34908006B64CCB0")
+                entity.HasIndex(e => e.CouponCode, "UQ__Coupons__D34908001B32A1D7")
                     .IsUnique();
 
                 entity.Property(e => e.CouponCode)
@@ -140,7 +140,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<DessertCart>(entity =>
             {
-                entity.HasIndex(e => e.Username, "UQ__DessertC__536C85E4825004AC")
+                entity.HasIndex(e => e.Username, "UQ__DessertC__536C85E4A4CA5997")
                     .IsUnique();
 
                 entity.Property(e => e.Username)
@@ -184,7 +184,7 @@ namespace SIERRA_Server.Models.EFModels
             modelBuilder.Entity<DessertImage>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
-                    .HasName("PK__DessertI__7516F70CC87AAEC4");
+                    .HasName("PK__DessertI__7516F70C9BBF4B73");
 
                 entity.Property(e => e.DessertImageName).HasMaxLength(255);
 
@@ -314,7 +314,7 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42AE2DA2BE7")
+                entity.HasIndex(e => e.EmployeeName, "UQ__Employee__9158E42AA7616965")
                     .IsUnique();
 
                 entity.Property(e => e.CreateAt)
@@ -410,8 +410,6 @@ namespace SIERRA_Server.Models.EFModels
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.DiscountInfo).HasMaxLength(200);
-
                 entity.Property(e => e.Note).HasMaxLength(200);
 
                 entity.Property(e => e.OrderCancellationReason).HasMaxLength(200);
@@ -458,10 +456,10 @@ namespace SIERRA_Server.Models.EFModels
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasIndex(e => e.Username, "UQ__Members__536C85E485856AC4")
+                entity.HasIndex(e => e.Username, "UQ__Members__536C85E4D13B9602")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Members__A9D10534163D5379")
+                entity.HasIndex(e => e.Email, "UQ__Members__A9D105340611CABE")
                     .IsUnique();
 
                 entity.Property(e => e.Address).HasMaxLength(50);
