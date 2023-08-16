@@ -12,6 +12,7 @@ using SIERRA_Server.Models.Repository.EFRepository;
 using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Transactions;
 
@@ -198,6 +199,22 @@ namespace SIERRA_Server.Models.Services
 
 			return Result.Success();
 
+		}
+
+		public Result EditPassword(EditPasswordDTO dto)
+		{
+			var salt = _hashUtility.GetSalt();
+			var hashOriginalPassword = _hashUtility.ToSHA256(dto.OriginalPassword, salt);
+
+			var memberInDb = _repo.GetMemberById(dto.MemberId);
+			if (memberInDb == null || memberInDb.EncryptedPassword!= hashOriginalPassword) return Result.Fail("找不到要修改的會員紀錄");
+
+			// 更新密碼
+			memberInDb.EncryptedPassword = _hashUtility.ToSHA256(dto.NewPassword, salt);
+
+			_repo.SaveChanges();
+
+			return Result.Success();
 		}
 
 	}

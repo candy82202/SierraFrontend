@@ -41,6 +41,7 @@ Members 部分
 [V] - ForgotPassword
 [V] - Modify EmailHelper.cs
 [V] - GoogleLogin
+[V] - EditPassword
 
 
 

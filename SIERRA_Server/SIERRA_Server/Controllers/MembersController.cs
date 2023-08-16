@@ -124,11 +124,17 @@ namespace SIERRA_Server.Controllers
 			return Ok("已更新您重設的密碼, 以後請用新密碼登入");
 		}
 
-		[HttpPost("IsEmailExist")]
-		[AllowAnonymous]
-		public bool IsEmailExist(string email)
+		[HttpPut("EditPassword")]
+		public IActionResult EditPassword(EditPasswordDTO request)
 		{
-			return _repo.IsEmailExist(email);
+			var service = new MemberService(_repo, _hashUtility);
+			var result = service.EditPassword(request);
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
+
+			return Ok("修改密碼成功");
 		}
 
 		[HttpPost("GoogleLogin")]
@@ -146,165 +152,103 @@ namespace SIERRA_Server.Controllers
 			return Ok(token);
 		}
 
-		[HttpPost("GoogleRegister")]
-		[AllowAnonymous]
-		public IActionResult GoogleRegister(RegisterDTO request)
-		{
-			var service = new MemberService(_repo, _hashUtility, _config);
-			var result = service.GoogleRegister(request);
-			if (result.IsFail)
-			{
-				return BadRequest(result.ErrorMessage);
-			}
-			var token = service.CreateJwtToken(request.Username);
-			return Ok(token);
-		}
 
-		[HttpPost("ValidGoogleLogin")]
-		[AllowAnonymous]
-		public IActionResult ValidGoogleLogin()
-		{
-
-			string? formCredential = Request.Form["credential"]; //回傳憑證
-			string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
-			string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
-
-			//// 驗證 Google Token
-			GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
-			if (payload == null)
-			{
-				// 驗證失敗
-				return BadRequest("驗證 Google 授權失敗");
-			}
-			else
-			{
-				// 驗證成功，構造回傳的物件
-				var result = new
-				{
-					Msg = "驗證 Google 授權成功",
-					Email = payload.Email,
-					Name = payload.Name,
-					Picture = payload.Picture
-				};
-				return Ok(result);
-				//return Redirect("http://localhost:5501/index.html");
-			}
-		}
-		private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
-		{
-			// 檢查空值
-			if (formCredential == null || formToken == null && cookiesToken == null)
-			{
-				return null;
-			}
-
-			GoogleJsonWebSignature.Payload? payload;
-			try
-			{
-				// 驗證 token
-				if (formToken != cookiesToken)
-				{
-					return null;
-				}
-
-				// 驗證憑證
-				//IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-				string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
-				var settings = new GoogleJsonWebSignature.ValidationSettings()
-				{
-					Audience = new List<string>() { GoogleApiClientId }
-				};
-				payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
-				if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
-				{
-					return null;
-				}
-				if (payload.ExpirationTimeSeconds == null)
-				{
-					return null;
-				}
-				else
-				{
-					DateTime now = DateTime.Now.ToUniversalTime();
-					DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
-					if (now > expiration)
-					{
-						return null;
-					}
-				}
-			}
-			catch
-			{
-				return null;
-			}
-			return payload;
-		}
-
-		//[HttpPost("GoogleLogin")]
+		/*若Google登入，在前端是使用HTML API再看
+		//[HttpPost("GoogleRegister")]
 		//[AllowAnonymous]
-		//public IActionResult ValidGoogleLogin(string credential)
+		//public IActionResult GoogleRegister(RegisterDTO request)
 		//{
-		//    //// 驗證 Google Token
-		//    GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(credential).Result;
-		//    if (payload == null)
-		//    {
-		//        // 驗證失敗
-		//        return BadRequest("驗證 Google 授權失敗");
-		//    }
-		//    else
-		//    {
-		//        // 驗證成功，構造回傳的物件
-		//        var result = new
-		//        {
-		//            Msg = "驗證 Google 授權成功",
-		//            Email = payload.Email,
-		//            Name = payload.Name,
-		//            Picture = payload.Picture
-		//        };
-		//        return Ok(result);
-		//        //return Redirect("http://localhost:5501/index.html");
-		//    }
+		//	var service = new MemberService(_repo, _hashUtility, _config);
+		//	var result = service.GoogleRegister(request);
+		//	if (result.IsFail)
+		//	{
+		//		return BadRequest(result.ErrorMessage);
+		//	}
+		//	var token = service.CreateJwtToken(request.Username);
+		//	return Ok(token);
 		//}
 
-		//private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential)
+		//[HttpPost("ValidGoogleLogin")]
+		//[AllowAnonymous]
+		//public IActionResult ValidGoogleLogin()
 		//{
 
-		//    GoogleJsonWebSignature.Payload? payload;
-		//    try
-		//    {
+		//	string? formCredential = Request.Form["credential"]; //回傳憑證
+		//	string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
+		//	string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
 
-		//        // 驗證憑證
-		//        //IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-		//        string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
-		//        var settings = new GoogleJsonWebSignature.ValidationSettings()
-		//        {
-		//            Audience = new List<string>() { GoogleApiClientId }
-		//        };
-		//        payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
-		//        if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
-		//        {
-		//            return null;
-		//        }
-		//        if (payload.ExpirationTimeSeconds == null)
-		//        {
-		//            return null;
-		//        }
-		//        else
-		//        {
-		//            DateTime now = DateTime.Now.ToUniversalTime();
-		//            DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
-		//            if (now > expiration)
-		//            {
-		//                return null;
-		//            }
-		//        }
-		//    }
-		//    catch
-		//    {
-		//        return null;
-		//    }
-		//    return payload;
+		//	//// 驗證 Google Token
+		//	GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+		//	if (payload == null)
+		//	{
+		//		// 驗證失敗
+		//		return BadRequest("驗證 Google 授權失敗");
+		//	}
+		//	else
+		//	{
+		//		// 驗證成功，構造回傳的物件
+		//		var result = new
+		//		{
+		//			Msg = "驗證 Google 授權成功",
+		//			Email = payload.Email,
+		//			Name = payload.Name,
+		//			Picture = payload.Picture
+		//		};
+		//		return Ok(result);
+		//		//return Redirect("http://localhost:5501/index.html");
+		//	}
 		//}
+		//private async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
+		//{
+		//	// 檢查空值
+		//	if (formCredential == null || formToken == null && cookiesToken == null)
+		//	{
+		//		return null;
+		//	}
+
+		//	GoogleJsonWebSignature.Payload? payload;
+		//	try
+		//	{
+		//		// 驗證 token
+		//		if (formToken != cookiesToken)
+		//		{
+		//			return null;
+		//		}
+
+		//		// 驗證憑證
+		//		//IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+		//		string GoogleApiClientId = _config["GoogleAuthentication:ClientId"];
+		//		var settings = new GoogleJsonWebSignature.ValidationSettings()
+		//		{
+		//			Audience = new List<string>() { GoogleApiClientId }
+		//		};
+		//		payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+		//		if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+		//		{
+		//			return null;
+		//		}
+		//		if (payload.ExpirationTimeSeconds == null)
+		//		{
+		//			return null;
+		//		}
+		//		else
+		//		{
+		//			DateTime now = DateTime.Now.ToUniversalTime();
+		//			DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+		//			if (now > expiration)
+		//			{
+		//				return null;
+		//			}
+		//		}
+		//	}
+		//	catch
+		//	{
+		//		return null;
+		//	}
+		//	return payload;
+		//}
+		*/
+
 
 
 		//// 以下是精靈生成的
