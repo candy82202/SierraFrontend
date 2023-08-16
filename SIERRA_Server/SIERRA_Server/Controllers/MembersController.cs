@@ -152,6 +152,30 @@ namespace SIERRA_Server.Controllers
 			return Ok(token);
 		}
 
+		[HttpGet("GetMember")]
+		public async Task<ActionResult<EditMemberDTO>> GetMember(int id)
+		{
+			var service = new MemberService(_repo);
+			var member = await service.GetMember(id);
+			if (member == null)
+			{
+				return BadRequest("找不到該用戶");
+			}
+			return Ok(member);
+		}
+
+		[HttpPut("EditMember")]
+		public async Task<ActionResult<EditMemberDTO>> EditMember(EditMemberDTO request)
+		{
+			var service = new MemberService(_repo);
+			var result = await service.EditMemberAsync(request);
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
+			return Ok("修改資料成功");
+		}
+
 
 		/*若Google登入，在前端是使用HTML API再看
 		//[HttpPost("GoogleRegister")]

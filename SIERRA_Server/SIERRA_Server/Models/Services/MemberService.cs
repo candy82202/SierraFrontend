@@ -217,5 +217,39 @@ namespace SIERRA_Server.Models.Services
 			return Result.Success();
 		}
 
+		public async Task<EditMemberDTO> GetMember(int id)
+		{
+			var memberInDb =  await _repo.GetMemberByIdAsync(id);
+			if (memberInDb != null)
+			{
+				var editMemberDTO = new EditMemberDTO
+				{
+					Id = memberInDb.Id,
+					Username = memberInDb.Username,
+					Email = memberInDb.Email,
+					Address = memberInDb.Address,
+					Phone = memberInDb.Phone,
+					Birth = memberInDb.Birth,
+					Gender = memberInDb.Gender
+				};
+				return editMemberDTO;
+			}
+			return null; // 或者返回适合的默认值，具体情况而定
+		}
+		public async Task<Result> EditMemberAsync(EditMemberDTO dto)
+		{
+			var memberInDb = await _repo.GetMemberByIdAsync(dto.Id);
+
+			if (memberInDb == null) return Result.Fail("找不到要修改的會員記錄");
+
+			memberInDb.Address = dto.Address;
+			memberInDb.Phone = dto.Phone;
+			memberInDb.Birth = dto.Birth;
+			memberInDb.Gender = dto.Gender;
+
+			await _repo.SaveChangesAsync();
+
+			return Result.Success();
+		}
 	}
 }

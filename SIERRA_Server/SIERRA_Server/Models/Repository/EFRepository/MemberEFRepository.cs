@@ -25,6 +25,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         {
             return _db.Members.FirstOrDefault(m => m.Id == memberId);
         }
+		public async Task<Member> GetMemberByIdAsync(int memberId)
+		{
+			return await _db.Members.FirstOrDefaultAsync(m => m.Id == memberId);
+		}
+
 		public Member GetMemberByEmail(string email)
 		{
 			return _db.Members.FirstOrDefault(m => m.Email == email);
@@ -69,6 +74,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         public void SaveChanges()
         {
             _db.SaveChanges();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _db.SaveChangesAsync();
         }
     }
 }
