@@ -68,13 +68,13 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                         UnitPrice = row.UnitPrice,
                         DessertImageName = row.DessertImageName,
                         DiscountGroupId = row.DiscountGroupId,
-                        Specification = new Specification
-                        {
+                        //Specification = new Specification
+                        //{
                             SpecificationId=row.SpecificationId,
-                            UnitPrice = row.UnitPrice,
+                            //UnitPrice = row.UnitPrice,
                             Flavor = row.Flavor,
                             Size = row.Size
-                        }
+                        //}
                     };
                     //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
                     dessertDiscountList.Add(dessertDiscountDTO);
@@ -135,13 +135,13 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                         UnitPrice = row.UnitPrice,
                         DessertImageName = row.DessertImageName,
                         DiscountGroupId = row.DiscountGroupId,
-                        Specification = new Specification
-                        {
+                        //Specification = new Specification
+                        //{
                             SpecificationId = row.SpecificationId,
-                            UnitPrice = row.UnitPrice,
+                            //UnitPrice = row.UnitPrice,
                             Flavor = row.Flavor,
                             Size = row.Size
-                        }
+                        //}
                     };
                     //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
                     dessertDiscountList.Add(dessertDiscountDTO);
@@ -203,13 +203,13 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                         UnitPrice = row.UnitPrice,
                         DessertImageName = row.DessertImageName,
                         DiscountGroupId = row.DiscountGroupId,
-                        Specification = new Specification
-                        {
+                        //Specification = new Specification
+                        //{
                             SpecificationId = row.SpecificationId,
-                            UnitPrice = row.UnitPrice,
+                            //UnitPrice = row.UnitPrice,
                             Flavor = row.Flavor,
                             Size = row.Size
-                        }
+                        //}
                     };
                     //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
                     dessertDiscountList.Add(dessertDiscountDTO);
@@ -256,13 +256,13 @@ ORDER BY TotalQuantity DESC;
                         UnitPrice = row.UnitPrice,
                         DessertImageName = row.DessertImageName,
 
-                        Specification = new Specification
-                        {
+                        //Specification = new Specification
+                        //{
                             SpecificationId = row.SpecificationId,
-                            UnitPrice = row.UnitPrice,
+                            //UnitPrice = row.UnitPrice,
                             Flavor = row.Flavor,
                             Size = row.Size
-                        }
+                        //}
                     };
                     //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
                     dessertTopSalesList.Add(dessertDiscountDTO);

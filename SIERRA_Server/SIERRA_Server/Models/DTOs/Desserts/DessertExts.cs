@@ -43,7 +43,10 @@ namespace SIERRA_Server.Models.DTOs.Desserts
                 DessertName = entity.DiscountGroupName, 
                 UnitPrice = 0, 
                 DiscountGroupId = entity.DiscountGroupId,
-                Specification = null 
+                SpecificationId=0,
+                Flavor="",
+                Size=""
+                //Specification = null 
             };
 
             // Assuming there's only one DiscountGroupItem per DiscountGroup for simplicity
@@ -56,12 +59,12 @@ namespace SIERRA_Server.Models.DTOs.Desserts
                 dessertDiscountDTO.DessertImageName = discountGroupItem.Dessert.DessertImages.FirstOrDefault()?.DessertImageName;
                 dessertDiscountDTO.UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
 
-                dessertDiscountDTO.Specification = new Specification
-                {
-                    UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0,
-                    Flavor = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Flavor,
-                    Size = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Size
-                };
+                //dessertDiscountDTO.Specification = new Specification
+                //{
+                dessertDiscountDTO.UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
+                dessertDiscountDTO.Flavor = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Flavor;
+                dessertDiscountDTO.Size = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Size;
+                //};
             }
 
             return dessertDiscountDTO;
