@@ -26,7 +26,7 @@ namespace SIERRA_Server.Models.EFModels
         public string PayMethod { get; set; }
         public string DeliveryMethod { get; set; }
         public string Note { get; set; }
-        public string DiscountInfo { get; set; }
+        public int? DiscountPrice { get; set; }
 
         public virtual OrderStatus DessertOrderStatus { get; set; }
         public virtual Member Member { get; set; }

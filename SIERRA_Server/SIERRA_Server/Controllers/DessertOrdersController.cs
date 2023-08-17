@@ -139,7 +139,7 @@ namespace SIERRA_Server.Controllers
                         DeliveryMethod = orderDto.DeliveryMethod,
                         Note = orderDto.Note,
                         PayMethod = orderDto.PayMethod,
-                        DiscountInfo= orderDto.DiscountInfo,
+                        //DiscountInfo= orderDto.DiscountInfo,
                     };
                     _context.DessertOrders.Add(order);
                     await _context.SaveChangesAsync();
@@ -206,7 +206,7 @@ namespace SIERRA_Server.Controllers
             PayMethod = x.PayMethod,
             Note = x.Note,
             CouponName=x.MemberCoupon.CouponName,
-            DiscountInfo = x.DiscountInfo,
+            //DiscountInfo = x.DiscountInfo,
             DessertOrderDetails = (List<ItemDto>)x.DessertOrderDetails.Select(n => new ItemDto
             {
                 DessertName = n.DessertName,

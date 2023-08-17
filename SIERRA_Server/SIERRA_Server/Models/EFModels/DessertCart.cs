@@ -15,6 +15,7 @@ namespace SIERRA_Server.Models.EFModels
         public int Id { get; set; }
         public string Username { get; set; }
         public int? MemberCouponId { get; set; }
+        public int? DiscountPrice { get; set; }
 
         public virtual MemberCoupon MemberCoupon { get; set; }
         public virtual Member UsernameNavigation { get; set; }
