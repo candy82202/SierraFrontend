@@ -32,7 +32,11 @@ namespace SIERRA_Server.Controllers
             {
                 return Enumerable.Empty<DessertCartItemsDto>();
             }
-            var cart = await _context.DessertCarts.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.DessertImages).FirstOrDefaultAsync(dc => dc.Username == username);
+            var cart = await _context.DessertCarts.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.Discounts)
+                                                   .Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert)
+                                                  .ThenInclude(d => d.DessertImages)
+                                                  .Include(dc => dc.DessertCartItems).ThenInclude(dci=>dci.Specification)
+                                                  .FirstOrDefaultAsync(dc => dc.Username == username);
             if (cart == null)
             {
                 return Enumerable.Empty<DessertCartItemsDto>();
@@ -42,7 +46,8 @@ namespace SIERRA_Server.Controllers
                 DessertCartItemId = dci.Id,
                 DessertName = dci.Dessert.DessertName,
                 DessertImage = dci.Dessert.DessertImages?.OrderBy(di => di.ImageId).Select(di => di.DessertImageName).First(),
-                Price = _context.Specifications.Find(dci.SpecificationId).UnitPrice,
+                Price = (int)(dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+                    ? Math.Round((decimal)dci.Specification.UnitPrice * ((decimal)dci.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice),
                 Count = dci.Quantity
             });
             return cartItems;

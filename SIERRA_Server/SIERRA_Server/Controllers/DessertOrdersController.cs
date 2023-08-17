@@ -183,14 +183,13 @@ namespace SIERRA_Server.Controllers
         [HttpPost("GetCustomerOrder")]
         public async Task<IActionResult> GetCustomerOrder(GetCustomerOrderDTO dto)
         {
-            
             //根據username找到所有的訂單及訂單狀態
             //最新訂單排最前
             if (dto.Username == null)
             {
                 return NotFound();
             }
-            var userOrder = await _context.DessertOrders.Include(od => od.DessertOrderDetails).Include(o => o.DessertOrderStatus)
+            var userOrder = await _context.DessertOrders.Include(c=>c.MemberCoupon).Include(od => od.DessertOrderDetails).Include(o => o.DessertOrderStatus)
         .Where(o => o.Username == dto.Username)
         .Select(x => new GetCustomerOrderDTO
         {
@@ -206,9 +205,11 @@ namespace SIERRA_Server.Controllers
             ShippingFee = x.ShippingFee,
             PayMethod = x.PayMethod,
             Note = x.Note,
+            CouponName=x.MemberCoupon.CouponName,
             DiscountInfo = x.DiscountInfo,
             DessertOrderDetails = (List<ItemDto>)x.DessertOrderDetails.Select(n => new ItemDto
-            { DessertName = n.DessertName,
+            {
+                DessertName = n.DessertName,
                 Quantity = n.Quantity,
                 UnitPrice = n.UnitPrice,
                 Subtotal = n.Subtotal,
@@ -222,6 +223,10 @@ namespace SIERRA_Server.Controllers
             }
             return Ok(userOrder);
         }
+
+
+
+
 
         // DELETE: api/DessertOrders/5
         [HttpDelete("{id}")]
