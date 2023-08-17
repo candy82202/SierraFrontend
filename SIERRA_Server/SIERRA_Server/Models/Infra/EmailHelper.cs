@@ -23,7 +23,7 @@ namespace SIERRA_Server.Models.Infra
 		public void SendForgotPasswordEmail(string email, string url, string name)
 		{
 			var to = email;
-			var subject = "[Sierra重設密碼通知信]";
+			var subject = "[Sierra忘記密碼重設通知信]";
 			var body = $@"Hi {name},
 <br />
 請點擊此連結 [<a href='{url}' target='_blank'>我要重設密碼</a>], 以進行重設密碼, 如果您沒有提出申請, 請忽略本信, 謝謝"; // target='_blank' 代表打開新視窗
