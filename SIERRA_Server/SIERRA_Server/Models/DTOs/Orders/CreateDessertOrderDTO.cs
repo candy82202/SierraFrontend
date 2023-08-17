@@ -19,7 +19,7 @@
         public string? CouponName { get; set; }
         public string PayMethod { get; set; }
 
-        public string? DiscountInfo { get; set; }
+        public int? DiscountPrice { get; set; }
     }
     //public class ItemDto
     //{
