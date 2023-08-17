@@ -61,7 +61,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
              
                 dvm.Add(item);
             }
-          
+            //  int totalMoldCake = moldCake.Count;
+            //int totalPages = (int)Math.Ceiling(totalMoldCake / (double)totalMoldCake);
+            //moldCake = moldCake.Skip(pageSize * (page - 1)).Take(pageSize);
+            //DessertsIndexDTO indexDTO = new DessertsIndexDTO();
+            //indexDTO.TotalPages = totalPages;
             return dvm;
         }
         public async Task<List<DessertsIndexDTO>> GetRoomTemperature()
