@@ -42,7 +42,7 @@ Members 部分
 [V] - Modify EmailHelper.cs
 [V] - GoogleLogin
 [V] - EditPassword
-[working on] - GetMember & EditMember
+[V] - GetMember & EditMember
 
 
 

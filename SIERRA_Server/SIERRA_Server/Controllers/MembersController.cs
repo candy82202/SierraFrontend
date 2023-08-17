@@ -177,21 +177,21 @@ namespace SIERRA_Server.Controllers
 		}
 
 
+		
+		[HttpPost("GoogleRegister")]
+		[AllowAnonymous]
+		public IActionResult GoogleRegister(RegisterDTO request)
+		{
+			var service = new MemberService(_repo, _hashUtility, _config);
+			var result = service.GoogleRegister(request);
+			if (result.IsFail)
+			{
+				return BadRequest(result.ErrorMessage);
+			}
+			var token = service.CreateJwtToken(request.Username);
+			return Ok(token);
+		}
 		/*若Google登入，在前端是使用HTML API再看
-		//[HttpPost("GoogleRegister")]
-		//[AllowAnonymous]
-		//public IActionResult GoogleRegister(RegisterDTO request)
-		//{
-		//	var service = new MemberService(_repo, _hashUtility, _config);
-		//	var result = service.GoogleRegister(request);
-		//	if (result.IsFail)
-		//	{
-		//		return BadRequest(result.ErrorMessage);
-		//	}
-		//	var token = service.CreateJwtToken(request.Username);
-		//	return Ok(token);
-		//}
-
 		//[HttpPost("ValidGoogleLogin")]
 		//[AllowAnonymous]
 		//public IActionResult ValidGoogleLogin()

@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Transactions;
 
 namespace SIERRA_Server.Models.Services
@@ -242,6 +243,10 @@ namespace SIERRA_Server.Models.Services
 
 			if (memberInDb == null) return Result.Fail("找不到要修改的會員記錄");
 
+			if (!ValidPhone(dto.Phone))
+			{
+				return Result.Fail("電話號碼應為10位數字或全空");
+			}
 			memberInDb.Address = dto.Address;
 			memberInDb.Phone = dto.Phone;
 			memberInDb.Birth = dto.Birth;
@@ -250,6 +255,11 @@ namespace SIERRA_Server.Models.Services
 			await _repo.SaveChangesAsync();
 
 			return Result.Success();
+		}
+
+		private bool ValidPhone(string phone)
+		{
+			return Regex.IsMatch(phone, @"^\d{10}$") || string.IsNullOrEmpty(phone);
 		}
 	}
 }
