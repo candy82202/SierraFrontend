@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SIERRA_Server.Models.DTOs;
 using SIERRA_Server.Models.DTOs.Desserts;
+using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
+using System.Drawing.Printing;
 using System.Threading.Tasks;
 
 namespace SIERRA_Server.Models.Services
@@ -41,10 +44,15 @@ namespace SIERRA_Server.Models.Services
             var snack = await _repo.GetSnack();
             return snack;
         }
-        public async Task<List<DessertsIndexDTO>> GetMoldCake()
+        public async Task<(List<DessertsIndexDTO> Desserts, int TotalPages)> GetMoldCake(int page = 1, int pageSize = 3)
         {
             var moldCake = await _repo.GetMoldCake();
-            return moldCake;
+            int totalMoldCake = moldCake.Count;
+            int totalPages = (int)Math.Ceiling(totalMoldCake / 6.0); // 每六个甜点为一页
+            moldCake = moldCake.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+                   
+
+            return (dessertsList, totalPages); // 返回甜点列表和总页数
         }
         public async Task<List<DessertsIndexDTO>> GetRoomTemperature()
         {
