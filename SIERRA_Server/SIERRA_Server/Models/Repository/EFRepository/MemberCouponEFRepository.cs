@@ -192,7 +192,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
 		public async Task<IEnumerable<CouponSetting>> GetPrizes()
 		{
-            var prizes = await _db.CouponSettings.Where(cs => cs.Qty != null)
+            var prizes = await _db.CouponSettings.Where(cs => cs.Qty != null && cs.CouponId!=null)
                                                  .ToListAsync();
             return prizes;
 		}
@@ -224,5 +224,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 			}
 			
 		}
-	}
+
+        public async Task<Coupon> FindCoupon(int couponId)
+        {
+            var coupom = await _db.Coupons.FindAsync(couponId);
+            return coupom;
+        }
+    }
 }

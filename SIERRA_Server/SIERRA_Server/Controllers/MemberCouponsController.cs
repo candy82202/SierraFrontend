@@ -130,6 +130,13 @@ namespace SIERRA_Server.Controllers
 			var result = await server.PlayDailyGame((int)memberId);
 			return result;
 		}
+		[HttpGet("DailyGameRate")]
+		public async Task<IEnumerable<DailyGameRateDto>> GetDailyGameRate()
+		{
+			var server = new MemberCouponService(_repo);
+			var result = await server.GetDailyGameRate();
+			return result;
+        }
 		
 	}
 }
