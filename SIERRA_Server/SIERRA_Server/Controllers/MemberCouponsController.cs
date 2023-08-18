@@ -137,6 +137,16 @@ namespace SIERRA_Server.Controllers
 			var result = await server.GetDailyGameRate();
 			return result;
         }
+		[HttpPost("WeeklyGame")]
+		public async Task<WeeklyGameResult?> PlayWeeklyGame(int[] ansAry)
+		{
+			if(ansAry.Length != 5)
+			{
+				return null;
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.PlayWeeklyGame(ansAry);
+		}
 		
 	}
 }

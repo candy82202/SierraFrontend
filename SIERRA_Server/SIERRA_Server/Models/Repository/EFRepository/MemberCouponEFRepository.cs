@@ -230,5 +230,14 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             var coupom = await _db.Coupons.FindAsync(couponId);
             return coupom;
         }
-    }
+        public async Task<CouponSetting[]> GetWeeklyGameCouponSettings()
+        {
+            var couponSettings =await _db.CouponSettings.Where(cs=>cs.CouponType==4)
+                                                        .OrderBy(cs=>cs.CouponSettingId)
+                                                        .ToArrayAsync();
+            return couponSettings;
+
+		}
+
+	}
 }
