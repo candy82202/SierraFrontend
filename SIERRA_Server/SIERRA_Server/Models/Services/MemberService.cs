@@ -12,7 +12,9 @@ using SIERRA_Server.Models.Repository.EFRepository;
 using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Transactions;
 
 namespace SIERRA_Server.Models.Services
@@ -200,5 +202,64 @@ namespace SIERRA_Server.Models.Services
 
 		}
 
+		public Result EditPassword(EditPasswordDTO dto)
+		{
+			var salt = _hashUtility.GetSalt();
+			var hashOriginalPassword = _hashUtility.ToSHA256(dto.OriginalPassword, salt);
+
+			var memberInDb = _repo.GetMemberById(dto.MemberId);
+			if (memberInDb == null || memberInDb.EncryptedPassword!= hashOriginalPassword) return Result.Fail("找不到要修改的會員紀錄");
+
+			// 更新密碼
+			memberInDb.EncryptedPassword = _hashUtility.ToSHA256(dto.NewPassword, salt);
+
+			_repo.SaveChanges();
+
+			return Result.Success();
+		}
+
+		public async Task<EditMemberDTO> GetMember(int id)
+		{
+			var memberInDb =  await _repo.GetMemberByIdAsync(id);
+			if (memberInDb != null)
+			{
+				var editMemberDTO = new EditMemberDTO
+				{
+					Id = memberInDb.Id,
+					Username = memberInDb.Username,
+					Email = memberInDb.Email,
+					Address = memberInDb.Address,
+					Phone = memberInDb.Phone,
+					Birth = memberInDb.Birth,
+					Gender = memberInDb.Gender
+				};
+				return editMemberDTO;
+			}
+			return null; // 或者返回适合的默认值，具体情况而定
+		}
+		public async Task<Result> EditMemberAsync(EditMemberDTO dto)
+		{
+			var memberInDb = await _repo.GetMemberByIdAsync(dto.Id);
+
+			if (memberInDb == null) return Result.Fail("找不到要修改的會員記錄");
+
+			if (!ValidPhone(dto.Phone))
+			{
+				return Result.Fail("電話號碼應為10位數字或全空");
+			}
+			memberInDb.Address = dto.Address;
+			memberInDb.Phone = dto.Phone;
+			memberInDb.Birth = dto.Birth;
+			memberInDb.Gender = dto.Gender;
+
+			await _repo.SaveChangesAsync();
+
+			return Result.Success();
+		}
+
+		private bool ValidPhone(string phone)
+		{
+			return Regex.IsMatch(phone, @"^\d{10}$") || string.IsNullOrEmpty(phone);
+		}
 	}
 }
