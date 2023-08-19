@@ -248,7 +248,7 @@ namespace SIERRA_Server.Models.Services
             }
 			return result;
         }
-		public async Task<WeeklyGameResult> PlayWeeklyGame(int[] ansAry)
+		public async Task<WeeklyGameResult> PlayWeeklyGame(int[] ansAry, int memberId)
 		{
 			CouponSetting[] couponSettings = await _repo.GetWeeklyGameCouponSettings();
 			var ans1 = ansAry[0];
@@ -384,9 +384,54 @@ namespace SIERRA_Server.Models.Services
 			Random random = new Random();
 			int randomIndex = random.Next(topAry.Length);
 			var result = topAry[randomIndex];
-			
-
-
+            var coupon = await _repo.FindCoupon((int)result.Setting.CouponId);
+            AddCouponResult couponResult;
+			if (await _repo.HasPlayedWeeklyGame(memberId))
+			{
+				couponResult = AddCouponResult.Fail("您已經領取過囉~");
+			}
+			else
+			{
+				await _repo.AddCouponAndRecordMemberPlayWeeklyGame(memberId, coupon);
+				couponResult = AddCouponResult.Success(coupon.CouponName);
+            }
+			string image = await _repo.FindResultImageByDiscountId((int)coupon.DiscountGroupId);
+			string title,content;
+			switch (result.Setting.CouponSettingId)
+			{
+				case 9:
+					title = "1";
+					content = "1";
+					break;
+				case 10:
+                    title = "2";
+                    content = "2";
+                    break;
+                case 11:
+                    title = "3";
+                    content = "3";
+                    break;
+                case 12:
+                    title = "4";
+                    content = "4";
+                    break;
+                case 13:
+                    title = "5";
+                    content = "5";
+                    break;
+				default:
+                    title = "6";
+                    content = "6";
+                    break;
+            }
+			var weeklyGameResult = new WeeklyGameResult()
+			{
+				Content = content,
+				Title = title,
+				Image = image,
+				Result = couponResult
+			};
+			return weeklyGameResult;
 		}
 		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{

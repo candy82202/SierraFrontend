@@ -2,8 +2,9 @@
 {
     public class WeeklyGameResult
     {
-        public AddCouponResult result { get; set; }
+        public AddCouponResult Result { get; set; }
         public string Image { get; set; }
-        public string ResultText { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
     }
 }

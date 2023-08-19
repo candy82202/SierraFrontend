@@ -138,14 +138,15 @@ namespace SIERRA_Server.Controllers
 			return result;
         }
 		[HttpPost("WeeklyGame")]
-		public async Task<WeeklyGameResult?> PlayWeeklyGame(int[] ansAry)
+		public async Task<WeeklyGameResult?> PlayWeeklyGame(int[] ansAry,int? memberId)
 		{
-			if(ansAry.Length != 5)
+			if(ansAry.Length != 5 || memberId==null)
 			{
 				return null;
 			}
 			var server = new MemberCouponService(_repo);
-			var result = await server.PlayWeeklyGame(ansAry);
+			var result = await server.PlayWeeklyGame(ansAry,(int)memberId);
+			return result;
 		}
 		
 	}
