@@ -106,22 +106,72 @@ namespace SIERRA_Server.Controllers
             return Ok($"Member with username {username} updated successfully.");
         }
 
-        // POST: api/LessonOrders
-        [HttpPost]
-        public async Task<ActionResult<LessonOrder>> PostLessonOrder(LessonOrder lessonOrder)
+        //POST: api/LessonOrders
+       [HttpPost]
+        public async Task<ActionResult> PostLessonOrder([FromBody] CreateLessonOrderDTO orderDto)
         {
-          if (_context.LessonOrders == null)
-          {
-              return Problem("Entity set 'AppDbContext.LessonOrders'  is null.");
-          }
-            _context.LessonOrders.Add(lessonOrder);
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
 
-            return CreatedAtAction("GetLessonOrder", new { id = lessonOrder.Id }, lessonOrder);
+                try
+                {
+                    // 根據標識符(username)
+                    var lesson = await _context.LessonOrders
+                        .Include(l => l.LessonOrderDetails).ThenInclude(li=>li.Lesson)
+                        .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
+                    if (lesson == null) throw new Exception("lesson not found");
+
+                    // 創建訂單
+                    var order = new LessonOrder
+                    {
+                        Id = (int)orderDto.Id,
+                        MemberId = orderDto.MemberId,
+                        Username = orderDto.Username,
+                        LessonOrderStatusId = 3,
+                        CreateTime = DateTime.Now,
+                        LessonOrderTotal = orderDto.LessonOrderTotal,
+                        Note = orderDto.Note,
+                        PayMethod = orderDto.PayMethod,
+
+                    };
+                    _context.LessonOrders.Add(order);
+                    await _context.SaveChangesAsync();
+
+                    // 創建訂單明細
+                    foreach (var item in lesson.LessonOrderDetails)
+                    {
+                        var orderDetail = new LessonOrderDetail
+                        {
+                            LessonOrderId = order.Id,
+                            LessonTitle = item.LessonTitle,
+                            LessonId = item.LessonId,
+                            NumberOfPeople = item.NumberOfPeople,
+                            LessonUnitPrice = item.LessonUnitPrice,
+                            Subtotal = item.Subtotal,
+                        };
+                        _context.LessonOrderDetails.Add(orderDetail);
+                    }
+                    await _context.SaveChangesAsync();
+
+                   
+                   
+
+                    await transaction.CommitAsync();
+
+                    return Ok(new { message = "Order created successfully" });
+
+                }
+                catch (Exception e)
+                {
+                    // 發生錯誤
+                    await transaction.RollbackAsync();
+                    return BadRequest(new { message = e.Message });
+                }
+            }
         }
 
-        // DELETE: api/LessonOrders/5
-        [HttpDelete("{id}")]
+            // DELETE: api/LessonOrders/5
+            [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLessonOrder(int id)
         {
             if (_context.LessonOrders == null)
