@@ -125,7 +125,7 @@ namespace SIERRA_Server.Controllers
                     var order = new LessonOrder
                     {
                         Id = (int)orderDto.Id,
-                        MemberId = orderDto.MemberId,
+                        MemberId = (int)orderDto.MemberId,
                         Username = orderDto.Username,
                         LessonOrderStatusId = 3,
                         CreateTime = DateTime.Now,
@@ -137,7 +137,7 @@ namespace SIERRA_Server.Controllers
                     _context.LessonOrders.Add(order);
                     await _context.SaveChangesAsync();
 
-                    // 創建訂單明細
+                    //創建訂單明細
                     foreach (var item in lesson.LessonOrderDetails)
                     {
                         var orderDetail = new LessonOrderDetail
@@ -145,16 +145,26 @@ namespace SIERRA_Server.Controllers
                             LessonOrderId = order.Id,
                             LessonTitle = item.LessonTitle,
                             LessonId = item.LessonId,
-                            NumberOfPeople = item.NumberOfPeople,
+                            NumberOfPeople = orderDto.ActualCapacity,
                             LessonUnitPrice = item.LessonUnitPrice,
-                            Subtotal = item.Subtotal,
+                            Subtotal = orderDto.LessonUnitPrice * orderDto.ActualCapacity,
                         };
                         _context.LessonOrderDetails.Add(orderDetail);
                     }
                     await _context.SaveChangesAsync();
 
-                   
-                   
+                    //var orderDetail = new LessonOrderDetail
+                    //{
+                    //    LessonOrderId = order.Id,
+                    //    LessonTitle = orderDto.LessonTitle, 
+                    //    LessonId = orderDto.LessonId, 
+                    //    NumberOfPeople = orderDto.ActualCapacity, 
+                    //    LessonUnitPrice = orderDto.LessonUnitPrice,
+                    //    Subtotal = orderDto.LessonUnitPrice * orderDto.ActualCapacity 
+                    //};
+                    //_context.LessonOrderDetails.Add(orderDetail);
+                    //await _context.SaveChangesAsync();
+
 
                     await transaction.CommitAsync();
 
