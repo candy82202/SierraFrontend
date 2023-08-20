@@ -108,101 +108,72 @@ namespace SIERRA_Server.Controllers
 
         //POST: api/LessonOrders
        [HttpPost]
-        public async Task<ActionResult> PostLessonOrder([FromBody] CreateLessonOrderDTO orderDto)
+        public async Task<IActionResult> CreateOrderForMember([FromBody] CreateLessonOrderDTO dto)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            // 驗證會員是否存在
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == dto.MemberId);
+            if (member == null)
             {
-
-                try
-                {
-                    // 根據標識符(username)
-                    var lesson = await _context.LessonOrders
-                        .Include(l => l.LessonOrderDetails).ThenInclude(li=>li.Lesson)
-                        .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
-                    if (lesson == null) throw new Exception("lesson not found");
-
-                    // 創建訂單
-                    var order = new LessonOrder
-                    {
-                        Id = (int)orderDto.Id,
-                        MemberId = (int)orderDto.MemberId,
-                        Username = orderDto.Username,
-                        LessonOrderStatusId = 3,
-                        CreateTime = DateTime.Now,
-                        LessonOrderTotal = orderDto.LessonOrderTotal,
-                        Note = orderDto.Note,
-                        PayMethod = orderDto.PayMethod,
-
-                    };
-                    _context.LessonOrders.Add(order);
-                    await _context.SaveChangesAsync();
-
-                    //創建訂單明細
-                    foreach (var item in lesson.LessonOrderDetails)
-                    {
-                        var orderDetail = new LessonOrderDetail
-                        {
-                            LessonOrderId = order.Id,
-                            LessonTitle = item.LessonTitle,
-                            LessonId = item.LessonId,
-                            NumberOfPeople = orderDto.ActualCapacity,
-                            LessonUnitPrice = item.LessonUnitPrice,
-                            Subtotal = orderDto.LessonUnitPrice * orderDto.ActualCapacity,
-                        };
-                        _context.LessonOrderDetails.Add(orderDetail);
-                    }
-                    await _context.SaveChangesAsync();
-
-                    //var orderDetail = new LessonOrderDetail
-                    //{
-                    //    LessonOrderId = order.Id,
-                    //    LessonTitle = orderDto.LessonTitle, 
-                    //    LessonId = orderDto.LessonId, 
-                    //    NumberOfPeople = orderDto.ActualCapacity, 
-                    //    LessonUnitPrice = orderDto.LessonUnitPrice,
-                    //    Subtotal = orderDto.LessonUnitPrice * orderDto.ActualCapacity 
-                    //};
-                    //_context.LessonOrderDetails.Add(orderDetail);
-                    //await _context.SaveChangesAsync();
-
-
-                    await transaction.CommitAsync();
-
-                    return Ok(new { message = "Order created successfully" });
-
-                }
-                catch (Exception e)
-                {
-                    // 發生錯誤
-                    await transaction.RollbackAsync();
-                    return BadRequest(new { message = e.Message });
-                }
+                return NotFound(new { Message = "Member not found" });
             }
-        }
-
-            // DELETE: api/LessonOrders/5
-            [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLessonOrder(int id)
-        {
-            if (_context.LessonOrders == null)
+            // 計算Subtotal
+            var calculatedSubtotal = dto.LessonUnitPrice * dto.NumberOfPeople;
+            // 創建訂單
+            var order = new LessonOrder
             {
-                return NotFound();
-            }
-            var lessonOrder = await _context.LessonOrders.FindAsync(id);
-            if (lessonOrder == null)
-            {
-                return NotFound();
-            }
+                Id=dto.Id,
+                MemberId = dto.MemberId,
+                Username = dto.Username,
+                LessonOrderStatusId=3,
+                LessonOrderTotal = dto.LessonOrderTotal,
+                PayMethod = dto.PayMethod,
+                Note = dto.Note,
+                CreateTime = DateTime.Now
+            };
 
-            _context.LessonOrders.Remove(lessonOrder);
+            _context.LessonOrders.Add(order);
             await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+            var orderDetail = new LessonOrderDetail
+            {
+                LessonOrderId = order.Id,
+                LessonId = dto.LessonId,
+                LessonTitle = dto.LessonTitle,
+                NumberOfPeople = dto.NumberOfPeople,
+                LessonUnitPrice = dto.LessonUnitPrice,
+                Subtotal = calculatedSubtotal
+            };
 
-        private bool LessonOrderExists(int id)
-        {
-            return (_context.LessonOrders?.Any(e => e.Id == id)).GetValueOrDefault();
+            _context.LessonOrderDetails.Add(orderDetail);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Order created successfully for member", OrderId = order.Id });
         }
     }
+
+    // DELETE: api/LessonOrders/5
+    //[HttpDelete("{id}")]
+    //    public async Task<IActionResult> DeleteLessonOrder(int id)
+    //    {
+    //        if (_context.LessonOrders == null)
+    //        {
+    //            return NotFound();
+    //        }
+    //        var lessonOrder = await _context.LessonOrders.FindAsync(id);
+    //        if (lessonOrder == null)
+    //        {
+    //            return NotFound();
+    //        }
+
+    //        _context.LessonOrders.Remove(lessonOrder);
+    //        await _context.SaveChangesAsync();
+
+    //        return NoContent();
+    //    }
+
+    //    private bool LessonOrderExists(int id)
+    //    {
+    //        return (_context.LessonOrders?.Any(e => e.Id == id)).GetValueOrDefault();
+    //    }
+    //}
 }
