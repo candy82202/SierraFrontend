@@ -9,5 +9,7 @@
 		public string? Phone { get; set; }
 		public DateTime? Birth { get; set; }
 		public bool? Gender { get; set; }
-	}
+        public string? ImageName { get; set; }
+
+    }
 }

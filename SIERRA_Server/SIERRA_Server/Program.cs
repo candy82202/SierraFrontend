@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
@@ -38,6 +39,7 @@ builder.Services.AddCors(options =>
         name: MyAllowSpecificOrigins,
         policy => policy.WithOrigins("*").WithHeaders("*").WithMethods("*"));
 });
+
 //DIª`¤J
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
@@ -90,6 +92,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// ÀRºAÀÉ®×
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+    RequestPath = "/Uploads"
+});
+
 app.UseRouting();
 
 // Allow CORS

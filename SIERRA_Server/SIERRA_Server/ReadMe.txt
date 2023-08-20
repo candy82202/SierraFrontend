@@ -43,6 +43,7 @@ Members 部分
 [V] - GoogleLogin
 [V] - EditPassword
 [V] - GetMember & EditMember
+[V] - EditMemberImage & GetMemberImageUrl
 
 
 

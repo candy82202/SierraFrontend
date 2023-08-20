@@ -63,6 +63,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 Username = dto.Username,
                 Email = dto.Email,
                 EncryptedPassword = dto.EncryptedPassword,
+                ImageName = dto.ImageName,
                 IsConfirmed = dto.IsConfirmed,
                 ConfirmCode = dto.ConfirmCode,
             };
