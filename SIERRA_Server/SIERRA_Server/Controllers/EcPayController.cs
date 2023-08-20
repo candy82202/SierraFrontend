@@ -42,10 +42,6 @@ namespace SIERRA_Server.Controllers
             }
             var dessertName = latestDessertDetail.DessertName;
 
-
-
-
-
             var orderId = Guid.NewGuid().ToString("N").Substring(0, 5);
 
 
