@@ -149,9 +149,22 @@ namespace SIERRA_Server.Models.Services
                     systemMessage.AppendLine($"很抱歉，找不到{dessertName}的價格信息。");
                 }
             }
-            systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"，");
-            systemMessage.AppendLine("除了蛋糕以外還有課程銷售，可以選日期推薦。");
+            if (text.Contains("宅配"))
+            {
+                systemMessage.AppendLine("目前與黑貓宅配物流配合全程低溫冷凍配送，因週日黑貓宅配無提供配送服務，SIERRA不負擔黑貓宅配物流延遲的責任，包裹出貨後配送狀況依物流中心、當區配送營業所為主，詳情請至黑貓官網查詢或撥打黑貓客服。運送過程中，如包裹在物流公司分流理貨當中有解凍到、失溫，都很有可能會因為配送人員與路況的不同，導致蛋糕位移、變形、或是盒內四周沾到黏膩果膠等損壞的風險，請務必謹慎評估風險後再下單。");
+                systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
+                systemMessage.AppendLine("如果有人詢問你可以指定時間送達蛋糕嗎，請回答目前無接受指定送達時段哦！實際送達時間需依照當區物流司機安排的路線為主。");
 
+            }
+            if (text.Contains("類別"))
+            {
+                systemMessage.AppendLine("如果有人詢問你可以貨到付款嗎?，請回答目前線上訂購的所有商品皆為接單製作生產，故無提供貨到付款服務。");
+
+            }
+
+            systemMessage.AppendLine("除了蛋糕以外還有課程銷售，可以選日期推薦。");
+            systemMessage.AppendLine("如果有人詢問訂單什麼時候會出貨，請回答 除以下特殊節慶之外的正常時間，我們都是在您選擇的希望到貨日期的前一天才會寄出包裹，逢各大節日前(年節、中秋節等節慶)，物流包裹量通常都會暴增，需請您自行將希望到貨日期選擇在您要送禮/慶祝前的兩~三天，提前收到比較不會因為物流延遲而耽誤您的送禮/慶祝安排。如遇母親節、父親節，將統一由我們主動提前出貨");
+            systemMessage.AppendLine($"如果有人詢問你可以寄便利商店店到店嗎?請回答不好意思，目前我們僅配合黑貓低溫宅配寄送， 無提供超商取貨、店到店服務哦！");
             chat.AppendSystemMessage(systemMessage.ToString());
             chat.AppendUserInput(text);
             var response = await chat.GetResponseFromChatbotAsync();
