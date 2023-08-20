@@ -284,6 +284,8 @@ namespace SIERRA_Server.Models.Services
 					mocha.Score += 1;
 					choco.Score += 1;
 					break;
+				default:
+					break;
 			}
 			switch(ans2)
 			{
@@ -307,7 +309,9 @@ namespace SIERRA_Server.Models.Services
 					strawberry.Score += 1;
 					beer.Score += 1;
 					break;
-			}
+                default:
+                    break;
+            }
 			switch (ans3)
 			{
 				case 1:
@@ -330,7 +334,9 @@ namespace SIERRA_Server.Models.Services
 					mocha.Score += 1;
 					taro.Score += 1;
 					break;
-			}
+                default:
+                    break;
+            }
 			switch (ans4)
 			{
 				case 1:
@@ -353,7 +359,9 @@ namespace SIERRA_Server.Models.Services
 					beer.Score += 1;
 					choco.Score += 1;
 					break;
-			}
+                default:
+                    break;
+            }
 			switch (ans5)
 			{
 				case 1:
@@ -376,7 +384,9 @@ namespace SIERRA_Server.Models.Services
 					beer.Score += 1;
 					taro.Score += 1;
 					break;
-			}
+                default:
+                    break;
+            }
 			var resultAry = new TestResult[] { choco, strawberry, mocha, beer, taro };
 			var orderedResultAry = resultAry.OrderByDescending(r=>r.Score).ToArray();
 			var top = orderedResultAry[0];
