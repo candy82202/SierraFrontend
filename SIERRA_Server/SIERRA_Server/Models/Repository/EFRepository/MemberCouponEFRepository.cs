@@ -183,10 +183,11 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                           
         }
 
-		public void RecordCouponInCart(DessertCart cart, int memberCouponId)
+		public void RecordCouponInCart(DessertCart cart, int memberCouponId, int result)
 		{
             var findCart = _db.DessertCarts.Find(cart.Id);
             findCart.MemberCouponId = memberCouponId;
+            findCart.DiscountPrice = result;
             _db.SaveChanges();
 		}
 
@@ -263,5 +264,13 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             }
         }
 
-    }
+		public async Task<IEnumerable<DiscountGroupItem>> FindSuggestProduct(int discountGroupId)
+		{
+			var desserts = await _db.DiscountGroupItems.Include(dgi => dgi.Dessert).ThenInclude(d=>d.DessertImages)
+				                                      .Include(dgi => dgi.Dessert).ThenInclude(d=>d.Specifications)
+				                                      .Where(dgi=>dgi.DiscountGroupId == discountGroupId)
+                                                      .ToListAsync();
+            return desserts;
+		}
+	}
 }

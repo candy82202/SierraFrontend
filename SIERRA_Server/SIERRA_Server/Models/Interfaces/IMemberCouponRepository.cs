@@ -21,7 +21,7 @@ namespace SIERRA_Server.Models.Interfaces
 		Task<Coupon> GetMemberCouponById(int memberCouponId);
         bool HasCouponBeenUsed(int memberCouponId);
 		bool IsPromotionCouponAndReady(int memberCouponId);
-		void RecordCouponInCart(DessertCart cart, int memberCouponId);
+		void RecordCouponInCart(DessertCart cart, int memberCouponId, int result);
 		Task<IEnumerable<CouponSetting>> GetPrizes();
 		Task<bool> HasPlayedGame(int memberId);
 		Task<string> AddCouponAndRecordMemberPlay(int memberId, int resultCouponId);
@@ -29,5 +29,6 @@ namespace SIERRA_Server.Models.Interfaces
 		Task<CouponSetting[]> GetWeeklyGameCouponSettings();
         Task<bool> HasPlayedWeeklyGame(int memberId);
         Task AddCouponAndRecordMemberPlayWeeklyGame(int memberId, Coupon coupon);
+		Task<IEnumerable<DiscountGroupItem>> FindSuggestProduct(int discountGroupId);
 	}
 }
