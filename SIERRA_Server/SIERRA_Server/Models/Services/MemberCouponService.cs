@@ -248,7 +248,202 @@ namespace SIERRA_Server.Models.Services
             }
 			return result;
         }
-        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+		public async Task<WeeklyGameResult> PlayWeeklyGame(int[] ansAry, int memberId)
+		{
+			CouponSetting[] couponSettings = await _repo.GetWeeklyGameCouponSettings();
+			var ans1 = ansAry[0];
+			var ans2 = ansAry[1];
+			var ans3 = ansAry[2];
+			var ans4 = ansAry[3];
+			var ans5 = ansAry[4];
+			var choco = new TestResult(0, couponSettings[0]);
+			var strawberry = new TestResult( 0, couponSettings[1]);
+			var mocha = new TestResult( 0, couponSettings[2]);
+			var taro = new TestResult( 0, couponSettings[3]);
+			var beer = new TestResult( 0, couponSettings[4]);
+			//巧，莓，抹茶，芋頭，酒
+			switch (ans1)
+			{
+				case 1:
+					strawberry.Score += 1;
+					beer.Score+=1;
+					break;
+				case 2:
+					beer.Score += 1;
+					choco.Score += 1;
+					break;
+				case 3:
+					strawberry.Score += 1;
+					taro.Score+= 1;
+					break;
+				case 4:
+					taro.Score += 1;
+					mocha.Score += 1;
+					break;
+				case 5:
+					mocha.Score += 1;
+					choco.Score += 1;
+					break;
+				default:
+					break;
+			}
+			switch(ans2)
+			{
+				case 1:
+					strawberry.Score += 1;
+					taro.Score += 1;
+					break;
+				case 2:
+					mocha.Score += 1;
+					taro.Score += 1;
+					break;
+				case 3:
+					beer.Score += 1;
+					choco.Score += 1;
+					break;
+				case 4:
+					choco.Score += 1;
+					mocha.Score += 1;
+					break;
+				case 5:
+					strawberry.Score += 1;
+					beer.Score += 1;
+					break;
+                default:
+                    break;
+            }
+			switch (ans3)
+			{
+				case 1:
+					strawberry.Score += 1;
+					beer.Score += 1;
+					break;
+				case 2:
+					mocha.Score += 1;
+					strawberry.Score += 1;
+					break;
+				case 3:
+					beer.Score += 1;
+					choco.Score += 1;
+					break;
+				case 4:
+					taro.Score += 1;
+					choco.Score += 1;
+					break;
+				case 5:
+					mocha.Score += 1;
+					taro.Score += 1;
+					break;
+                default:
+                    break;
+            }
+			switch (ans4)
+			{
+				case 1:
+					taro.Score += 1;
+					choco.Score += 1;
+					break;
+				case 2:
+					mocha.Score += 1;
+					strawberry.Score += 1;
+					break;
+				case 3:
+					beer.Score += 1;
+					strawberry.Score += 1;
+					break;
+				case 4:
+					mocha.Score += 1;
+					taro.Score += 1;
+					break;
+				case 5:
+					beer.Score += 1;
+					choco.Score += 1;
+					break;
+                default:
+                    break;
+            }
+			switch (ans5)
+			{
+				case 1:
+					strawberry.Score += 1;
+					mocha.Score += 1;
+					break;
+				case 2:
+					beer.Score += 1;
+					choco.Score += 1;
+					break;
+				case 3:
+					choco.Score += 1;
+					strawberry.Score += 1;
+					break;
+				case 4:
+					mocha.Score += 1;
+					taro.Score += 1;
+					break;
+				case 5:
+					beer.Score += 1;
+					taro.Score += 1;
+					break;
+                default:
+                    break;
+            }
+			var resultAry = new TestResult[] { choco, strawberry, mocha, beer, taro };
+			var orderedResultAry = resultAry.OrderByDescending(r=>r.Score).ToArray();
+			var top = orderedResultAry[0];
+			var topAry = orderedResultAry.Where(r=>r.Score==top.Score).ToArray();
+			Random random = new Random();
+			int randomIndex = random.Next(topAry.Length);
+			var result = topAry[randomIndex];
+            var coupon = await _repo.FindCoupon((int)result.Setting.CouponId);
+            AddCouponResult couponResult;
+			if (await _repo.HasPlayedWeeklyGame(memberId))
+			{
+				couponResult = AddCouponResult.Fail("您已經領取過囉~");
+			}
+			else
+			{
+				await _repo.AddCouponAndRecordMemberPlayWeeklyGame(memberId, coupon);
+				couponResult = AddCouponResult.Success(coupon.CouponName);
+            }
+			string image = await _repo.FindResultImageByDiscountId((int)coupon.DiscountGroupId);
+			string title,content;
+			switch (result.Setting.CouponSettingId)
+			{
+				case 9:
+					title = "1";
+					content = "1";
+					break;
+				case 10:
+                    title = "2";
+                    content = "2";
+                    break;
+                case 11:
+                    title = "3";
+                    content = "3";
+                    break;
+                case 12:
+                    title = "4";
+                    content = "4";
+                    break;
+                case 13:
+                    title = "5";
+                    content = "5";
+                    break;
+				default:
+                    title = "6";
+                    content = "6";
+                    break;
+            }
+			var weeklyGameResult = new WeeklyGameResult()
+			{
+				Content = content,
+				Title = title,
+				Image = image,
+				Result = couponResult
+			};
+			return weeklyGameResult;
+		}
+		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
 			//先把一定可以用的優惠券加進來
@@ -329,6 +524,6 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-       
-    }
+		
+	}
 }

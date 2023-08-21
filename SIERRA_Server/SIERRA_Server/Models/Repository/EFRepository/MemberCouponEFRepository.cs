@@ -227,8 +227,52 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<Coupon> FindCoupon(int couponId)
         {
-            var coupom = await _db.Coupons.FindAsync(couponId);
+            var coupom = await _db.Coupons.Include(c=>c.DiscountGroup).FirstOrDefaultAsync(c=>c.CouponId==couponId);
             return coupom;
         }
+        public async Task<CouponSetting[]> GetWeeklyGameCouponSettings()
+        {
+            var couponSettings =await _db.CouponSettings.Where(cs=>cs.CouponType==4)
+                                                        .OrderBy(cs=>cs.CouponSettingId)
+                                                        .ToArrayAsync();
+            return couponSettings;
+
+		}
+        public async Task<bool> HasPlayedWeeklyGame(int memberId)
+        {
+            var member = await _db.Members.FindAsync(memberId);
+            return (bool)member.WeeklyGamePlayed;
+        }
+        public async Task AddCouponAndRecordMemberPlayWeeklyGame(int memberId, Coupon coupon)
+        {
+            using (var transaction = _db.Database.BeginTransaction())
+            {
+                var member =await _db.Members.FindAsync(memberId);
+                var newMemberCoupon = new MemberCoupon()
+                {
+                    MemberId = memberId,
+                    CouponId = coupon.CouponId,
+                    CouponName = coupon.CouponName,
+                    CreateAt = DateTime.Now,
+                    ExpireAt = DateTime.Now.AddDays((double)coupon.Expiration)
+                };
+                await _db.MemberCoupons.AddAsync(newMemberCoupon);
+                member.WeeklyGamePlayed = true;
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+        }
+        public async Task<string> FindResultImageByDiscountId(int discountGroupId)
+        {
+            var image = _db.DiscountGroups.Include(dg=>dg.DiscountGroupItems)
+                                          .ThenInclude(dgi=>dgi.Dessert)
+                                          .ThenInclude(d=>d.DessertImages)
+                                          .First(dg=>dg.DiscountGroupId == discountGroupId)
+                                          .DiscountGroupItems.First()
+                                          .Dessert.DessertImages.First().DessertImageName;
+            return image;
+
+        }
+
     }
 }
