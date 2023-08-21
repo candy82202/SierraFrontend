@@ -440,7 +440,6 @@ namespace SIERRA_Server.Models.Services
 					break;
             }
 			var discountGroupId = coupon.DiscountGroupId;
-			var SuggestProduct = await _repo.FindSuggestProduct((int)discountGroupId);
 			var weeklyGameResult = new WeeklyGameResult()
 			{
 				Content = content,
