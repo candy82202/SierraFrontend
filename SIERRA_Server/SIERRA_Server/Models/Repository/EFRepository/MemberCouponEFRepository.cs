@@ -262,17 +262,6 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 await transaction.CommitAsync();
             }
         }
-        public async Task<string> FindResultImageByDiscountId(int discountGroupId)
-        {
-            var image = _db.DiscountGroups.Include(dg=>dg.DiscountGroupItems)
-                                          .ThenInclude(dgi=>dgi.Dessert)
-                                          .ThenInclude(d=>d.DessertImages)
-                                          .First(dg=>dg.DiscountGroupId == discountGroupId)
-                                          .DiscountGroupItems.First()
-                                          .Dessert.DessertImages.First().DessertImageName;
-            return image;
-
-        }
 
     }
 }

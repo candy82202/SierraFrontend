@@ -405,35 +405,42 @@ namespace SIERRA_Server.Models.Services
 				await _repo.AddCouponAndRecordMemberPlayWeeklyGame(memberId, coupon);
 				couponResult = AddCouponResult.Success(coupon.CouponName);
             }
-			string image = await _repo.FindResultImageByDiscountId((int)coupon.DiscountGroupId);
-			string title,content;
+			string title,content,image;
 			switch (result.Setting.CouponSettingId)
 			{
 				case 9:
-					title = "1";
-					content = "1";
+					title = "巧克力";
+					content = "巧克力甜點是經典的享受，濃郁的可可味道總是能在每一口中帶來愉悅。無論是朱古力蛋糕、布朗尼，還是朱古力曲奇，巧克力的豐富風味總是能夠滿足你的味蕾，讓你感受到甜蜜的享受。";
+					image = "心理測驗-巧克力.jpg";
 					break;
 				case 10:
-                    title = "2";
-                    content = "2";
-                    break;
+                    title = "草莓";
+                    content = "草莓甜點散發著天然的水果香氣，帶來清新的口感和微酸的滋味。從草莓奶油蛋糕到草莓塔，這種口味充滿活力，讓人感受到自然的甜美，是一個完美的夏季選擇。";
+					image = "心理測驗-草莓.jpg";
+					break;
                 case 11:
-                    title = "3";
-                    content = "3";
-                    break;
+                    title = "抹茶";
+                    content = "抹茶甜點代表了日本的精緻和平衡。抹茶口味的冰淇淋、抹茶拿鐵和抹茶蛋糕都帶有微妙的苦甜味道，深受喜愛。這種風味融合了獨特的茶香和奶香，給人一種優雅的感覺。";
+					image = "心理測驗-抹茶.jpg";
+					break;
                 case 12:
-                    title = "4";
-                    content = "4";
-                    break;
+                    title = "芋頭";
+                    content = "芋頭甜點來自東亞的傳統美食，帶來濃厚的口感和淡淡的甜味。從芋泥包到芋圓湯，芋頭的獨特風味總是令人愉悅。它的豐富和濃郁讓你感受到溫暖和滿足。";
+					image = "心理測驗-芋頭.jpg";
+					break;
                 case 13:
-                    title = "5";
-                    content = "5";
-                    break;
+                    title = "微醺";
+                    content = "微醺口味的甜點常常融合了微妙的酒香和甜蜜的滋味。從香檳蛋糕到葡萄酒巧克力，這種口味帶來一種恬淡的愉悅感，適合在特別的時刻品味，將微醺的情感與美味融合在一起。";
+					image = "心理測驗-微醺.jpg";
+					break;
 				default:
-                    title = "6";
-                    content = "6";
-                    break;
+                    title = "xxxxx";
+                    content = "xxxxx";
+					image = "xxxxx";
+					break;
             }
+			var discountGroupId = coupon.DiscountGroupId;
+			var SuggestProduct = await _repo.FindSuggestProduct((int)discountGroupId);
 			var weeklyGameResult = new WeeklyGameResult()
 			{
 				Content = content,
