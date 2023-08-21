@@ -6,15 +6,22 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using SIERRA_Server.Configurations;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Infra;
 using SIERRA_Server.Models.Interfaces;
 using SIERRA_Server.Models.Repository.DPRepository;
 using SIERRA_Server.Models.Repository.EFRepository;
+using SIERRA_Server.Models.Services;
 using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Configuration
+builder.Services.Configure<OpenAiConfig>(builder.Configuration.GetSection("OpenAI"));
+
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(Options => {
@@ -53,6 +60,9 @@ builder.Services.AddScoped<IDessertDiscountRepository, DessertDiscountDPReposito
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IOpenAiService, OpenAiService>();
+
 // 所有API使用,需經過JWT驗證
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    .AddJwtBearer(options =>

@@ -136,6 +136,35 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             }
             return dvm;
         }
+        public async Task<List<DessertsIndexDTO>> GetDessertByName(string dessertName)
+        {
+            var dvm = new List<DessertsIndexDTO>();
+
+            var desserts = await _context.Desserts
+                .Include(d => d.Specifications)
+                .Where(d => d.DessertName == dessertName) // Filter by dessert name
+                .ToListAsync();
+
+            foreach (var dessert in desserts)
+            {
+                var specification = dessert.Specifications.FirstOrDefault();
+                int unitPrice = specification?.UnitPrice ?? 0;
+
+                DessertsIndexDTO item = dessert.ToDIndexDto();
+                dvm.Add(item);
+            }
+            // Filter the desserts based on the dessertName parameter
+            if (!string.IsNullOrWhiteSpace(dessertName))
+            {
+                dvm = dvm.Where(d => d.DessertName.Contains(dessertName)).ToList();
+            }
+            return dvm;
+        }
+        public async Task<List<string>> GetDessertNames()
+        {
+            var dessertNames = await _context.Desserts.Select(d => d.DessertName).ToListAsync();
+            return dessertNames;
+        }
 
     }
 }
