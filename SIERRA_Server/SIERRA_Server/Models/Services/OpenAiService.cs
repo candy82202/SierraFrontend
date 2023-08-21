@@ -2,6 +2,7 @@
 using OpenAI_API.Models;
 using SIERRA_Server.Configurations;
 using SIERRA_Server.Models.DTOs.Desserts;
+using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
 using System.Text;
 
@@ -12,11 +13,14 @@ namespace SIERRA_Server.Models.Services
         private readonly OpenAiConfig _openAiConfig;
         private readonly IDessertRepository _repo;
         private readonly IDessertCategoryRepository _dessertCategoryRepository;
-        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository)
+        private readonly IMemberCouponRepository _memberCouponRepo;
+
+        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo)
         {
             _openAiConfig = optionsMonitor.CurrentValue;
             _repo = repo;
             _dessertCategoryRepository = dessertCategoryRepository;
+            _memberCouponRepo = memberCouponRepo;
         }
 
         public async Task<string> CheckProgramingLanguage(string language)
@@ -99,11 +103,12 @@ namespace SIERRA_Server.Models.Services
         //    var response = await chat.GetResponseFromChatbotAsync();
         //    return response;
         //}
-        public async Task<string> AskDessertQuestion(string text)
+        public async Task<string> AskDessertQuestion(string text, int? memberId)
         {
             var api = new OpenAI_API.OpenAIAPI(_openAiConfig.Key);
             var chat = api.Chat.CreateConversation();
             var hotdessert = await _repo.GetHotProductsAsync();
+
             var dessertCategories = new Dictionary<string, Func<Task<List<DessertListDTO>>>>
     {
         { "整模蛋糕", async () => await GetDessertsByCategoryAsync(1) },
@@ -129,18 +134,45 @@ namespace SIERRA_Server.Models.Services
                     }
                 }
             }
-
+            if (memberId == null) { systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以註冊會員，點擊這個網址連結<a href='http://127.0.0.1:5501/LogIn.html'>http://127.0.0.1:5501/LogIn.html</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
+            else
+            {
+                var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
+                if (coupons.Any()) { 
+                systemMessage.AppendLine("您可以使用的優惠券有：");
+                foreach (var coupon in coupons)
+                {
+                    systemMessage.AppendLine($"{coupon.CouponName}");
+                }}
+                else { systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
+            }
             systemMessage.AppendLine("熱銷商品前三名分别是：");
             for (int i = 0; i < hotdessert.Count && i < 3; i++)
             {
                 systemMessage.AppendLine($"{i + 1}. {hotdessert[i].DessertName}");
             }
-            if (text.Contains("價格"))
-            {
-                var dessertName = await ExtractDessertNameFromText(text); // Extract dessert name from user input
-                var price = await GetDessertPriceAsync(dessertName);
+            //if (text.Contains("價格") || text.Contains("Price") || text.Contains("money"))
+            //{
+            //    var dessertName = await ExtractDessertNameFromText(text); // Extract dessert name from user input
+            //    var price = await GetDessertPriceAsync(dessertName);
 
-                if (price != null)
+            //    if (price != null)
+            //    {
+            //        systemMessage.AppendLine($"{dessertName}的價格是{price}元。");
+            //    }
+            //    else
+            //    {
+            //        systemMessage.AppendLine($"很抱歉，找不到{dessertName}的價格信息。");
+            //    }
+            //}
+            string[] keywords = { "價錢", "價格", "Price", "money", "金額", "How much" };
+
+            if (keywords.Any(keyword => text.Contains(keyword)))
+            {
+                string dessertName = await ExtractDessertNameFromText(text);
+                decimal? price = await GetDessertPriceAsync(dessertName);
+
+                if (price.HasValue)
                 {
                     systemMessage.AppendLine($"{dessertName}的價格是{price}元。");
                 }
