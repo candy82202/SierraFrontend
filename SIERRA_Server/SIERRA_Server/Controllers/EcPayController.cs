@@ -40,12 +40,22 @@ namespace SIERRA_Server.Controllers
             var dessertOrderTotal = latestOrder.DessertOrderTotal;
 
             //根據最新訂單的Id獲取相應的DessertOrderDetails資料
-           var latestDessertDetail = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).FirstOrDefaultAsync();
-            if (latestDessertDetail == null)
+            //var latestDessertDetail = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).FirstOrDefaultAsync();
+            // if (latestDessertDetail == null)
+            // {
+            //     return BadRequest("No dessert detail found for the order.");
+            // }
+            // var dessertName = latestDessertDetail.DessertName;
+            //根據最新訂單的Id獲取所有相應的DessertOrderDetails資料
+            var dessertDetails = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).ToListAsync();
+
+            if (!dessertDetails.Any())
             {
-                return BadRequest("No dessert detail found for the order.");
+                return BadRequest("No dessert details found for the order.");
             }
-            var dessertName = latestDessertDetail.DessertName;
+
+            //將所有的dessertName使用#組合成一個字符串
+            var combinedDessertNames = string.Join("#", dessertDetails.Select(d => d.DessertName));
 
             var orderId = Guid.NewGuid().ToString("N").Substring(0, 5);
 
@@ -61,7 +71,7 @@ namespace SIERRA_Server.Controllers
                 {"MerchantTradeDate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
                 {"TotalAmount",dessertOrderTotal.ToString() },
                 {"TradeDesc", "香草輕乳酪選用的是馬達加斯加的天然香草籽切開蛋糕後會清晰地看到香草籽佈滿其中"},
-                {"ItemName",dessertName },
+                {"ItemName",combinedDessertNames },
                 {"ReturnURL", "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io"},
                 { "ClientBackURL", "http://localhost:5501/Order.html"},
                 { "EncryptType",  "1"},
