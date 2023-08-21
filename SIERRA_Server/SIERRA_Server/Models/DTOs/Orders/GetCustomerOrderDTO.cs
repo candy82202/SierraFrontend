@@ -17,7 +17,7 @@ namespace SIERRA_Server.Models.DTOs.Orders
         public string? Note { get; set; }
         public string? PayMethod { get; set; }
         public string? CouponName { get; set; }
-        public string? DiscountInfo { get; set; }
+        public int? DiscountPrice { get; set; }
         //public int OrderStatusId { get; set; }
         public string? StatusName { get; set; }
         public List<ItemDto>? DessertOrderDetails { get; set; }

@@ -119,6 +119,7 @@ namespace SIERRA_Server.Controllers
                     // 根據標識符(username)找到購物車
                     var cart = await _context.DessertCarts
                         .Include(c => c.DessertCartItems).ThenInclude(ci=>ci.Dessert).ThenInclude(x=>x.Specifications)
+                        .Include(c => c.DessertCartItems).ThenInclude(ci => ci.Dessert).ThenInclude(d=>d.Discounts)
                         .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
                     if (cart == null) throw new Exception("Cart not found");
                     
@@ -139,7 +140,7 @@ namespace SIERRA_Server.Controllers
                         DeliveryMethod = orderDto.DeliveryMethod,
                         Note = orderDto.Note,
                         PayMethod = orderDto.PayMethod,
-                        //DiscountInfo= orderDto.DiscountInfo,
+                        DiscountPrice = orderDto.DiscountPrice,
                     };
                     _context.DessertOrders.Add(order);
                     await _context.SaveChangesAsync();
@@ -154,8 +155,10 @@ namespace SIERRA_Server.Controllers
                             DessertId = item.DessertId,
                             DessertName = item.Dessert.DessertName, 
                             Quantity = item.Quantity,
-                            UnitPrice = item.Specification.UnitPrice,
-                            Subtotal = item.Quantity * item.Specification.UnitPrice
+                            UnitPrice = (int)(item.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+                    ? Math.Round((decimal)item.Specification.UnitPrice * ((decimal)item.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : item.Specification.UnitPrice),
+                            Subtotal = item.Quantity * (int)(item.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+                    ? Math.Round((decimal)item.Specification.UnitPrice * ((decimal)item.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : item.Specification.UnitPrice)
                         };
                         _context.DessertOrderDetails.Add(orderDetail);
                     }
@@ -206,7 +209,7 @@ namespace SIERRA_Server.Controllers
             PayMethod = x.PayMethod,
             Note = x.Note,
             CouponName=x.MemberCoupon.CouponName,
-            //DiscountInfo = x.DiscountInfo,
+            DiscountPrice = x.DiscountPrice,
             DessertOrderDetails = (List<ItemDto>)x.DessertOrderDetails.Select(n => new ItemDto
             {
                 DessertName = n.DessertName,

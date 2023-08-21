@@ -26,24 +26,25 @@ namespace SIERRA_Server.Controllers
         [HttpPost]
         public async Task<IActionResult> EcPayCheckOut()
         {
-            // 從DessertOrders獲取第一筆資料
-            var firstOrder = await _context.DessertOrders.FirstOrDefaultAsync();
-            if (firstOrder == null)
+            //從DessertOrders獲取最新一筆資料
+            var latestOrder = await _context.DessertOrders.OrderByDescending(o => o.CreateTime).FirstOrDefaultAsync();
+            if (latestOrder == null)
             {
                 return BadRequest("No order found.");
             }
-            var dessertOrderTotal = firstOrder.DessertOrderTotal;
+            var dessertOrderTotal = latestOrder.DessertOrderTotal;
 
-            var firstDessert = await _context.DessertOrderDetails.FirstOrDefaultAsync();
-            if (firstDessert == null)
+            //根據最新訂單的Id獲取相應的DessertOrderDetails資料
+           var latestDessertDetail = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).FirstOrDefaultAsync();
+            if (latestDessertDetail == null)
             {
-                return BadRequest("No order found.");
+                return BadRequest("No dessert detail found for the order.");
             }
-            var dessertName = firstDessert.DessertName;
-
-
+            var dessertName = latestDessertDetail.DessertName;
 
             var orderId = Guid.NewGuid().ToString("N").Substring(0, 5);
+
+
             //需填入你的網址
             var website = "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io ";
             var order = new Dictionary<string, string>
