@@ -5,6 +5,6 @@
         Task<string> CompleteSentence(string text);
         Task<string> CompleteSentenceAdvance(string text);
         Task<string> CheckProgramingLanguage(string language);
-        Task<string> AskDessertQuestion(string text);
+        Task<string> AskDessertQuestion(string text, int? memberId);
     }
 }
