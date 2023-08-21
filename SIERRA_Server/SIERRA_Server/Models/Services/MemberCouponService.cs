@@ -190,7 +190,7 @@ namespace SIERRA_Server.Models.Services
 			var result = Math.Abs(price)> totalPrice? (int)-totalPrice:price;
 			if (result != 0)
 			{
-				_repo.RecordCouponInCart(cart, memberCouponId);
+				_repo.RecordCouponInCart(cart, memberCouponId,result);
 			}
 			return result;
 		}
