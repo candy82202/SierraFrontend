@@ -440,13 +440,15 @@ namespace SIERRA_Server.Models.Services
 					break;
             }
 			var discountGroupId = coupon.DiscountGroupId;
-			var SuggestProduct = await _repo.FindSuggestProduct((int)discountGroupId);
+			var dessertsInDiscountGroup = await _repo.FindSuggestProduct((int)discountGroupId);
+			var suggestProducts = dessertsInDiscountGroup.Select(d => d.ToSuggestProductDto());
 			var weeklyGameResult = new WeeklyGameResult()
 			{
 				Content = content,
 				Title = title,
 				Image = image,
-				Result = couponResult
+				Result = couponResult,
+				SuggestProducts = suggestProducts
 			};
 			return weeklyGameResult;
 		}

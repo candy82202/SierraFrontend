@@ -1,5 +1,6 @@
 ﻿using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
+using SIERRA_Server.Models.Infra.Promotions;
 
 namespace SIERRA_Server.Models.Exts
 {
@@ -131,6 +132,16 @@ namespace SIERRA_Server.Models.Exts
 				ApplyTo = applyTo,
 				ApplyToDeTail = dessertNames,
 				CouponType = entity.Coupon.DiscountType
+			};
+		}
+		public static SuggestProductDto ToSuggestProductDto(this DiscountGroupItem entity)
+		{
+			return new SuggestProductDto()
+			{
+				DessertId = entity.DessertId,
+				DessertName = entity.Dessert.DessertName,
+				DessertImage = entity.Dessert.DessertImages.First().DessertImageName,
+				UnitPrice = entity.Dessert.Specifications.First().UnitPrice,
 			};
 		}
 	}
