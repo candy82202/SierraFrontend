@@ -46,6 +46,7 @@ namespace SIERRA_Server.Controllers
             //     return BadRequest("No dessert detail found for the order.");
             // }
             // var dessertName = latestDessertDetail.DessertName;
+
             //根據最新訂單的Id獲取所有相應的DessertOrderDetails資料
             var dessertDetails = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).ToListAsync();
 

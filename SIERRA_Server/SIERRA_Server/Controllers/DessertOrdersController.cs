@@ -182,18 +182,18 @@ namespace SIERRA_Server.Controllers
             }
         }
 
-        //GET: api/DessertOrders
-        [HttpPost("GetCustomerOrder")]
-        public async Task<IActionResult> GetCustomerOrder(GetCustomerOrderDTO dto)
+        //Get: api/DessertOrders
+        [HttpGet("GetCustomerOrder")]
+        public async Task<IActionResult> GetCustomerOrder(string? username)
         {
             //根據username找到所有的訂單及訂單狀態
             //最新訂單排最前
-            if (dto.Username == null)
+            if (username == null)
             {
                 return NotFound();
             }
             var userOrder = await _context.DessertOrders.Include(c=>c.MemberCoupon).Include(od => od.DessertOrderDetails).Include(o => o.DessertOrderStatus)
-        .Where(o => o.Username == dto.Username)
+        .Where(o => o.Username == username)
         .Select(x => new GetCustomerOrderDTO
         {
             Id = x.Id,
