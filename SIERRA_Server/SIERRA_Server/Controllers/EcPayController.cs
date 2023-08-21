@@ -24,14 +24,19 @@ namespace SIERRA_Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EcPayCheckOut()
+        public async Task<IActionResult> EcPayCheckOut([FromBody] UserRequest request)
         {
             //從DessertOrders獲取最新一筆資料
-            var latestOrder = await _context.DessertOrders.OrderByDescending(o => o.CreateTime).FirstOrDefaultAsync();
-            if (latestOrder == null)
-            {
-                return BadRequest("No order found.");
-            }
+            //var latestOrder = await _context.DessertOrders.OrderByDescending(o => o.CreateTime).FirstOrDefaultAsync();
+            //if (latestOrder == null)
+            //{
+            //    return BadRequest("No order found.");
+            //}
+            //根據提供的username查找最新一筆訂單資訊
+            var latestOrder = await _context.DessertOrders
+                                            .Where(o => o.Username == request.Username)
+                                            .OrderByDescending(o => o.CreateTime)
+                                            .FirstOrDefaultAsync();
             var dessertOrderTotal = latestOrder.DessertOrderTotal;
 
             //根據最新訂單的Id獲取相應的DessertOrderDetails資料
@@ -78,5 +83,10 @@ namespace SIERRA_Server.Controllers
 
 
 
+    }
+
+    public class UserRequest
+    {
+        public string Username { get; set; }
     }
 }
