@@ -68,11 +68,12 @@ namespace SIERRA_Server.Models.Services
             return result;
         }
 
-        public async Task<IEnumerable<MemberCouponDto>> GetIneligibleCoupon(int memberId)
+        public async Task<IEnumerable<IneligibleMemberCouponDto>> GetIneligibleCoupon(int memberId)
         {
             var coupons = await _repo.GetUsableCoupon(memberId);
             var usableCoupons = await DoThisToGetCouponMeetCriteria(memberId);
-            var ineligibleCoupons = coupons.Except(usableCoupons).Select(mc => mc.ToMemberCouponDto());
+			var cart = await _repo.GetDessertCart(memberId);
+			var ineligibleCoupons = coupons.Except(usableCoupons).Select(mc => mc.ToIneligibleMemberCouponDto(cart));
             return ineligibleCoupons;
         }
         public async Task<IEnumerable<CouponCanGetDto>> GetCouponCanGet(int memberId)

@@ -50,6 +50,7 @@ builder.Services.AddCors(options =>
 //DIª`¤J
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
+builder.Services.AddScoped<MemberDPRepository>();
 builder.Services.AddScoped<PromotionEFRepository>();
 builder.Services.AddScoped<HashUtility>();
 //builder.Services.AddScoped<UrlHelper>();
@@ -85,10 +86,10 @@ builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
 //        };
 //    }).AddGoogle(options =>
-//	{
-//		options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
-//		options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
-//	});
+//    {
+//        options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+//        options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+//    });
 
 //builder.Services.AddMvc(options =>
 //{

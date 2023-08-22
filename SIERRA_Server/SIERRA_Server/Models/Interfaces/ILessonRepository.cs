@@ -6,5 +6,7 @@ namespace SIERRA_Server.Models.Interfaces {
     public interface ILessonRepository {
 
         Task<List<LessonCategoryDtoItem>> GetLessonCategoriesAsync();
+
+        Task<List<LessonDto>> GetLessonsAsync(string? categoryName);
     }
 }

@@ -24,6 +24,7 @@ using System.Net;
 using System.Text.Json.Nodes;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using SIERRA_Server.Models.Repository.DPRepository;
 
 namespace SIERRA_Server.Controllers
 {
@@ -32,12 +33,12 @@ namespace SIERRA_Server.Controllers
     public class MembersController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly MemberEFRepository _repo;
+        private readonly MemberDPRepository _repo;
         private readonly IConfiguration _config;
         private readonly HashUtility _hashUtility;
         private readonly EmailHelper _emailHelper;
 
-        public MembersController(AppDbContext context, MemberEFRepository repo, IConfiguration config, HashUtility hashUtility, EmailHelper emailHelper)
+        public MembersController(AppDbContext context, MemberDPRepository repo, IConfiguration config, HashUtility hashUtility, EmailHelper emailHelper)
         {
             _context = context;
             _repo = repo;
@@ -91,7 +92,7 @@ namespace SIERRA_Server.Controllers
         public IActionResult ForgotPassword(ForgotPasswordDTO request)
         {
             var service = new MemberService(_repo, _hashUtility, _emailHelper);
-            var result = service.ProccessResetPassword(request);
+            var result = service.ForgotPassword(request);
 
             if (result.IsFail) return BadRequest(result.ErrorMessage);
 
@@ -103,7 +104,7 @@ namespace SIERRA_Server.Controllers
         public IActionResult ResetPassword(ResetPasswordDTO request)
         {
             var service = new MemberService(_repo, _hashUtility);
-            var result = service.ProccessChangePassword(request);
+            var result = service.ResetPassword(request);
 
             if (result.IsFail) return BadRequest(result.ErrorMessage);
 
