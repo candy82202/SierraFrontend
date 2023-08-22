@@ -1,4 +1,5 @@
 ﻿using SIERRA_Server.Models.DTOs.Lessons;
+using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
 
 namespace SIERRA_Server.Models.Services {
@@ -15,6 +16,15 @@ namespace SIERRA_Server.Models.Services {
         {
             var lessoncategory = await _repo.GetLessonCategoriesAsync();
             return lessoncategory;
+        }
+
+        public async Task<List<LessonDto>> GetLessonsAsync(string? categoryName)
+        {
+           
+
+            var lesson = await _repo.GetLessonsAsync(categoryName);
+          
+            return lesson;
         }
     }
 }
