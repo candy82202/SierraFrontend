@@ -123,7 +123,7 @@ namespace SIERRA_Server.Controllers
                         .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
                     if (cart == null) throw new Exception("Cart not found");
                     
-                    // 創建訂單
+                    // 創建訂單甜點總額
                     var order = new DessertOrder
                     {
                         Id= (int)orderDto.Id,
