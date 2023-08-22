@@ -63,24 +63,27 @@ ORDER BY DG.DiscountGroupId";
 
                 foreach (var row in queryResult)
                 {
+                    var dessertDiscountDTO = _context.DiscountGroups
+                        .Select(dg => dg.ToDDiscountDto());
+                        //.ToList();
                     //然後查詢的結果對應到DTO
-                    var dessertDiscountDTO = new DessertDiscountDTO
-                    {
-                        DessertId = row.DessertId,
-                        DessertName = row.DessertName,
-                        UnitPrice = row.UnitPrice ?? null, // 如果 row.UnitPrice 为 null，将 UnitPrice 设置为 null
-                        DessertImageName = row.DessertImageName,
-                        DiscountGroupId = row.DiscountGroupId,
-                        Specification = new Specification
-                        {
-                            SpecificationId=row.SpecificationId,
-                            UnitPrice = row.UnitPrice,
-                            Flavor = row.Flavor,
-                            Size = row.Size
-                        }
-                    };
+                    //var dessertDiscountDTO = new DessertDiscountDTO
+                    //{
+                    //    DessertId = row.DessertId,
+                    //    DessertName = row.DessertName,
+                    //    UnitPrice = row.UnitPrice!=null? row.UnitPrice, // 如果 row.UnitPrice 为 null，将 UnitPrice 设置为 null
+                    //    DessertImageName = row.DessertImageName,
+                    //    DiscountGroupId = row.DiscountGroupId,
+                    //    Specification = new Specification
+                    //    {
+                    //        SpecificationId=row.SpecificationId,
+                    //        UnitPrice = row.UnitPrice,
+                    //        Flavor = row.Flavor,
+                    //        Size = row.Size
+                    //    }
+                    //};
                     //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
-                    dessertDiscountList.Add(dessertDiscountDTO);
+                    dessertDiscountList.AddRange(dessertDiscountDTO);
                 }
             }
             //返回剛剛迴圈找出的所有結果
