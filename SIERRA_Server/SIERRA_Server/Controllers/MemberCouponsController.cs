@@ -73,11 +73,11 @@ namespace SIERRA_Server.Controllers
 			return await server.GetCouponMeetCriteria((int)MemberId);
         }
         [HttpGet("Ineligible")]
-        public async Task<IEnumerable<MemberCouponDto>> GetIneligibleCoupon(int? MemberId)
+        public async Task<IEnumerable<IneligibleMemberCouponDto>> GetIneligibleCoupon(int? MemberId)
         {
             if (MemberId == null)
             {
-                return Enumerable.Empty<MemberCouponDto>();
+                return Enumerable.Empty<IneligibleMemberCouponDto>();
             }
             var server = new MemberCouponService(_repo);
             return await server.GetIneligibleCoupon((int)MemberId);
