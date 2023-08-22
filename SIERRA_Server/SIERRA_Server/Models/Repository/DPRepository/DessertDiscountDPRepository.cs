@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Desserts;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
@@ -70,7 +71,7 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                         DiscountGroupId = row.DiscountGroupId,
                         Specification = new Specification
                         {
-                            SpecificationId=row.SpecificationId,
+                            SpecificationId = row.SpecificationId,
                             UnitPrice = row.UnitPrice,
                             Flavor = row.Flavor,
                             Size = row.Size
@@ -82,8 +83,88 @@ namespace SIERRA_Server.Models.Repository.DPRepository
             }
             //返回剛剛迴圈找出的所有結果
             return dessertDiscountList;
+
+        }
+//        public async Task<List<DessertDiscountDTO>> GetDiscountGroupsByGroupId(int discountGroupId)
+//        {
+
+//            var dessertDiscountList = new List<DessertDiscountDTO>();
+
+//            // 取得名為Sierra的連接字符串(用於連接到數據庫)
+//            var connectionString = _configuration.GetConnectionString("Sierra");
+
+//            //建立數據庫連接
+//            using (var connection = new SqlConnection(connectionString))
+//            {
+//                // 從SQL 查詢裡面使用SQL Query的語法查找出資料
+//                string sqlQuery = $@"
+//               SELECT 
+//    D.DessertId,
+//    MAX(D.DessertName) AS DessertName, 
+//    MAX(S.Flavor) AS Flavor,           
+//    MAX(S.Size) AS Size,                
+//	 MAX(S.UnitPrice) AS UnitPrice, 
+//    DG.DiscountGroupId,
+//    MAX(DI.DessertImageName) AS DessertImageName, 
+//    STRING_AGG(CONVERT(VARCHAR, S2.SpecificationId), ', ') WITHIN GROUP (ORDER BY S2.SpecificationId) AS SpecificationIds
+//FROM 
+//    DiscountGroups DG
+//INNER JOIN 
+//    DiscountGroupItems DGI ON DG.DiscountGroupId = DGI.DiscountGroupId
+//INNER JOIN 
+//    Desserts D ON DGI.DessertId = D.DessertId
+//LEFT JOIN 
+//    DessertImages DI ON DI.DessertId = D.DessertId
+//LEFT JOIN 
+//    Specification S ON D.DessertId = S.DessertId 
+//LEFT JOIN 
+//    Specification S2 ON D.DessertId = S2.DessertId 
+//     WHERE DG.DiscountGroupId = @DiscountGroupId
+//GROUP BY D.DessertId, DG.DiscountGroupId
+//ORDER BY DG.DiscountGroupId";
+
+//                await connection.OpenAsync();
+
+//                //這裡QueryAsync使用Dapper的方法來非同步執行SQL查詢。
+//                //這裡為了防止SQL注入，使用參數化@DiscountGroupId 對應到 discountGroupId傳遞給方法的參數。
+//                var queryResult = await connection.QueryAsync(sqlQuery, new { DiscountGroupId = discountGroupId });
+
+//                foreach (var row in queryResult)
+//                {
+//                    var dessertDiscountDTOs = _context.DiscountGroups
+//      .Where(dg => dg.DiscountGroupId == discountGroupId)
+//      .Include(dg => dg.DiscountGroupItems)
+//      .SelectMany(dg => dg.DiscountGroupItems)
+//      .Select(dgi => dgi.ToDDiscountDto())
+//      .ToList();
+//                    //var dessertDiscountDTO = _context.DiscountGroups
+//                    //    .Select(dg => dg.ToDDiscountDto());
+//                    //.ToList();
+//                    //然後查詢的結果對應到DTO
+//                    //var dessertDiscountDTO = new DessertDiscountDTO
+//                    //{
+//                    //    DessertId = row.DessertId,
+//                    //    DessertName = row.DessertName,
+//                    //    UnitPrice = row.UnitPrice , // 如果 row.UnitPrice 为 null，将 UnitPrice 设置为 null
+//                    //    DessertImageName = row.DessertImageName,
+//                    //    DiscountGroupId = row.DiscountGroupId,
+//                    //    Specification = new Specification
+//                    //    {
+//                    //        SpecificationId = row.SpecificationId,
+//                    //        UnitPrice = row.UnitPrice,
+//                    //        Flavor = row.Flavor,
+//                    //        Size = row.Size
+//                    //    }
+//                    //};
+//                    //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
+//                    dessertDiscountList.AddRange(dessertDiscountDTOs);
+//                }
+//            }
+//            //返回剛剛迴圈找出的所有結果
+//            return dessertDiscountList;
         
-    }
+//    }
+      
         public async Task<List<DessertDiscountDTO>> GetDiscountGroups()
         {
 
