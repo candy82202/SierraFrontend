@@ -34,9 +34,9 @@ namespace SIERRA_Server.Controllers
         }
         [HttpPost()]
         [Route("AskDessert")]
-        public async Task<IActionResult> AskDessert(string text)
+        public async Task<IActionResult> AskDessert(string text, int? memberId)
         {
-            var result = await _openAiService.AskDessertQuestion(text);
+            var result = await _openAiService.AskDessertQuestion(text, memberId);
             return Ok(result);
 
         }
