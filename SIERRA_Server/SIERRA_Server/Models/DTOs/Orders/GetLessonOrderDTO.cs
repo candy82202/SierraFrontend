@@ -20,5 +20,6 @@
         public int NumberOfPeople { get; set; }
         public int LessonUnitPrice { get; set; }
         public int Subtotal { get; set; }
+        public DateTime LessonTime { get; set; }
     }
 }

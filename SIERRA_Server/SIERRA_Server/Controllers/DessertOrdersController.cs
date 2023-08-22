@@ -130,7 +130,7 @@ namespace SIERRA_Server.Controllers
                         MemberId= orderDto.MemberId,
                         Username = orderDto.Username,
                         DessertOrderStatusId= 1,
-                        MemberCouponId= orderDto.MemberCouponId,
+                        MemberCouponId= cart.MemberCouponId,
                         CreateTime = DateTime.Now,
                         Recipient = orderDto.Recipient,
                         RecipientPhone = orderDto.RecipientPhone,
@@ -140,9 +140,18 @@ namespace SIERRA_Server.Controllers
                         DeliveryMethod = orderDto.DeliveryMethod,
                         Note = orderDto.Note,
                         PayMethod = orderDto.PayMethod,
-                        DiscountPrice = orderDto.DiscountPrice,
+                        DiscountPrice = cart.DiscountPrice,
                     };
                     _context.DessertOrders.Add(order);
+                    var coupon = _context.MemberCoupons.Find(cart.MemberCouponId);
+                    if (coupon != null)
+                    {
+                        coupon.UseAt = DateTime.Now;
+                    }
+                    
+                    cart.MemberCouponId = null;
+                    cart.DiscountPrice = null;
+                    
                     await _context.SaveChangesAsync();
 
                     // 創建訂單明細
@@ -201,7 +210,7 @@ namespace SIERRA_Server.Controllers
             CreateTime = x.CreateTime,
             StatusName = x.DessertOrderStatus.StatusName,
             DeliveryMethod = x.DeliveryMethod,
-            DessertOrderTotal = x.DessertOrderTotal,
+            DessertOrderTotal = x.DiscountPrice==null?x.DessertOrderTotal:x.DessertOrderTotal+x.DiscountPrice,
             Recipient = x.Recipient,
             RecipientPhone = x.RecipientPhone,
             RecipientAddress = x.RecipientAddress,
