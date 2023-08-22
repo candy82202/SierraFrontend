@@ -44,6 +44,9 @@ Members 部分
 [V] - EditPassword
 [V] - GetMember & EditMember
 [V] - EditMemberImage & GetMemberImageUrl
+[V] - Modify MemberService.EditPassword() logic
+[V] - Rename ForgotPassword & ResetPassword
+[V] - Dapper
 
 
 

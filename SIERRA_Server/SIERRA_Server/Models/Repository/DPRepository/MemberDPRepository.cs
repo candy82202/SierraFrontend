@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using SIERRA_Server.Models.DTOs.Members;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 namespace SIERRA_Server.Models.Repository.DPRepository
@@ -38,7 +39,7 @@ namespace SIERRA_Server.Models.Repository.DPRepository
 		{
 			using var conn = new SqlConnection(_connStr);
 			await conn.OpenAsync();
-			string query = "SELECT * FROM Members WHERE Id = Id";
+			string query = "SELECT * FROM Members WHERE Id = @Id";
 			return await conn.QueryFirstOrDefaultAsync<Member>(query, new { Id = memberId });
 		}
 
@@ -59,32 +60,160 @@ namespace SIERRA_Server.Models.Repository.DPRepository
 
 		public bool IsAccountExist(string username)
 		{
-			throw new NotImplementedException();
+			using var conn = new SqlConnection(_connStr);
+			string query = "SELECT TOP 1 1 FROM Members WHERE Username=@Username";
+			return conn.ExecuteScalar<bool>(query, new { Username = username });
 		}
 
 		public bool IsAccountExist(int memberId)
 		{
-			throw new NotImplementedException();
+			using var conn = new SqlConnection(_connStr);
+			string query = "SELECT TOP 1 1 FROM Members WHERE Id=@Id";
+			return conn.ExecuteScalar<bool>(query, new { Id = memberId });
 		}
 
 		public bool IsEmailExist(string email)
 		{
-			throw new NotImplementedException();
+			using var conn = new SqlConnection(_connStr);
+			string query = "SELECT TOP 1 1 FROM Members WHERE Email=@Email";
+			return conn.ExecuteScalar<bool>(query, new { Email = email });
 		}
 
 		public void PostMember(RegisterDTO dto)
 		{
-			throw new NotImplementedException();
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+            INSERT INTO Members (Username, Email, EncryptedPassword, ImageName, IsConfirmed, ConfirmCode)
+            VALUES (@Username, @Email, @EncryptedPassword, @ImageName, @IsConfirmed, @ConfirmCode)";
+
+			var parameters = new
+			{
+				dto.Username,
+				dto.Email,
+				dto.EncryptedPassword,
+				dto.ImageName,
+				dto.IsConfirmed,
+				dto.ConfirmCode
+			};
+
+			conn.Execute(query, parameters);
 		}
 
-		public void SaveChanges()
+		public void ActiveRegister(Member member)
 		{
-			throw new NotImplementedException();
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+UPDATE Members 
+SET IsConfirmed = @IsConfirmed, ConfirmCode = @ConfirmCode
+WHERE Id = @Id
+";
+
+			// 參數名稱如果跟資料庫欄位名稱相同，可把等號左邊部分去掉
+			var parameters = new
+			{
+				IsConfirmed = member.IsConfirmed,
+				ConfirmCode = member.ConfirmCode,
+				Id = member.Id
+			};
+
+			conn.Execute(query, parameters);
 		}
 
-		public Task SaveChangesAsync()
+		public void ForgotPassword(Member member)
 		{
-			throw new NotImplementedException();
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+UPDATE Members 
+SET ConfirmCode = @ConfirmCode
+WHERE Id = @Id
+";
+			
+			var parameters = new
+			{
+				member.ConfirmCode,
+				member.Id
+			};
+
+			conn.Execute(query, parameters);
 		}
+		public void ResetPassword(Member member)
+		{
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+UPDATE Members 
+SET EncryptedPassword = @EncryptedPassword, ConfirmCode = @ConfirmCode
+WHERE Id = @Id
+";
+			
+			var parameters = new
+			{
+				member.EncryptedPassword,
+				member.ConfirmCode,
+				member.Id
+			};
+			conn.Execute(query, parameters);
+		}
+
+		public void EditPassword(Member member)
+		{
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+UPDATE Members 
+SET EncryptedPassword = @EncryptedPassword
+WHERE Id = @Id
+";
+			
+			var parameters = new
+			{
+				member.EncryptedPassword,
+				member.Id
+			};
+			conn.Execute(query, parameters);
+		}
+
+		public async Task EditMemberAsync(Member member)
+		{
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+UPDATE Members 
+SET Address = @Address, Phone = @Phone, Birth = @Birth, Gender = @Gender
+WHERE Id = @Id
+";
+			
+			var parameters = new
+			{
+				member.Address,
+				member.Phone,
+				member.Birth,
+				member.Gender,
+				member.Id
+			};
+			await conn.ExecuteAsync(query, parameters);
+		}
+
+		public async Task EditMemberImageAsync(Member member)
+		{
+			using var conn = new SqlConnection(_connStr);
+
+			string query = @"
+UPDATE Members 
+SET ImageName = @ImageName
+WHERE Id = @Id
+";
+			
+			var parameters = new
+			{
+				member.ImageName,
+				member.Id
+			};
+			await conn.ExecuteAsync(query, parameters);
+		}
+
 	}
 }

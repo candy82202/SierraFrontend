@@ -15,8 +15,5 @@ namespace SIERRA_Server.Models.Interfaces
 		bool IsAccountExist(string username);
 		bool IsAccountExist(int memberId);
 		void PostMember(RegisterDTO dto);
-		void SaveChanges();
-		Task SaveChangesAsync();
-
 	}
 }
