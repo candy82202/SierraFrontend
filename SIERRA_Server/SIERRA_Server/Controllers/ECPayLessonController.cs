@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using SIERRA_Server.Models.EFModels;
@@ -9,54 +10,41 @@ using System.Text;
 using System.Web;
 using System.Net.Http;
 
-
 namespace SIERRA_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EcPayController : ControllerBase
+    public class ECPayLessonController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public EcPayController(AppDbContext context)
+        public ECPayLessonController(AppDbContext context)
         {
             _context = context;
         }
-
         [HttpPost]
         public async Task<IActionResult> EcPayCheckOut([FromBody] UserRequest request)
         {
-            //從DessertOrders獲取最新一筆資料
-            //var latestOrder = await _context.DessertOrders.OrderByDescending(o => o.CreateTime).FirstOrDefaultAsync();
-            //if (latestOrder == null)
-            //{
-            //    return BadRequest("No order found.");
-            //}
+            
             //根據提供的username查找最新一筆訂單資訊
-            var latestOrder = await _context.DessertOrders
+            var latestOrder = await _context.LessonOrders
                                             .Where(o => o.Username == request.Username)
                                             .OrderByDescending(o => o.CreateTime)
                                             .FirstOrDefaultAsync();
-            var dessertOrderTotal = latestOrder.DessertOrderTotal;
+            var lessonOrderTotal = latestOrder.LessonOrderTotal;
 
-            //根據最新訂單的Id獲取相應的DessertOrderDetails資料
-            //var latestDessertDetail = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).FirstOrDefaultAsync();
-            // if (latestDessertDetail == null)
-            // {
-            //     return BadRequest("No dessert detail found for the order.");
-            // }
-            // var dessertName = latestDessertDetail.DessertName;
+           
 
             //根據最新訂單的Id獲取所有相應的DessertOrderDetails資料
-            var dessertDetails = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).ToListAsync();
+            var lessonDetails = await _context.LessonOrderDetails.Where(d => d.LessonOrderId == latestOrder.Id).ToListAsync();
 
-            if (!dessertDetails.Any())
+            if (!lessonDetails.Any())
             {
-                return BadRequest("No dessert details found for the order.");
+                return BadRequest("No lesson details found for the order.");
             }
 
-            //將所有的dessertName使用#組合成一個字符串
-            var combinedDessertNames = string.Join("#", dessertDetails.Select(d => d.DessertName));
+            //將所有的lessonTitle使用#組合成一個字符串
+            var combinedlessonTitles = string.Join("#", lessonDetails.Select(d => d.LessonTitle));
 
             var orderId = Guid.NewGuid().ToString("N").Substring(0, 5);
 
@@ -65,14 +53,13 @@ namespace SIERRA_Server.Controllers
             var website = "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io ";
             var order = new Dictionary<string, string>
             {
-                //{"HashKey","pwFHCqoQZGmho4w6"},
-                //{"HashIV" ,"EkRm7iFT261dpevs"},
+                
                 {"MerchantID","3002607" },
                 {"MerchantTradeNo",orderId},
                 {"MerchantTradeDate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
-                {"TotalAmount",dessertOrderTotal.ToString() },
-                {"TradeDesc", "香草輕乳酪選用的是馬達加斯加的天然香草籽切開蛋糕後會清晰地看到香草籽佈滿其中"},
-                {"ItemName",combinedDessertNames },
+                {"TotalAmount",lessonOrderTotal.ToString() },
+                {"TradeDesc", "在這個課程中，您將學習手工製作法式馬卡龍。從馬卡龍的製作、內餡的調配到最後的裝飾，讓您的法式馬卡龍美味可口、色彩豐富。"},
+                {"ItemName",combinedlessonTitles },
                 {"ReturnURL", "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io"},
                 { "ClientBackURL", "http://localhost:5501/Order.html"},
                 { "EncryptType",  "1"},
@@ -91,13 +78,6 @@ namespace SIERRA_Server.Controllers
             order.Add("CheckMacValue", checkMacValue);
             return Ok(order);
         }
-
-
-
     }
-
-    public class UserRequest
-    {
-        public string Username { get; set; }
-    }
+  
 }
