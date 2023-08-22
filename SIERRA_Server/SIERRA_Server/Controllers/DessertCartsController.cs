@@ -272,7 +272,7 @@ namespace SIERRA_Server.Controllers
             return cart.DessertCartItems.Any();
         }
         [HttpGet("UsingCoupon")]
-        public async Task<object> GetUsingCouponAndDiscount(string username)
+        public async Task<object?> GetUsingCouponAndDiscount(string username)
         {
             var cart = await _context.DessertCarts.Include(c=>c.MemberCoupon)
                                                   .FirstOrDefaultAsync(c => c.Username == username);

@@ -453,7 +453,18 @@ namespace SIERRA_Server.Models.Services
 			};
 			return weeklyGameResult;
 		}
-		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+        public async Task<bool> CancelUsingCoupon(int memberId)
+        {
+            var result = await _repo.CancelUsingCoupon(memberId);
+            return result;
+        }
+
+        public async Task<object?> GetUsingCoupon(int memberId)
+        {
+			var result = await _repo.GetUsingCoupon(memberId);
+			return result;
+        }
+        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
 			//先把一定可以用的優惠券加進來
@@ -534,6 +545,6 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-		
-	}
+        
+    }
 }
