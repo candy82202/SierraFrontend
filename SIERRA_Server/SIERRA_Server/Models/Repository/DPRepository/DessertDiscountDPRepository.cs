@@ -30,27 +30,30 @@ namespace SIERRA_Server.Models.Repository.DPRepository
             {
                 // 從SQL 查詢裡面使用SQL Query的語法查找出資料
                 string sqlQuery = $@"
-                SELECT 
-                    D.DessertId,
-                    D.DessertName,
-                    S.UnitPrice,
-                    S.Flavor,
-                    S.Size,S.SpecificationId,
-
-                    DG.DiscountGroupId,
-                    DI.DessertImageName
-                FROM 
-                    DiscountGroups DG
-                INNER JOIN 
-                    DiscountGroupItems DGI ON DG.DiscountGroupId = DGI.DiscountGroupId
-                INNER JOIN 
-                    Desserts D ON DGI.DessertId = D.DessertId
-                LEFT JOIN 
-                    DessertImages DI ON DI.DessertId = D.DessertId
-                LEFT JOIN 
-                    Specification S ON D.DessertId = S.DessertId 
-                WHERE DG.DiscountGroupId = @DiscountGroupId
-                ORDER BY DG.DiscountGroupId";
+               SELECT 
+    D.DessertId,
+    MAX(D.DessertName) AS DessertName, 
+    MAX(S.Flavor) AS Flavor,           
+    MAX(S.Size) AS Size,                
+	 MAX(S.UnitPrice) AS UnitPrice, 
+    DG.DiscountGroupId,
+    MAX(DI.DessertImageName) AS DessertImageName, 
+    STRING_AGG(CONVERT(VARCHAR, S2.SpecificationId), ', ') WITHIN GROUP (ORDER BY S2.SpecificationId) AS SpecificationIds
+FROM 
+    DiscountGroups DG
+INNER JOIN 
+    DiscountGroupItems DGI ON DG.DiscountGroupId = DGI.DiscountGroupId
+INNER JOIN 
+    Desserts D ON DGI.DessertId = D.DessertId
+LEFT JOIN 
+    DessertImages DI ON DI.DessertId = D.DessertId
+LEFT JOIN 
+    Specification S ON D.DessertId = S.DessertId 
+LEFT JOIN 
+    Specification S2 ON D.DessertId = S2.DessertId 
+     WHERE DG.DiscountGroupId = @DiscountGroupId
+GROUP BY D.DessertId, DG.DiscountGroupId
+ORDER BY DG.DiscountGroupId";
 
                 await connection.OpenAsync();
 
@@ -65,7 +68,7 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                     {
                         DessertId = row.DessertId,
                         DessertName = row.DessertName,
-                        UnitPrice = row.UnitPrice,
+                        UnitPrice = row.UnitPrice ?? null, // 如果 row.UnitPrice 为 null，将 UnitPrice 设置为 null
                         DessertImageName = row.DessertImageName,
                         DiscountGroupId = row.DiscountGroupId,
                         Specification = new Specification
