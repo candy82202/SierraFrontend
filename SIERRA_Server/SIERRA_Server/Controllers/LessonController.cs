@@ -25,32 +25,32 @@ namespace SIERRA_Server.Controllers {
                 _repo = repo;
             }
 
-            [HttpGet]
-            public async Task<ActionResult<LessonDTO>> GetLessons(string? categoryName)
-            {
-                if (_context == null)
-                {
-                    return NotFound();
-                }
+            //[HttpGet]
+            //public async Task<ActionResult<LessonDTO>> GetLessons(string? categoryName)
+            //{
+            //    if (_context == null)
+            //    {
+            //        return NotFound();
+            //    }
 
-                var lessons = _context.Lessons.Include(t => t.Teacher)
-                                                                  .Include(lm => lm.LessonImages)
-                                                                  .Include(lc => lc.LessonCategory)
-                                                                  .Where(l => l.Teacher.TeacherStatus == true && l.LessonStatus == true)
-                                                                  .AsQueryable();
+            //    var lessons = _context.Lessons.Include(t => t.Teacher)
+            //                                                      .Include(lm => lm.LessonImages)
+            //                                                      .Include(lc => lc.LessonCategory)
+            //                                                      .Where(l => l.Teacher.TeacherStatus == true && l.LessonStatus == true)
+            //                                                      .AsQueryable();
 
 
-                if (!string.IsNullOrEmpty(categoryName))
-                {
-                    lessons = lessons.Include(l => l.LessonCategory)
-                                                .Where(lc => lc.LessonCategory.LessonCategoryName.Contains(categoryName));
-                }
+            //    if (!string.IsNullOrEmpty(categoryName))
+            //    {
+            //        lessons = lessons.Include(l => l.LessonCategory)
+            //                                    .Where(lc => lc.LessonCategory.LessonCategoryName.Contains(categoryName));
+            //    }
 
-                LessonDTO lessondto = new LessonDTO();
-                lessondto.Lessons = await lessons.ToListAsync();
+            //    LessonDTO lessondto = new LessonDTO();
+            //    lessondto.Lessons = await lessons.ToListAsync();
 
-                return lessondto;
-            }
+            //    return lessondto;
+            //}
 
             // GET:category
 
@@ -121,7 +121,19 @@ namespace SIERRA_Server.Controllers {
                 var lessonCategory = await service.GetLessonCategoriesAsync();
                 return Ok(lessonCategory);
             }
+
+            [HttpGet("lesson")]
+            public async Task<IActionResult> GetLessonsAsync(string? categoryName)
+            {
+                var service = new LessonService(_repo); 
+                var lesson = await service.GetLessonsAsync(categoryName);
+                return Ok(lesson);
+            }
+
         }
+    
+    
+    
     }
 
 }
