@@ -162,6 +162,7 @@ namespace SIERRA_Server.Controllers
             }
             var userorder = await _context.LessonOrders
     .Include(l => l.LessonOrderDetails)
+    .ThenInclude(lt=>lt.Lesson)
     .Include(lo => lo.LessonOrderStatus)
     .Where(m => m.Username == username)
     .OrderByDescending(o => o.CreateTime)
@@ -183,6 +184,7 @@ namespace SIERRA_Server.Controllers
                     NumberOfPeople = n.NumberOfPeople,
                     LessonUnitPrice = n.LessonUnitPrice,
                     Subtotal = n.Subtotal,
+                    LessonTime=n.Lesson.LessonTime,
                 }).ToList()
             }).ToList();
 
