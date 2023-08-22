@@ -14,13 +14,16 @@ namespace SIERRA_Server.Models.Services
         private readonly IDessertRepository _repo;
         private readonly IDessertCategoryRepository _dessertCategoryRepository;
         private readonly IMemberCouponRepository _memberCouponRepo;
+        private readonly IDessertDiscountRepository _dessertDiscountRepository;
+        
 
-        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo)
+        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo,IDessertDiscountRepository dessertDiscountRepository)
         {
             _openAiConfig = optionsMonitor.CurrentValue;
             _repo = repo;
             _dessertCategoryRepository = dessertCategoryRepository;
             _memberCouponRepo = memberCouponRepo;
+            _dessertDiscountRepository = dessertDiscountRepository;
         }
 
         public async Task<string> CheckProgramingLanguage(string language)
@@ -117,7 +120,14 @@ namespace SIERRA_Server.Models.Services
         { "長條蛋糕", async () => await GetDessertsByCategoryAsync(4) },
         { "禮盒", async () => await GetDessertsByCategoryAsync(5) }
     };
-
+            var dessertDiscountGroups = new Dictionary<string, Func<Task<List<DessertDiscountDTO>>>>
+    {
+        { "巧克力", async () => await GetDessertsDiscountByIdAsync(6) },
+        { "草莓", async () => await GetDessertsDiscountByIdAsync(7) },
+        { "抹茶", async () => await GetDessertsDiscountByIdAsync(8) },
+        { "芋頭", async () => await GetDessertsDiscountByIdAsync(9) },
+        { "微醺", async () => await GetDessertsDiscountByIdAsync(10) }
+    };
             // Construct system message
             var systemMessage = new StringBuilder();
             systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，我們的甜點店有賣甜點類別有：");
@@ -134,44 +144,75 @@ namespace SIERRA_Server.Models.Services
                     }
                 }
             }
-            if (memberId == null) { systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以註冊會員，點擊這個網址連結<a href='http://127.0.0.1:5501/LogIn.html'>http://127.0.0.1:5501/LogIn.html</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
+            string[] cateKeywords = { "類別", "類", "category", "種類" };
+            if (cateKeywords.Any(cateKeywords => text.Contains(cateKeywords)))
+            {
+                systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
+
+            }
+            if (memberId == null) { systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://127.0.0.1:5501/LogIn.html'>http://127.0.0.1:5501/LogIn.html</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
             else
             {
                 var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
-                if (coupons.Any()) { 
-                systemMessage.AppendLine("您可以使用的優惠券有：");
-                foreach (var coupon in coupons)
+                if (coupons.Any())
                 {
-                    systemMessage.AppendLine($"{coupon.CouponName}");
-                }}
+                    systemMessage.AppendLine("您可以使用的優惠券有：");
+                    foreach (var coupon in coupons)
+                    {
+                        systemMessage.AppendLine($"{coupon.CouponName}");
+                    }
+                }
                 else { systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
             }
+            string[] flavorKeywords = { "口味", "flavor", "味道", "味", "風味" };
+
+            foreach (var keyword in flavorKeywords)
+            {
+                if (text.Contains(keyword))
+                {
+                    var selectedFlavor = dessertDiscountGroups.Keys.FirstOrDefault(f => text.Contains(f));
+
+                    if (selectedFlavor != null)
+                    {
+                        var dessertsWithFlavor = await dessertDiscountGroups[selectedFlavor]();
+
+                        if (dessertsWithFlavor.Any())
+                        {
+                            systemMessage.AppendLine($"以下是{selectedFlavor}口味的甜點：");
+                            foreach (var dessert in dessertsWithFlavor)
+                            {
+                                systemMessage.AppendLine($" {dessert.DessertName}");
+                            }
+                        }
+                        else
+                        {
+                            systemMessage.AppendLine($"很抱歉，目前没有{selectedFlavor}口味的甜點。");
+                        }
+                    }
+                    else
+                    {
+                        // Flavor keyword found, but no matching flavor in dictionary
+                        systemMessage.AppendLine($"很抱歉，找不到相關口味的甜點資訊。");
+                    }
+
+                    break; // Exit the loop after finding a matching keyword
+                }
+            }
+
             systemMessage.AppendLine("熱銷商品前三名分别是：");
             for (int i = 0; i < hotdessert.Count && i < 3; i++)
             {
                 systemMessage.AppendLine($"{i + 1}. {hotdessert[i].DessertName}");
             }
-            //if (text.Contains("價格") || text.Contains("Price") || text.Contains("money"))
-            //{
-            //    var dessertName = await ExtractDessertNameFromText(text); // Extract dessert name from user input
-            //    var price = await GetDessertPriceAsync(dessertName);
+            string[] priceKeywords = { "價錢", "價格", "Price", "money", "金額", "How much" };
+            var matchingPriceKeyword = priceKeywords.FirstOrDefault(keyword => text.Contains(keyword));
 
-            //    if (price != null)
-            //    {
-            //        systemMessage.AppendLine($"{dessertName}的價格是{price}元。");
-            //    }
-            //    else
-            //    {
-            //        systemMessage.AppendLine($"很抱歉，找不到{dessertName}的價格信息。");
-            //    }
-            //}
-            string[] keywords = { "價錢", "價格", "Price", "money", "金額", "How much" };
-
-            if (keywords.Any(keyword => text.Contains(keyword)))
+            if (matchingPriceKeyword != null)
             {
-                string dessertName = await ExtractDessertNameFromText(text);
+                // Remove the matching keyword from the text before extracting dessert name
+                var cleanedText = text.Replace(matchingPriceKeyword, "");
+                string dessertName = await ExtractDessertNameFromText(cleanedText);
                 decimal? price = await GetDessertPriceAsync(dessertName);
-
                 if (price.HasValue)
                 {
                     systemMessage.AppendLine($"{dessertName}的價格是{price}元。");
@@ -181,18 +222,17 @@ namespace SIERRA_Server.Models.Services
                     systemMessage.AppendLine($"很抱歉，找不到{dessertName}的價格信息。");
                 }
             }
-            if (text.Contains("宅配"))
+
+            string[] deliveryKeywords = { "宅配", "delivery", "黑貓", "money", "物流", "配送" };
+
+            if (deliveryKeywords.Any(deliveryKeywords => text.Contains(deliveryKeywords)))
             {
                 systemMessage.AppendLine("目前與黑貓宅配物流配合全程低溫冷凍配送，因週日黑貓宅配無提供配送服務，SIERRA不負擔黑貓宅配物流延遲的責任，包裹出貨後配送狀況依物流中心、當區配送營業所為主，詳情請至黑貓官網查詢或撥打黑貓客服。運送過程中，如包裹在物流公司分流理貨當中有解凍到、失溫，都很有可能會因為配送人員與路況的不同，導致蛋糕位移、變形、或是盒內四周沾到黏膩果膠等損壞的風險，請務必謹慎評估風險後再下單。");
-                systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
+
                 systemMessage.AppendLine("如果有人詢問你可以指定時間送達蛋糕嗎，請回答目前無接受指定送達時段哦！實際送達時間需依照當區物流司機安排的路線為主。");
-
-            }
-            if (text.Contains("類別"))
-            {
                 systemMessage.AppendLine("如果有人詢問你可以貨到付款嗎?，請回答目前線上訂購的所有商品皆為接單製作生產，故無提供貨到付款服務。");
-
             }
+
 
             systemMessage.AppendLine("除了蛋糕以外還有課程銷售，可以選日期推薦。");
             systemMessage.AppendLine("如果有人詢問訂單什麼時候會出貨，請回答 除以下特殊節慶之外的正常時間，我們都是在您選擇的希望到貨日期的前一天才會寄出包裹，逢各大節日前(年節、中秋節等節慶)，物流包裹量通常都會暴增，需請您自行將希望到貨日期選擇在您要送禮/慶祝前的兩~三天，提前收到比較不會因為物流延遲而耽誤您的送禮/慶祝安排。如遇母親節、父親節，將統一由我們主動提前出貨");
@@ -201,6 +241,57 @@ namespace SIERRA_Server.Models.Services
             chat.AppendUserInput(text);
             var response = await chat.GetResponseFromChatbotAsync();
             return response;
+        }
+        //抓取甜點價格
+        private async Task<decimal?> GetDessertPriceAsync(string dessertName)
+        {
+            var dessert = await _repo.GetDessertByName(dessertName);
+            if (dessert != null && dessert.Any())
+            {
+                var firstDessert = dessert.First();
+                return firstDessert.UnitPrice;
+            }
+            return null;
+        }
+        //模糊搜尋甜點名稱，對比傳入的text
+ private async Task<string> ExtractDessertNameFromText(string text)
+        {
+            var dessertNames = await _repo.GetDessertNames();
+
+            foreach (var dessertName in dessertNames)
+            {
+                // Check if any part of dessertName is contained in the input text
+                if (IsPartialMatch(dessertName, text))
+                {
+                    return dessertName;
+                }
+            }
+
+            return null;
+        }
+        private bool IsPartialMatch(string str1, string str2)
+        {
+            int minLength = Math.Min(str1.Length, str2.Length);
+
+            for (int i = 0; i < minLength; i++)
+            {
+                if (str2.Contains(str1[i]))
+                {
+                    return true; // Return true if any character in str1 is present in str2
+                }
+            }
+
+            return false;
+        }
+   private async Task<List<DessertListDTO>> GetDessertsByCategoryAsync(int categoryId)
+        {
+            var desserts = await _dessertCategoryRepository.GetDessertsByCategoryId(categoryId);
+            return desserts.Select(d => d.ToDListDto()).ToList();
+        }
+        private async Task<List<DessertDiscountDTO>> GetDessertsDiscountByIdAsync(int discountGroupId)
+        {
+            var dessertDiscounts = await _dessertDiscountRepository.GetDiscountGroupsByGroupId(discountGroupId);
+            return dessertDiscounts;
         }
         //private async Task<decimal?> GetDessertPriceAsync(string dessertName)
         //{
@@ -226,36 +317,23 @@ namespace SIERRA_Server.Models.Services
 
         //    return null; // Return null if no dessert name is extracted or matched
         //}
-        private async Task<decimal?> GetDessertPriceAsync(string dessertName)
-        {
-            var dessert = await _repo.GetDessertByName(dessertName);
-            if (dessert != null && dessert.Any())
-            {
-                var firstDessert = dessert.First();
-                return firstDessert.UnitPrice;
-            }
-            return null;
-        }
 
-        private async Task<string> ExtractDessertNameFromText(string text)
-        {
-            var dessertNames = await _repo.GetDessertNames();
-            foreach (var dessertName in dessertNames)
-            {
-                if (text.Contains(dessertName))
-                {
-                    return dessertName;
-                }
-            }
 
-            return null;
-        }
+        //private async Task<string> ExtractDessertNameFromText(string text)
+        //{
+        //    var dessertNames = await _repo.GetDessertNames();
+        //    foreach (var dessertName in dessertNames)
+        //    { // Check if the dessertName contains at least three characters that match the input text
+        //        if (CountMatchingCharacters(dessertName, text) >= 3)
+        //        {
+        //            return dessertName;
+        //        }
+        //    }
 
-        private async Task<List<DessertListDTO>> GetDessertsByCategoryAsync(int categoryId)
-        {
-            var desserts = await _dessertCategoryRepository.GetDessertsByCategoryId(categoryId);
-            return desserts.Select(d => d.ToDListDto()).ToList();
-        }
+        //    return null;
+        //}
+
+
 
         public async Task<string> CompleteSentenceAdvance(string text)
         {
@@ -268,7 +346,9 @@ namespace SIERRA_Server.Models.Services
 
         public async Task<string> CompleteSentence(string text)
         {
-            throw new NotImplementedException();
+            var api = new OpenAI_API.OpenAIAPI(_openAiConfig.Key);
+            var result = await api.Completions.GetCompletion(text);
+            return result;
         }
     }
 }
