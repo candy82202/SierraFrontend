@@ -114,12 +114,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<IEnumerable<Coupon>> GetPromotionCoupons()
         {
-            var coupons =await _db.Promotions.Include(p=>p.Coupon)
-                                        .Where(p=>p.CouponId!=null)
-                                        .Where(p=>p.LaunchAt<DateTime.Now&&p.EndAt>DateTime.Now)
-                                        .Select (p=>p.Coupon)
-                                        .Distinct()
-                                        .ToListAsync();
+            var coupons =await _db.Promotions.Include(p=>p.Coupon).ThenInclude(c=>c.DiscountGroup).ThenInclude(d=>d.DiscountGroupItems).ThenInclude(dgi=>dgi.Dessert)
+                                             .Where(p=>p.CouponId!=null)
+                                             .Where(p=>p.LaunchAt<DateTime.Now&&p.EndAt>DateTime.Now)
+                                             .Select (p=>p.Coupon)
+                                             .Distinct()
+                                             .ToListAsync();
             return coupons;
         }
 

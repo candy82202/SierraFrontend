@@ -5,5 +5,6 @@
         public string CouponName { get; set; }
         public string ExpireAt { get; set; }
         public string ApplyTo { get; set; }
+        public string ApplyToDetail { get; set; }
     }
 }
