@@ -105,7 +105,9 @@ namespace SIERRA_Server.Models.Exts
                 CouponName = entity.CouponName,
                 ExpireAt = ((DateTime)entity.EndAt).ToString("yyyy-MM-dd"),
                 ApplyTo = applyTo,
-				ApplyToDetail = dessertNames
+				ApplyToDetail = dessertNames,
+				CouponType = entity.DiscountType,
+				CouponId = entity.CouponId,
             };
         }
 

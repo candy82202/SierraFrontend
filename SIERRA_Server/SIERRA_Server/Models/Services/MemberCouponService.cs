@@ -545,6 +545,11 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-        
+        public async Task<object?> DidMemberPlayedGame(int memberId)
+        {
+            var dailyGame = await _repo.HasPlayedGame(memberId);
+			var weeklyGame =await _repo.HasPlayedWeeklyGame(memberId);
+			return new {DailyGame= dailyGame, WeeklyGame= weeklyGame};
+        }
     }
 }

@@ -173,5 +173,18 @@ namespace SIERRA_Server.Controllers
 			return result;
 
         }
-	}
+		[HttpGet("DidMemberPlayedGame")]
+		public async Task<object?> DidMemberPlayedGame(int? memberId)
+		{
+			if (memberId == null)
+			{
+				return null;
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.DidMemberPlayedGame((int)memberId);
+			return result;
+
+        }
+
+    }
 }
