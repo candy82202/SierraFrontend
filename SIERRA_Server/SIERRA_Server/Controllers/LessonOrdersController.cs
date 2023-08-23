@@ -194,10 +194,32 @@ namespace SIERRA_Server.Controllers
             }
             return Ok(result);
         }
+        [HttpPut]
+        public async Task<IActionResult> CancelOrder(CancelOrderDto cancelOrderDto)
+        {
+            // 先根據LessonOrderId找到訂單和相關課程
+            var order = _context.LessonOrders.FirstOrDefault(o => o.Id == cancelOrderDto.LessonOrderId);
+            var lessonOrderDetail = _context.LessonOrderDetails.FirstOrDefault(d => d.LessonOrderId == cancelOrderDto.LessonOrderId);
+            var lesson = _context.Lessons.FirstOrDefault(l => l.LessonId == lessonOrderDetail.LessonId);
+
+            // 檢查課程時間是否還沒到
+            if (lesson.LessonTime > DateTime.Now)
+            {
+                order.OrderCancellationReason = cancelOrderDto.OrderCancellationReason;
+                order.LessonOrderStatusId = 4; // 設置為"訂單已取消"
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "訂單已成功取消" });
+            }
+            else
+            {
+                return BadRequest(new { message = "課程時間已到，無法取消訂單" });
+            }
+        }
+
 
     }
 
-   
+
 
     // DELETE: api/LessonOrders/5
     //[HttpDelete("{id}")]
