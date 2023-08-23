@@ -19,13 +19,17 @@ namespace SIERRA_Server.Models.Exts
 			{
 				applyTo = $"{dessertNames},共{itemsCount}項";
 			}
-			return new MemberCouponDto()
+            var startAt = entity.Coupon.CouponCategoryId == 2 ? entity.Coupon.StartAt : entity.CreateAt;
+            return new MemberCouponDto()
 			{
 				MemberCouponId = entity.MemberCouponId,
 				CouponName = entity.CouponName,
 				ExpireAt = entity.ExpireAt,
 				ApplyTo = applyTo,
-				CouponType = entity.Coupon.DiscountType
+				CouponType = entity.Coupon.DiscountType,
+				CreateAt = entity.CreateAt,
+				StartAt = (DateTime)startAt,
+
 			};
 		}
 		public static MemberCouponCanNotUseDto ToMemberCouponCanNotUseDto(this MemberCoupon entity)
