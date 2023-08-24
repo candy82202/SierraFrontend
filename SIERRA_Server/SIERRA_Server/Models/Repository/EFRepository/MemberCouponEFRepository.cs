@@ -114,12 +114,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         public async Task<IEnumerable<Coupon>> GetPromotionCoupons()
         {
-            var coupons =await _db.Promotions.Include(p=>p.Coupon)
-                                        .Where(p=>p.CouponId!=null)
-                                        .Where(p=>p.LaunchAt<DateTime.Now&&p.EndAt>DateTime.Now)
-                                        .Select (p=>p.Coupon)
-                                        .Distinct()
-                                        .ToListAsync();
+            var coupons =await _db.Promotions.Include(p=>p.Coupon).ThenInclude(c=>c.DiscountGroup).ThenInclude(d=>d.DiscountGroupItems).ThenInclude(dgi=>dgi.Dessert)
+                                             .Where(p=>p.CouponId!=null)
+                                             .Where(p=>p.LaunchAt<DateTime.Now&&p.EndAt>DateTime.Now)
+                                             .Select (p=>p.Coupon)
+                                             .Distinct()
+                                             .ToListAsync();
             return coupons;
         }
 
@@ -272,5 +272,37 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                                                       .ToListAsync();
             return desserts;
 		}
-	}
+
+        public async Task<bool> CancelUsingCoupon(int memberId)
+        {
+            var member = await _db.Members.FindAsync(memberId);
+            var memberName = member.Username;
+            var cart = _db.DessertCarts.Where(c=>c.Username== memberName).FirstOrDefault();
+            if(cart==null) return false;
+            else
+            {
+                cart.DiscountPrice = null;
+                cart.MemberCouponId = null;
+                await _db.SaveChangesAsync();
+                return true;
+            }
+
+        }
+
+        public async Task<object?> GetUsingCoupon(int memberId)
+        {
+            var member = await _db.Members.FindAsync(memberId);
+            var memberName = member.Username;
+            var cart = _db.DessertCarts.Include(c=>c.MemberCoupon).Where(c => c.Username == memberName).FirstOrDefault();
+            if(cart==null) return null;
+            else
+            {
+                if (cart.MemberCouponId == null) return null;
+                else
+                {
+                    return new { MemberCouponId = cart.MemberCouponId, DiscountPrice = cart.DiscountPrice };
+                }
+            }
+        }
+    }
 }

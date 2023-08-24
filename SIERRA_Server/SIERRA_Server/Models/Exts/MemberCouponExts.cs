@@ -10,67 +10,80 @@ namespace SIERRA_Server.Models.Exts
 		{
 			var dessertNames =entity.Coupon==null||entity.Coupon.DiscountGroup == null ? "所有商品" : entity.Coupon.DiscountGroup.DiscountGroupItems.Count() > 0 ? string.Join(",", entity.Coupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.Dessert.DessertName)) : "無";
 			int? itemsCount = entity.Coupon.DiscountGroup==null?null:entity.Coupon.DiscountGroup.DiscountGroupItems.Count();
-			string applyTo;
+			string applyToDetail;
 			if (itemsCount == null)
 			{
-				applyTo = dessertNames;
+				applyToDetail = dessertNames;
 			}
 			else
 			{
-				applyTo = $"{dessertNames},共{itemsCount}項";
+				applyToDetail = $"{dessertNames},共{itemsCount}項";
 			}
+            var startAt = entity.Coupon.CouponCategoryId == 2 ? entity.Coupon.StartAt : entity.CreateAt;
 			return new MemberCouponDto()
 			{
 				MemberCouponId = entity.MemberCouponId,
 				CouponName = entity.CouponName,
 				ExpireAt = entity.ExpireAt,
-				ApplyTo = applyTo,
-				CouponType = entity.Coupon.DiscountType
+				ApplyToDetail = applyToDetail,
+				ApplyTo = entity.Coupon.DiscountGroup == null ? dessertNames : $"{entity.Coupon.DiscountGroup.DiscountGroupName},共{itemsCount}項",
+				CouponType = entity.Coupon.DiscountType,
+				CreateAt = entity.CreateAt,
+				StartAt = (DateTime)startAt,
+
 			};
 		}
 		public static MemberCouponCanNotUseDto ToMemberCouponCanNotUseDto(this MemberCoupon entity)
 		{
 			var dessertNames = entity.Coupon == null || entity.Coupon.DiscountGroup == null ? "所有商品" : entity.Coupon.DiscountGroup.DiscountGroupItems.Count() > 0 ? string.Join(",", entity.Coupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.Dessert.DessertName)) : "無";
 			int? itemsCount = entity.Coupon.DiscountGroup == null ? null : entity.Coupon.DiscountGroup.DiscountGroupItems.Count();
-			string applyTo;
+			string applyToDetail;
 			if (itemsCount == null)
 			{
-				applyTo = dessertNames;
+				applyToDetail = dessertNames;
 			}
 			else
 			{
-				applyTo = $"{dessertNames},共{itemsCount}項";
+				applyToDetail = $"{dessertNames},共{itemsCount}項";
 			}
+			var startAt = entity.Coupon.CouponCategoryId == 2 ? entity.Coupon.StartAt : entity.CreateAt;
 			return new MemberCouponCanNotUseDto()
 			{
 				MemberCouponId = entity.MemberCouponId,
 				CouponName = entity.CouponName,
 				StartAt = (DateTime)entity.Coupon.StartAt,
-				ApplyTo = applyTo,
-				CouponType=entity.Coupon.DiscountType
+				ExpireAt = entity.ExpireAt,
+				ApplyToDetail = applyToDetail,
+				ApplyTo = entity.Coupon.DiscountGroup == null ? dessertNames : $"{entity.Coupon.DiscountGroup.DiscountGroupName},共{itemsCount}項",
+				CouponType =entity.Coupon.DiscountType,
+				CreateAt = entity.CreateAt,
 			};
 		}
         public static MemberCouponHasUsedDto ToMemberCouponHasUsedDto(this MemberCoupon entity)
 		{
 			var dessertNames = entity.Coupon == null || entity.Coupon.DiscountGroup == null ? "所有商品" : entity.Coupon.DiscountGroup.DiscountGroupItems.Count() > 0 ? string.Join(",", entity.Coupon.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.Dessert.DessertName)) : "無";
 			int? itemsCount = entity.Coupon.DiscountGroup == null ? null : entity.Coupon.DiscountGroup.DiscountGroupItems.Count();
-			string applyTo;
+			string applyToDetail;
 			if (itemsCount == null)
 			{
-				applyTo = dessertNames;
+				applyToDetail = dessertNames;
 			}
 			else
 			{
-				applyTo = $"{dessertNames},共{itemsCount}項";
+				applyToDetail = $"{dessertNames},共{itemsCount}項";
 			}
+			var startAt = entity.Coupon.CouponCategoryId == 2 ? entity.Coupon.StartAt : entity.CreateAt;
 			return new MemberCouponHasUsedDto()
 			{
 				MemberCouponId = entity.MemberCouponId,
 				CouponName = entity.CouponName,
 				UsedAt = (DateTime)entity.UseAt,
-				ApplyTo = applyTo,
-				CouponType = entity.Coupon.DiscountType
-				
+				StartAt = (DateTime)startAt,
+				ExpireAt = entity.ExpireAt,
+				ApplyTo = entity.Coupon.DiscountGroup == null ? dessertNames : $"{entity.Coupon.DiscountGroup.DiscountGroupName},共{itemsCount}項",
+				ApplyToDetail = applyToDetail,
+				CouponType = entity.Coupon.DiscountType,
+				CreateAt = entity.CreateAt,
 			};
 		}
 		public static MemberCouponAndCouponDetailDto ToMemberCouponAndCouponDetailDto(this MemberCoupon entity)
@@ -91,19 +104,23 @@ namespace SIERRA_Server.Models.Exts
             var dessertNames =  entity.DiscountGroup == null ? "所有商品" : entity.DiscountGroup.DiscountGroupItems.Count() > 0 ? string.Join(",", entity.DiscountGroup.DiscountGroupItems.Select(dgi => dgi.Dessert.DessertName)) : "無";
             int? itemsCount = entity.DiscountGroup == null ? null : entity.DiscountGroup.DiscountGroupItems.Count();
             string applyTo;
+            var discountGrroupName = entity.DiscountGroup?.DiscountGroupName;
             if (itemsCount == null)
             {
                 applyTo = dessertNames;
             }
             else
             {
-                applyTo = $"{dessertNames},共{itemsCount}項";
+                applyTo = $"{discountGrroupName},共{itemsCount}項";
             }
             return new CouponCanGetDto()
             {
                 CouponName = entity.CouponName,
                 ExpireAt = ((DateTime)entity.EndAt).ToString("yyyy-MM-dd"),
                 ApplyTo = applyTo,
+				ApplyToDetail = dessertNames,
+				CouponType = entity.DiscountType,
+				CouponId = entity.CouponId,
             };
         }
 

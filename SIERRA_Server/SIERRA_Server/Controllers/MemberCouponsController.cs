@@ -150,6 +150,41 @@ namespace SIERRA_Server.Controllers
 			var result = await server.PlayWeeklyGame(ansAry,(int)memberId);
 			return result;
 		}
-		
-	}
+		[HttpPut("CancelCoupon")]
+		public async Task<bool> CancelUsingCoupon(int? memberId)
+		{
+			if (memberId == null)
+			{
+				return false;
+			}
+            var server = new MemberCouponService(_repo);
+			var result = await server.CancelUsingCoupon((int)memberId);
+			return result;
+        }
+		[HttpGet("GetUsingCoupon")]
+		public async Task<object?> GetUsingCoupon(int? memberId)
+		{
+			if(memberId == null)
+			{
+				return null;
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.GetUsingCoupon((int)memberId);
+			return result;
+
+        }
+		[HttpGet("DidMemberPlayedGame")]
+		public async Task<object?> DidMemberPlayedGame(int? memberId)
+		{
+			if (memberId == null)
+			{
+				return null;
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.DidMemberPlayedGame((int)memberId);
+			return result;
+
+        }
+
+    }
 }

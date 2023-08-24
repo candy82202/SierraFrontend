@@ -30,5 +30,7 @@ namespace SIERRA_Server.Models.Interfaces
         Task<bool> HasPlayedWeeklyGame(int memberId);
         Task AddCouponAndRecordMemberPlayWeeklyGame(int memberId, Coupon coupon);
 		Task<IEnumerable<DiscountGroupItem>> FindSuggestProduct(int discountGroupId);
-	}
+        Task<bool> CancelUsingCoupon(int memberId);
+        Task<object?> GetUsingCoupon(int memberId);
+    }
 }
