@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Orders;
 using SIERRA_Server.Models.EFModels;
+using SQLitePCL;
 
 namespace SIERRA_Server.Controllers
 {
@@ -149,7 +150,76 @@ namespace SIERRA_Server.Controllers
 
             return Ok(new { Message = "Order created successfully for member", OrderId = order.Id });
         }
+        //Get: api/LessonOrders
+        [HttpGet("GetLessonOrder")]
+        public async Task<IActionResult> GetLessonOrder(string? username)
+        {
+            //根據username找到所有的訂單及訂單狀態
+            //最新訂單排最前
+            if (username == null)
+            {
+                return NotFound();
+            }
+            var userorder = await _context.LessonOrders
+    .Include(l => l.LessonOrderDetails)
+    .ThenInclude(lt=>lt.Lesson)
+    .Include(lo => lo.LessonOrderStatus)
+    .Where(m => m.Username == username)
+    .OrderByDescending(o => o.CreateTime)
+    .ToListAsync();
+
+            var result = userorder.Select(x => new GetLessonOrderDTO
+            {
+                Id = x.Id,
+                Username = x.Username,
+                StatusName = x.LessonOrderStatus.StatusName,
+                LessonOrderTotal = x.LessonOrderTotal,
+                PayMethod = x.PayMethod,
+                Note = x.Note,
+                CreateTime = x.CreateTime,
+                OrderCancellationReason = x.OrderCancellationReason,
+                LessonOrderDetails = x.LessonOrderDetails.Select(n => new LessonItemDto
+                {
+                    LessonTitle = n.LessonTitle,
+                    NumberOfPeople = n.NumberOfPeople,
+                    LessonUnitPrice = n.LessonUnitPrice,
+                    Subtotal = n.Subtotal,
+                    LessonTime=n.Lesson.LessonTime,
+                }).ToList()
+            }).ToList();
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<IActionResult> CancelOrder(CancelOrderDto cancelOrderDto)
+        {
+            // 先根據LessonOrderId找到訂單和相關課程
+            var order = _context.LessonOrders.FirstOrDefault(o => o.Id == cancelOrderDto.LessonOrderId);
+            var lessonOrderDetail = _context.LessonOrderDetails.FirstOrDefault(d => d.LessonOrderId == cancelOrderDto.LessonOrderId);
+            var lesson = _context.Lessons.FirstOrDefault(l => l.LessonId == lessonOrderDetail.LessonId);
+
+            // 檢查課程時間是否還沒到
+            if (lesson.LessonTime > DateTime.Now)
+            {
+                order.OrderCancellationReason = cancelOrderDto.OrderCancellationReason;
+                order.LessonOrderStatusId = 4; // 設置為"訂單已取消"
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "訂單已成功取消" });
+            }
+            else
+            {
+                return BadRequest(new { message = "課程時間已到，無法取消訂單" });
+            }
+        }
+
+
     }
+
+
 
     // DELETE: api/LessonOrders/5
     //[HttpDelete("{id}")]

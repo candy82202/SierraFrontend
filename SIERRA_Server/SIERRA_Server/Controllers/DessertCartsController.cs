@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -254,11 +255,9 @@ namespace SIERRA_Server.Controllers
                     _context.DessertCartItems.Update(cartItem);
                 }
             }
-            if(cart.MemberCouponId!=null)
-            {
-                cart.MemberCouponId = null;
-            }
-			await _context.SaveChangesAsync();
+            cart.MemberCouponId= null;
+            cart.DiscountPrice = null;
+            await _context.SaveChangesAsync();
 		}
         [HttpGet("GetPrice")]
         public async Task<int> GetCartTotalPrice(string username)
@@ -271,6 +270,13 @@ namespace SIERRA_Server.Controllers
         {
             var cart = await GetOrCreateCart(username);
             return cart.DessertCartItems.Any();
+        }
+        [HttpGet("UsingCoupon")]
+        public async Task<object?> GetUsingCouponAndDiscount(string username)
+        {
+            var cart = await _context.DessertCarts.Include(c=>c.MemberCoupon)
+                                                  .FirstOrDefaultAsync(c => c.Username == username);
+            return new { UsingCoupon = cart.MemberCoupon?.CouponName, DiscountValue = cart.DiscountPrice };
         }
    
     private bool DessertCartExists(int id)

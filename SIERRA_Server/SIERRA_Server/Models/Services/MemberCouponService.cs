@@ -68,11 +68,12 @@ namespace SIERRA_Server.Models.Services
             return result;
         }
 
-        public async Task<IEnumerable<MemberCouponDto>> GetIneligibleCoupon(int memberId)
+        public async Task<IEnumerable<IneligibleMemberCouponDto>> GetIneligibleCoupon(int memberId)
         {
             var coupons = await _repo.GetUsableCoupon(memberId);
             var usableCoupons = await DoThisToGetCouponMeetCriteria(memberId);
-            var ineligibleCoupons = coupons.Except(usableCoupons).Select(mc => mc.ToMemberCouponDto());
+			var cart = await _repo.GetDessertCart(memberId);
+			var ineligibleCoupons = coupons.Except(usableCoupons).Select(mc => mc.ToIneligibleMemberCouponDto(cart));
             return ineligibleCoupons;
         }
         public async Task<IEnumerable<CouponCanGetDto>> GetCouponCanGet(int memberId)
@@ -190,7 +191,7 @@ namespace SIERRA_Server.Models.Services
 			var result = Math.Abs(price)> totalPrice? (int)-totalPrice:price;
 			if (result != 0)
 			{
-				_repo.RecordCouponInCart(cart, memberCouponId);
+				_repo.RecordCouponInCart(cart, memberCouponId,result);
 			}
 			return result;
 		}
@@ -440,16 +441,30 @@ namespace SIERRA_Server.Models.Services
 					break;
             }
 			var discountGroupId = coupon.DiscountGroupId;
+			var dessertsInDiscountGroup = await _repo.FindSuggestProduct((int)discountGroupId);
+			var suggestProducts = dessertsInDiscountGroup.Select(d => d.ToSuggestProductDto());
 			var weeklyGameResult = new WeeklyGameResult()
 			{
 				Content = content,
 				Title = title,
 				Image = image,
-				Result = couponResult
+				Result = couponResult,
+				SuggestProducts = suggestProducts
 			};
 			return weeklyGameResult;
 		}
-		private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
+        public async Task<bool> CancelUsingCoupon(int memberId)
+        {
+            var result = await _repo.CancelUsingCoupon(memberId);
+            return result;
+        }
+
+        public async Task<object?> GetUsingCoupon(int memberId)
+        {
+			var result = await _repo.GetUsingCoupon(memberId);
+			return result;
+        }
+        private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
 			//先把一定可以用的優惠券加進來
@@ -530,6 +545,11 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-		
-	}
+        public async Task<object?> DidMemberPlayedGame(int memberId)
+        {
+            var dailyGame = await _repo.HasPlayedGame(memberId);
+			var weeklyGame =await _repo.HasPlayedWeeklyGame(memberId);
+			return new {DailyGame= dailyGame, WeeklyGame= weeklyGame};
+        }
+    }
 }

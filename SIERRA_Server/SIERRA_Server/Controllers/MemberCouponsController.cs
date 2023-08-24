@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Promotions;
@@ -73,11 +74,11 @@ namespace SIERRA_Server.Controllers
 			return await server.GetCouponMeetCriteria((int)MemberId);
         }
         [HttpGet("Ineligible")]
-        public async Task<IEnumerable<MemberCouponDto>> GetIneligibleCoupon(int? MemberId)
+        public async Task<IEnumerable<IneligibleMemberCouponDto>> GetIneligibleCoupon(int? MemberId)
         {
             if (MemberId == null)
             {
-                return Enumerable.Empty<MemberCouponDto>();
+                return Enumerable.Empty<IneligibleMemberCouponDto>();
             }
             var server = new MemberCouponService(_repo);
             return await server.GetIneligibleCoupon((int)MemberId);
@@ -131,7 +132,8 @@ namespace SIERRA_Server.Controllers
 			return result;
 		}
 		[HttpGet("DailyGameRate")]
-		public async Task<IEnumerable<DailyGameRateDto>> GetDailyGameRate()
+        [AllowAnonymous]
+        public async Task<IEnumerable<DailyGameRateDto>> GetDailyGameRate()
 		{
 			var server = new MemberCouponService(_repo);
 			var result = await server.GetDailyGameRate();
@@ -150,6 +152,41 @@ namespace SIERRA_Server.Controllers
 			var result = await server.PlayWeeklyGame(ansAry,(int)memberId);
 			return result;
 		}
-		
-	}
+		[HttpPut("CancelCoupon")]
+		public async Task<bool> CancelUsingCoupon(int? memberId)
+		{
+			if (memberId == null)
+			{
+				return false;
+			}
+            var server = new MemberCouponService(_repo);
+			var result = await server.CancelUsingCoupon((int)memberId);
+			return result;
+        }
+		[HttpGet("GetUsingCoupon")]
+		public async Task<object?> GetUsingCoupon(int? memberId)
+		{
+			if(memberId == null)
+			{
+				return null;
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.GetUsingCoupon((int)memberId);
+			return result;
+
+        }
+		[HttpGet("DidMemberPlayedGame")]
+		public async Task<object?> DidMemberPlayedGame(int? memberId)
+		{
+			if (memberId == null)
+			{
+				return null;
+			}
+			var server = new MemberCouponService(_repo);
+			var result = await server.DidMemberPlayedGame((int)memberId);
+			return result;
+
+        }
+
+    }
 }

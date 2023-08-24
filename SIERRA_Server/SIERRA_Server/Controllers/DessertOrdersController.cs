@@ -123,26 +123,35 @@ namespace SIERRA_Server.Controllers
                         .FirstOrDefaultAsync(c => c.Username == orderDto.Username);
                     if (cart == null) throw new Exception("Cart not found");
                     
-                    // 創建訂單
+                    // 創建訂單甜點總額
                     var order = new DessertOrder
                     {
                         Id= (int)orderDto.Id,
                         MemberId= orderDto.MemberId,
                         Username = orderDto.Username,
                         DessertOrderStatusId= 1,
-                        MemberCouponId= orderDto.MemberCouponId,
+                        MemberCouponId= cart.MemberCouponId,
                         CreateTime = DateTime.Now,
                         Recipient = orderDto.Recipient,
                         RecipientPhone = orderDto.RecipientPhone,
                         RecipientAddress = orderDto.RecipientAddress,
                         ShippingFee= orderDto.ShippingFee,
-                        DessertOrderTotal = orderDto.DessertOrderTotal,
+                        DessertOrderTotal = (int)(cart.DiscountPrice==null?orderDto.DessertOrderTotal:orderDto.DessertOrderTotal+cart.DiscountPrice),
                         DeliveryMethod = orderDto.DeliveryMethod,
                         Note = orderDto.Note,
                         PayMethod = orderDto.PayMethod,
-                        DiscountPrice = orderDto.DiscountPrice,
+                        DiscountPrice = cart.DiscountPrice,
                     };
                     _context.DessertOrders.Add(order);
+                    var coupon = _context.MemberCoupons.Find(cart.MemberCouponId);
+                    if (coupon != null)
+                    {
+                        coupon.UseAt = DateTime.Now;
+                    }
+                    
+                    cart.MemberCouponId = null;
+                    cart.DiscountPrice = null;
+                    
                     await _context.SaveChangesAsync();
 
                     // 創建訂單明細
@@ -182,18 +191,18 @@ namespace SIERRA_Server.Controllers
             }
         }
 
-        //GET: api/DessertOrders
-        [HttpPost("GetCustomerOrder")]
-        public async Task<IActionResult> GetCustomerOrder(GetCustomerOrderDTO dto)
+        //Get: api/DessertOrders
+        [HttpGet("GetCustomerOrder")]
+        public async Task<IActionResult> GetCustomerOrder(string? username)
         {
             //根據username找到所有的訂單及訂單狀態
             //最新訂單排最前
-            if (dto.Username == null)
+            if (username == null)
             {
                 return NotFound();
             }
             var userOrder = await _context.DessertOrders.Include(c=>c.MemberCoupon).Include(od => od.DessertOrderDetails).Include(o => o.DessertOrderStatus)
-        .Where(o => o.Username == dto.Username)
+        .Where(o => o.Username == username)
         .Select(x => new GetCustomerOrderDTO
         {
             Id = x.Id,

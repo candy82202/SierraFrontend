@@ -50,6 +50,7 @@ builder.Services.AddCors(options =>
 //DI注入
 builder.Services.AddScoped<IMemberCouponRepository,MemberCouponEFRepository>();
 builder.Services.AddScoped<MemberEFRepository>();
+builder.Services.AddScoped<MemberDPRepository>();
 builder.Services.AddScoped<PromotionEFRepository>();
 builder.Services.AddScoped<HashUtility>();
 //builder.Services.AddScoped<UrlHelper>();
@@ -57,6 +58,7 @@ builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFRepository>();
 builder.Services.AddScoped<IDessertDiscountRepository, DessertDiscountDPRepository>();
+builder.Services.AddScoped<ILessonRepository,LessonCategoryEFRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -64,35 +66,35 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 
 // 所有API使用,需經過JWT驗證
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
 
-//            ValidateIssuer = true,
-//            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
 
-//            ValidateAudience = true,
-//            ValidAudience = builder.Configuration["JWT:Audience"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JWT:Audience"],
 
-//            ValidateLifetime = true, // 預設是true
+            ValidateLifetime = true, // 預設是true
 
-//            ClockSkew = TimeSpan.Zero, // 預設會有偏差，把偏差設成0
+            ClockSkew = TimeSpan.Zero, // 預設會有偏差，把偏差設成0
 
-//            ValidateIssuerSigningKey = true,
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
-//        };
-//    }).AddGoogle(options =>
-//	{
-//		options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
-//		options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
-//	});
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]))
+        };
+    }).AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+        options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+    });
 
-//builder.Services.AddMvc(options =>
-//{
-//    options.Filters.Add(new AuthorizeFilter());
-//});
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(new AuthorizeFilter());
+});
 
 var app = builder.Build();
 
