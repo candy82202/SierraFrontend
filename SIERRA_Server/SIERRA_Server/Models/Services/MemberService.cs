@@ -116,7 +116,7 @@ namespace SIERRA_Server.Models.Services
 				audience: _config["JWT:Audience"],
 				claims: claims,
 				//expires: DateTime.Now.AddMinutes(30),
-				expires: DateTime.Now.AddSeconds(30),
+				expires: DateTime.Now.AddDays(30),
 				signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
 			);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Promotions;
@@ -131,7 +132,8 @@ namespace SIERRA_Server.Controllers
 			return result;
 		}
 		[HttpGet("DailyGameRate")]
-		public async Task<IEnumerable<DailyGameRateDto>> GetDailyGameRate()
+        [AllowAnonymous]
+        public async Task<IEnumerable<DailyGameRateDto>> GetDailyGameRate()
 		{
 			var server = new MemberCouponService(_repo);
 			var result = await server.GetDailyGameRate();

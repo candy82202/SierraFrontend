@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Lessons;
 using SIERRA_Server.Models.EFModels;
@@ -15,6 +16,7 @@ namespace SIERRA_Server.Controllers {
         
         [Route("api/[controller]")]
         [ApiController]
+        [AllowAnonymous]
         public class LessonController : ControllerBase {
 
             private readonly AppDbContext _context;

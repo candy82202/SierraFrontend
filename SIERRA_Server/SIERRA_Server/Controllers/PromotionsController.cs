@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.Interfaces;
@@ -17,6 +18,7 @@ namespace SIERRA_Server.Controllers
             _repo = repo;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<PromotionDto>> GetPromotionsNow()
         {
             var server = new PromotionService(_repo);
