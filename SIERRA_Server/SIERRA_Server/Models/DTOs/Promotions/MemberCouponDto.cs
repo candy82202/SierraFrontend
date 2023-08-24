@@ -63,6 +63,7 @@ namespace SIERRA_Server.Models.DTOs.Promotions
             }
         }
         public string ApplyTo { get; set; }
+        public string ApplyToDetail { get; set; }
         public int CouponType { get; set; }
 
 	}
