@@ -26,12 +26,6 @@ namespace SIERRA_Server.Controllers
         [HttpPost]
         public async Task<IActionResult> EcPayCheckOut([FromBody] UserRequest request)
         {
-            //從DessertOrders獲取最新一筆資料
-            //var latestOrder = await _context.DessertOrders.OrderByDescending(o => o.CreateTime).FirstOrDefaultAsync();
-            //if (latestOrder == null)
-            //{
-            //    return BadRequest("No order found.");
-            //}
             //根據提供的username查找最新一筆訂單資訊
             var latestOrder = await _context.DessertOrders
                                             .Where(o => o.Username == request.Username)
@@ -39,13 +33,7 @@ namespace SIERRA_Server.Controllers
                                             .FirstOrDefaultAsync();
             var dessertOrderTotal = latestOrder.DessertOrderTotal;
 
-            //根據最新訂單的Id獲取相應的DessertOrderDetails資料
-            //var latestDessertDetail = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).FirstOrDefaultAsync();
-            // if (latestDessertDetail == null)
-            // {
-            //     return BadRequest("No dessert detail found for the order.");
-            // }
-            // var dessertName = latestDessertDetail.DessertName;
+        
 
             //根據最新訂單的Id獲取所有相應的DessertOrderDetails資料
             var dessertDetails = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).ToListAsync();
@@ -71,7 +59,7 @@ namespace SIERRA_Server.Controllers
                 {"MerchantTradeNo",orderId},
                 {"MerchantTradeDate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
                 {"TotalAmount",dessertOrderTotal.ToString() },
-                {"TradeDesc", "香草輕乳酪選用的是馬達加斯加的天然香草籽切開蛋糕後會清晰地看到香草籽佈滿其中"},
+                {"TradeDesc", "好吃的甜點不用華麗鋪張，做出具備撫慰人心效果的甜點"},
                 {"ItemName",combinedDessertNames },
                 {"ReturnURL", "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io"},
                 { "ClientBackURL", "http://localhost:5501/Order.html"},
