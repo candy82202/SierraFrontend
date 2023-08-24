@@ -15,9 +15,9 @@ namespace SIERRA_Server.Models.Services
         private readonly IDessertCategoryRepository _dessertCategoryRepository;
         private readonly IMemberCouponRepository _memberCouponRepo;
         private readonly IDessertDiscountRepository _dessertDiscountRepository;
-        
 
-        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo,IDessertDiscountRepository dessertDiscountRepository)
+
+        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo, IDessertDiscountRepository dessertDiscountRepository)
         {
             _openAiConfig = optionsMonitor.CurrentValue;
             _repo = repo;
@@ -112,6 +112,7 @@ namespace SIERRA_Server.Models.Services
             var chat = api.Chat.CreateConversation();
             var hotdessert = await _repo.GetHotProductsAsync();
 
+            //dessert category
             var dessertCategories = new Dictionary<string, Func<Task<List<DessertListDTO>>>>
     {
         { "整模蛋糕", async () => await GetDessertsByCategoryAsync(1) },
@@ -120,6 +121,8 @@ namespace SIERRA_Server.Models.Services
         { "長條蛋糕", async () => await GetDessertsByCategoryAsync(4) },
         { "禮盒", async () => await GetDessertsByCategoryAsync(5) }
     };
+
+            //dessert discount
             var dessertDiscountGroups = new Dictionary<string, Func<Task<List<DessertDiscountDTO>>>>
     {
         { "巧克力", async () => await GetDessertsDiscountByIdAsync(6) },
@@ -150,22 +153,41 @@ namespace SIERRA_Server.Models.Services
                 systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
 
             }
-            if (memberId == null) { systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://127.0.0.1:5501/LogIn.html'>http://127.0.0.1:5501/LogIn.html</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
-            else
+
+            //member coupon
+            string[] couponKeywords = { "優惠券", "coupon", "折扣", "優待" };
+            bool containsCouponKeyword = couponKeywords.Any(keyword => text.Contains(keyword));
+            if (containsCouponKeyword)
             {
-                var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
-                if (coupons.Any())
+                if (memberId == null)
                 {
-                    systemMessage.AppendLine("您可以使用的優惠券有：");
-                    foreach (var coupon in coupons)
+                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://127.0.0.1:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
+                }
+                else
+                {
+                    var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
+                    if (coupons.Any())
                     {
-                        systemMessage.AppendLine($"{coupon.CouponName}");
+                        systemMessage.AppendLine("您可以使用的優惠券有：");
+                        foreach (var coupon in coupons)
+                        {
+                            systemMessage.AppendLine($"{coupon.CouponName}");
+                        }
+
+                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://127.0.0.1:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+
+                    }
+                    else
+                    {
+                        systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
+                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://127.0.0.1:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+
                     }
                 }
-                else { systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔"); }
             }
-            string[] flavorKeywords = { "口味", "flavor", "味道", "味", "風味" };
 
+            //Flavor dessert discount
+            string[] flavorKeywords = { "口味", "flavor", "味道", "味", "風味" };
             foreach (var keyword in flavorKeywords)
             {
                 if (text.Contains(keyword))
@@ -191,7 +213,7 @@ namespace SIERRA_Server.Models.Services
                     }
                     else
                     {
-                        // Flavor keyword found, but no matching flavor in dictionary
+                        // 如果口味關鍵字有找到，但是沒有這個口味的話。
                         systemMessage.AppendLine($"很抱歉，找不到相關口味的甜點資訊。");
                     }
 
@@ -223,20 +245,23 @@ namespace SIERRA_Server.Models.Services
                 }
             }
 
+            //宅配相關
             string[] deliveryKeywords = { "宅配", "delivery", "黑貓", "money", "物流", "配送" };
-
             if (deliveryKeywords.Any(deliveryKeywords => text.Contains(deliveryKeywords)))
             {
                 systemMessage.AppendLine("目前與黑貓宅配物流配合全程低溫冷凍配送，因週日黑貓宅配無提供配送服務，SIERRA不負擔黑貓宅配物流延遲的責任，包裹出貨後配送狀況依物流中心、當區配送營業所為主，詳情請至黑貓官網查詢或撥打黑貓客服。運送過程中，如包裹在物流公司分流理貨當中有解凍到、失溫，都很有可能會因為配送人員與路況的不同，導致蛋糕位移、變形、或是盒內四周沾到黏膩果膠等損壞的風險，請務必謹慎評估風險後再下單。");
 
                 systemMessage.AppendLine("如果有人詢問你可以指定時間送達蛋糕嗎，請回答目前無接受指定送達時段哦！實際送達時間需依照當區物流司機安排的路線為主。");
                 systemMessage.AppendLine("如果有人詢問你可以貨到付款嗎?，請回答目前線上訂購的所有商品皆為接單製作生產，故無提供貨到付款服務。");
+
+                systemMessage.AppendLine($"如果有人詢問你可以寄便利商店店到店嗎?請回答不好意思，目前我們僅配合黑貓低溫宅配寄送， 無提供超商取貨、店到店服務哦！");
+
+                systemMessage.AppendLine("如果有人詢問訂單什麼時候會出貨，請回答 除以下特殊節慶之外的正常時間，我們都是在您選擇的希望到貨日期的前一天才會寄出包裹，逢各大節日前(年節、中秋節等節慶)，物流包裹量通常都會暴增，需請您自行將希望到貨日期選擇在您要送禮/慶祝前的兩~三天，提前收到比較不會因為物流延遲而耽誤您的送禮/慶祝安排。如遇母親節、父親節，將統一由我們主動提前出貨");
             }
 
 
-            systemMessage.AppendLine("除了蛋糕以外還有課程銷售，可以選日期推薦。");
-            systemMessage.AppendLine("如果有人詢問訂單什麼時候會出貨，請回答 除以下特殊節慶之外的正常時間，我們都是在您選擇的希望到貨日期的前一天才會寄出包裹，逢各大節日前(年節、中秋節等節慶)，物流包裹量通常都會暴增，需請您自行將希望到貨日期選擇在您要送禮/慶祝前的兩~三天，提前收到比較不會因為物流延遲而耽誤您的送禮/慶祝安排。如遇母親節、父親節，將統一由我們主動提前出貨");
-            systemMessage.AppendLine($"如果有人詢問你可以寄便利商店店到店嗎?請回答不好意思，目前我們僅配合黑貓低溫宅配寄送， 無提供超商取貨、店到店服務哦！");
+            systemMessage.AppendLine("除了蛋糕以外還有課程，可以選日期推薦<a href='http://127.0.0.1:5501/lessonBook.html'>課程預約</a>。");
+
             chat.AppendSystemMessage(systemMessage.ToString());
             chat.AppendUserInput(text);
             var response = await chat.GetResponseFromChatbotAsync();
@@ -254,7 +279,7 @@ namespace SIERRA_Server.Models.Services
             return null;
         }
         //模糊搜尋甜點名稱，對比傳入的text
- private async Task<string> ExtractDessertNameFromText(string text)
+        private async Task<string> ExtractDessertNameFromText(string text)
         {
             var dessertNames = await _repo.GetDessertNames();
 
@@ -283,7 +308,7 @@ namespace SIERRA_Server.Models.Services
 
             return false;
         }
-   private async Task<List<DessertListDTO>> GetDessertsByCategoryAsync(int categoryId)
+        private async Task<List<DessertListDTO>> GetDessertsByCategoryAsync(int categoryId)
         {
             var desserts = await _dessertCategoryRepository.GetDessertsByCategoryId(categoryId);
             return desserts.Select(d => d.ToDListDto()).ToList();
