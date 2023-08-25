@@ -475,8 +475,8 @@ namespace SIERRA_Server.Models.Services
 			var cart = await _repo.GetDessertCart(memberId);
 			//算出總金額
 			var totalPrice = cart.DessertCartItems.Select(dci => dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
-												  ? Math.Round((decimal)(dci.Specification.UnitPrice) * ((dci.Dessert.Discounts.First().DiscountPrice) / 100), 0, MidpointRounding.AwayFromZero)
-												  : dci.Specification.UnitPrice)
+												  ? (Math.Round((decimal)(dci.Specification.UnitPrice) * ((dci.Dessert.Discounts.First().DiscountPrice) / 100), 0, MidpointRounding.AwayFromZero))*dci.Quantity
+												  : dci.Specification.UnitPrice*dci.Quantity)
 												  .Sum();
 			//列出購物車所優商品的id
 			var cartItemsDessertIds = cart.DessertCartItems.Select(dci => dci.DessertId);
