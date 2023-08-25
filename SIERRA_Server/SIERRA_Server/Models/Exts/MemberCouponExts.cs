@@ -187,10 +187,14 @@ namespace SIERRA_Server.Models.Exts
 			else if(entity.Coupon.LimitType == 2)
 			{
 				var neededCost = entity.Coupon.LimitValue;
-				var totalPrice = cart.DessertCartItems.Select(dci => dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
-												  ? (Math.Round((decimal)(dci.Specification.UnitPrice) * ((dci.Dessert.Discounts.First().DiscountPrice) / 100), 0, MidpointRounding.AwayFromZero))*dci.Quantity
-												  : dci.Specification.UnitPrice*dci.Quantity)
-												  .Sum();
+				var cartItems = cart.DessertCartItems.Select(dci => new DCIwithDiscountPrice()
+				{
+					UnitPrice = dci.Specification.UnitPrice,
+					DiscountPrice = dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+												  ? dci.Dessert.Discounts.First().DiscountPrice : null,
+					Qty = dci.Quantity
+				});
+				var totalPrice = cartItems.Select(i => i.DiscountPrice == null ? i.UnitPrice * i.Qty : (Math.Round((decimal)i.UnitPrice * ((decimal)i.DiscountPrice / 100), 0, MidpointRounding.AwayFromZero)) * i.Qty).Sum();
 				needWhat = $"還差{neededCost-totalPrice}元";
 			}
 			else
