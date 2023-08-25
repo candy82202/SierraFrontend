@@ -64,12 +64,12 @@ namespace SIERRA_Server.Models.Repository.EFRepository
 
         }
 
-        public async Task<string> GetCouponByCode(MemberCouponCreateDto dto)
+        public async Task<AddCouponResult> GetCouponByCode(MemberCouponCreateDto dto)
         {
             var coupon = _db.Coupons.Find(dto.CouponId);
             if(coupon == null)
             {
-                return "查無此優惠券";
+                return AddCouponResult.Fail("查無此優惠券");
             }
             else
             {
@@ -81,7 +81,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 newMemberCoupon.ExpireAt = DateTime.Now.AddDays((double)coupon.Expiration);
                 _db.MemberCoupons.Add(newMemberCoupon);
                 await _db.SaveChangesAsync();
-                return newMemberCoupon.CouponName;
+                return AddCouponResult.Success(newMemberCoupon.CouponName);
             }
         }
 

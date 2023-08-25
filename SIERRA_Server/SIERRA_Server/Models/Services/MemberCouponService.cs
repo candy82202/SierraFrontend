@@ -30,19 +30,19 @@ namespace SIERRA_Server.Models.Services
             return coupons.Select(mc => mc.ToMemberCouponCanNotUseDto());
         }
 
-        public async Task<string> GetCouponByCode(int memberId, string code)
+        public async Task<AddCouponResult> GetCouponByCode(int memberId, string code)
         {
             var isExist = await _repo.CheckCouponExist(code);
             if (!isExist)
             {
-                return "查無此優惠碼";
+                return AddCouponResult.Fail("查無此優惠碼");
             }
             else
             {
                 var result =await _repo.CheckHaveSame(memberId, code);
                 if (result.HaveSame)
                 {
-                    return "已領取過此優惠券";
+                    return AddCouponResult.Fail("已領取過此優惠券");
                 }
                 else
                 {

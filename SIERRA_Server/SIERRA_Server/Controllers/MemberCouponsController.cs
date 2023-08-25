@@ -53,11 +53,11 @@ namespace SIERRA_Server.Controllers
 			return coupons;
         }
 		[HttpPost]
-		public async Task<string> GetCouponByCode(int? MemberId,string? code)
+		public async Task<AddCouponResult> GetCouponByCode(int? MemberId,string? code)
 		{
 			if(MemberId == null ||string.IsNullOrEmpty(code))
 			{
-				return "查無此優惠碼";
+				return AddCouponResult.Fail("查無此優惠券");
 			}
 			var server = new MemberCouponService(_repo);
 			return await server.GetCouponByCode((int)MemberId, code);
