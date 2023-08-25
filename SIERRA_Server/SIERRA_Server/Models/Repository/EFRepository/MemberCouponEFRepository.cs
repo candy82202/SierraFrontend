@@ -104,10 +104,8 @@ namespace SIERRA_Server.Models.Repository.EFRepository
         {
             var member = await _db.Members.FindAsync(memberId);
             var memberName = member.Username;
-            var cart = await _db.DessertCarts.Include(dc => dc.DessertCartItems)
-                                             .ThenInclude(dci => dci.Specification)
-                                             .ThenInclude(dci => dci.Dessert)
-                                             .ThenInclude(d => d.Discounts)
+            var cart = await _db.DessertCarts.Include(dc => dc.DessertCartItems).ThenInclude(dci => dci.Dessert).ThenInclude(d => d.Discounts)
+                                             .Include(dc=>dc.DessertCartItems).ThenInclude(dci=>dci.Specification)   
                                              .FirstOrDefaultAsync(dc => dc.Username == memberName);
             return cart;
         }
