@@ -34,35 +34,38 @@ namespace SIERRA_Server.Models.DTOs.Desserts
              
             };
         }
-        public static DessertDiscountDTO ToDDiscountDto(this DiscountGroupItem discountGroupItem)
-        {
-            var dessertDiscountDTO = new DessertDiscountDTO
-            {
-                DessertId = 0,
-                DessertImageName = "",
-                DessertName = "",  // Set the default value, or remove this line if not needed
-                UnitPrice = 0,
-                DiscountGroupId = discountGroupItem.DiscountGroupId,
-                Specification = null
-            };
+        //public static DessertDiscountDTO ToDDiscountDto(this DiscountGroupItem discountGroupItem)
+        //{
+        //    var dessertDiscountDTO = new DessertDiscountDTO
+        //    {
+        //        DessertId = 0,
+        //        DessertImageName = "", 
+        //        DessertName = entity.DiscountGroupName, 
+        //        UnitPrice = 0, 
+        //        DiscountGroupId = entity.DiscountGroupId,
+        //        SpecificationId=0,
+        //        Flavor="",
+        //        Size=""
+        //        //Specification = null 
+        //    };
 
-            if (discountGroupItem.Dessert != null)
-            {
-                dessertDiscountDTO.DessertId = discountGroupItem.Dessert.DessertId;
-                dessertDiscountDTO.DessertName = discountGroupItem.Dessert.DessertName;
-                dessertDiscountDTO.DessertImageName = discountGroupItem.Dessert.DessertImages.FirstOrDefault()?.DessertImageName;
-                dessertDiscountDTO.UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
+        //    if (discountGroupItem.Dessert != null)
+        //    {
+        //        dessertDiscountDTO.DessertId = discountGroupItem.Dessert.DessertId;
+        //        dessertDiscountDTO.DessertName = discountGroupItem.Dessert.DessertName;
+        //        dessertDiscountDTO.DessertImageName = discountGroupItem.Dessert.DessertImages.FirstOrDefault()?.DessertImageName;
+        //        dessertDiscountDTO.UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
 
-                dessertDiscountDTO.Specification = new Specification
-                {
-                    UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0,
-                    Flavor = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Flavor,
-                    Size = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Size
-                };
-            }
+        //        //dessertDiscountDTO.Specification = new Specification
+        //        //{
+        //        dessertDiscountDTO.UnitPrice = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
+        //        dessertDiscountDTO.Flavor = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Flavor;
+        //        dessertDiscountDTO.Size = discountGroupItem.Dessert.Specifications.FirstOrDefault()?.Size;
+        //        //};
+        //    }
 
-            return dessertDiscountDTO;
-        }
+        //    return dessertDiscountDTO;
+        //}
         //public static DessertDiscountDTO ToDDiscountDto(this DiscountGroup entity)
         //{
         //    var dessertDiscountDTO = new DessertDiscountDTO
