@@ -17,5 +17,7 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         public string Flavor { get; set; }
         public string Size { get; set; }
         public int DiscountGroupId { get; set; }
+        public int DiscountPrice { get; set; }
+        public decimal DessertDiscountPrice { get; set; }
     }
 }

@@ -247,7 +247,7 @@ namespace SIERRA_Server.Controllers
                 cartItem.Quantity += quantity;
                 if (cartItem.Quantity < 1)
                 {
-                    // 如果数量小于1，将项目从购物车中删除
+                    // 數量小於1，從購物車裡面刪除
                     _context.DessertCartItems.Remove(cartItem);
                 }
                 else

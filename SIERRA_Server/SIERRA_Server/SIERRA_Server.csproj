@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\DTOs\NewFolder\**" />
+    <Content Remove="Models\DTOs\NewFolder\**" />
+    <EmbeddedResource Remove="Models\DTOs\NewFolder\**" />
+    <None Remove="Models\DTOs\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.61.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.20" />
@@ -32,7 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DTOs\NewFolder\" />
     <Folder Include="Uploads\" />
   </ItemGroup>
 

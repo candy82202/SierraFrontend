@@ -147,12 +147,9 @@ namespace SIERRA_Server.Models.Services
                     }
                 }
             }
-            string[] cateKeywords = { "類別", "類", "category", "種類" };
-            if (cateKeywords.Any(cateKeywords => text.Contains(cateKeywords)))
-            {
-                systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
 
-            }
+            systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
+
 
             //member coupon
             string[] couponKeywords = { "優惠券", "coupon", "折扣", "優待" };

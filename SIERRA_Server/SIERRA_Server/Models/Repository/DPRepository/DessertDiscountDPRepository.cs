@@ -6,6 +6,7 @@ using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
 using System.Drawing;
 using System;
+using static Dapper.SqlMapper;
 
 namespace SIERRA_Server.Models.Repository.DPRepository
 {
@@ -151,7 +152,7 @@ namespace SIERRA_Server.Models.Repository.DPRepository
             {
                 // 從SQL 查詢裡面使用SQL Query的語法查找出資料
                 string sqlQuery = $@"
-                SELECT
+                 SELECT
         D.DessertId,
         MAX(D.DessertName) AS DessertName,
         MAX(S.Flavor) AS Flavor,
@@ -159,21 +160,23 @@ namespace SIERRA_Server.Models.Repository.DPRepository
         MAX(S.UnitPrice) AS UnitPrice,
         DGI.DiscountGroupId,
         MAX(DI.DessertImageName) AS DessertImageName,
-        STRING_AGG(CONVERT(VARCHAR, S2.SpecificationId), ', ') WITHIN GROUP(ORDER BY S2.SpecificationId) AS SpecificationIds
-                FROM
-                     DiscountGroupItems DGI
-                INNER JOIN
-                    Desserts D ON DGI.DessertId = D.DessertId
-                LEFT JOIN
-                    DessertImages DI ON DI.DessertId = D.DessertId
-                LEFT JOIN
-                    Specification S ON D.DessertId = S.DessertId
-                LEFT JOIN
-                    Specification S2 ON D.DessertId = S2.DessertId
-                           WHERE DGI.DiscountGroupId = @DiscountGroupId
-
-                GROUP BY D.DessertId, DGI.DiscountGroupId
-                ORDER BY DGI.DiscountGroupId";
+        MAX(Discount.StartAt) AS DiscountStartAt,  -- Select Discount.StartAt here
+        MAX(Discount.EndAt) AS DiscountEndAt,      -- Select Discount.EndAt here
+        MAX(Discount.DiscountPrice) AS DiscountPrice
+    FROM
+        DiscountGroupItems DGI
+    INNER JOIN
+        Desserts D ON DGI.DessertId = D.DessertId
+    LEFT JOIN
+        DessertImages DI ON DI.DessertId = D.DessertId
+    LEFT JOIN
+        Specification S ON D.DessertId = S.DessertId
+    LEFT JOIN
+        Specification S2 ON D.DessertId = S2.DessertId
+    LEFT JOIN
+        Discounts Discount ON Discount.DessertId = D.DessertId
+    WHERE DGI.DiscountGroupId = @DiscountGroupId
+    GROUP BY D.DessertId, DGI.DiscountGroupId";
 
                 await connection.OpenAsync();
 
@@ -183,18 +186,33 @@ namespace SIERRA_Server.Models.Repository.DPRepository
 
                 foreach (var row in queryResult)
                 {
-                    var dessertDiscountDTO = new DessertDiscountDTO
+                    int unitPrice = row.UnitPrice ?? 0;
+                    decimal dessertDiscountPrice = unitPrice;  // Default to unit price
+
+                    if (row.DiscountStartAt != null && row.DiscountEndAt != null)
+                    {
+                        DateTime discountStartAt = row.DiscountStartAt;
+                        DateTime discountEndAt = row.DiscountEndAt;
+
+                        if (discountStartAt < DateTime.Now && discountEndAt > DateTime.Now)
+                        {
+                            dessertDiscountPrice = Math.Round((decimal)unitPrice * ((decimal)row.DiscountPrice / 100), 0, MidpointRounding.AwayFromZero);
+                        }
+                    }
+
+                    dessertDiscountList.Add(new DessertDiscountDTO
                     {
                         DessertId = row.DessertId,
                         DessertName = row.DessertName,
-                        UnitPrice = row.UnitPrice,
+                        UnitPrice = unitPrice,
                         DessertImageName = row.DessertImageName,
                         DiscountGroupId = row.DiscountGroupId,
-                        Flavor=row.Flavor,
+                        SpecificationId = row.SpecificationIds,
+                        Flavor = row.Flavor,
                         Size = row.Size,
-                    };
-
-                    dessertDiscountList.Add(dessertDiscountDTO);
+                        DiscountPrice = row.DiscountPrice,
+                        DessertDiscountPrice = dessertDiscountPrice
+                    });
                 }
             }
             //返回剛剛迴圈找出的所有結果
