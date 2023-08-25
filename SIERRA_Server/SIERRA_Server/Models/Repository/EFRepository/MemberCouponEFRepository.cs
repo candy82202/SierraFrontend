@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Exts;
-using SIERRA_Server.Models.Infra;
+using SIERRA_Server.Models.Infra.Promotions;
 using SIERRA_Server.Models.Interfaces;
 using System.Linq;
 

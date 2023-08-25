@@ -529,19 +529,17 @@ namespace SIERRA_Server.Models.Services
 						var buyCount = 0;
 						for (int i = 0; i < dessertIdAndQtys.Length; i++)
 						{
-							if (buyCount >= neededCount)
-							{
-								couponsMeetCriteria.Add(coupon);
-								break;
-							}
-							else
-							{
-								if (discountGroupDessertIds.Contains(dessertIdAndQtys[i].Id))
+							if (discountGroupDessertIds.Contains(dessertIdAndQtys[i].Id))
 								{
 									buyCount += dessertIdAndQtys[i].Qty;
+									if (buyCount >= neededCount)
+									{
+										couponsMeetCriteria.Add(coupon);
+										break;
+									}
 								}
-								else continue;
-							}
+							else continue;
+							
 						}
 					}
 				}
