@@ -189,7 +189,9 @@ namespace SIERRA_Server.Models.Repository.DPRepository
                         DessertName = row.DessertName,
                         UnitPrice = row.UnitPrice,
                         DessertImageName = row.DessertImageName,
-                        DiscountGroupId = row.DiscountGroupId
+                        DiscountGroupId = row.DiscountGroupId,
+                        Flavor=row.Flavor,
+                        Size = row.Size,
                     };
 
                     dessertDiscountList.Add(dessertDiscountDTO);
