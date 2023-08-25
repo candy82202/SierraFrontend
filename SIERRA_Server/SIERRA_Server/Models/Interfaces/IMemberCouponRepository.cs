@@ -10,7 +10,7 @@ namespace SIERRA_Server.Models.Interfaces
 		Task<IEnumerable<MemberCoupon>> GetCouponCanNotUseNow(int? MemberId);
         Task<bool>CheckCouponExist(string code);
         Task<ResultForCheck> CheckHaveSame(int memberId, string code);
-        Task<string> GetCouponByCode(MemberCouponCreateDto dto);
+        Task<AddCouponResult> GetCouponByCode(MemberCouponCreateDto dto);
         Task<IEnumerable<MemberCouponHasUsedDto>> GetCouponHasUsed(int? memberId);
         Task<DessertCart> GetDessertCart(int memberId);
         Task<IEnumerable<Coupon>> GetPromotionCoupons();
