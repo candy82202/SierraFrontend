@@ -10,28 +10,37 @@
 
 =========================================================
 Desserts 部分
-[V] - Get all categories desserts to views
+[index]
 [V] - Get Top Sales 3 Desserts
+
+[desserts]
+[V] - Get all categories desserts to views
 [V] - Turn into Three Layers
 	- Add new IDessertRepository
 		- method Getpresents , GetMoldCake , GetLongCake , GetSnack , GetRoomTemperature ,TopSaleDesserts
 	- Add new IDessertCategoryRepository
 		- Select desserts base on different categoryId 
-		
-[V] - Get desserts in discount group (Except catagories)
+
+[dessert discount group]		
+[V] - Get desserts in discount group (Except catagories) use dapper
 	- IDessertDiscountRepository GetDiscountGroupsByGroupId method
 	- DessertDiscountDPRepository interface  IDessertDiscountRepository
 	- DessertService call for different DiscountGroupId , To get different method
+	- Get DiscountGroup select by params DessertId , return different discountGroup suggest
+	- Get Desserts by id , Add DessertImageName
 
-
+[cart system]
 [V] - Desserts Add To Cart 
 	- Desserts Delete From DessertCartItems
 	- SpecificationId add in DiscountGroup(GetDiscountGroup)
 	- Update DessertCartItems
 
-[working on] - Get DiscountGroup select by params DessertId , return different discountGroup suggest
-[working on] - Get Desserts by id , Add DessertImageName
-
+[customer service]
+[V] - Open Ai API For Customer Service
+	- IOpenAiService , OpenAiService ,OpenAiController
+	- Complete sentences
+	- Chat (answer question like customer service)
+	- Add Dessert , Categories ,DessertDiscountGroup , MemberCoupon
 =========================================================
 Members 部分
 [V] - Login(with JWT Authentication & thress-layer Architecture)
