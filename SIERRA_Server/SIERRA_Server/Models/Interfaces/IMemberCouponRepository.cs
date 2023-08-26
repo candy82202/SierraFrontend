@@ -1,6 +1,6 @@
 ﻿using SIERRA_Server.Models.DTOs.Promotions;
 using SIERRA_Server.Models.EFModels;
-using SIERRA_Server.Models.Infra;
+using SIERRA_Server.Models.Infra.Promotions;
 
 namespace SIERRA_Server.Models.Interfaces
 {
