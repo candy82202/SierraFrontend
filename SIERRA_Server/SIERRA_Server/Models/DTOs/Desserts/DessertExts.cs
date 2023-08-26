@@ -15,7 +15,17 @@ namespace SIERRA_Server.Models.DTOs.Desserts
                 UnitPrice = unitPrice,
             };
         }
-
+        public static DessertPageDTO ToDPageDto(this Dessert entity)
+        {
+            int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
+            return new DessertPageDTO
+            {
+                DessertId = entity.DessertId,
+                DessertName = entity.DessertName,
+                ImageName = entity.DessertImages.FirstOrDefault().DessertImageName,
+                               UnitPrice = unitPrice,
+            };
+        }
         public static DessertsIndexDTO ToDIndexDto(this Dessert entity)
         {
             int unitPrice = entity.Specifications.FirstOrDefault()?.UnitPrice ?? 0;
