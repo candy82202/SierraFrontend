@@ -61,7 +61,7 @@ namespace SIERRA_Server.Models.Services
 			var member = _repo.GetMemberByUsername(dto.Username);
 			if (member == null) return Result.Fail("帳密有誤");
 
-			if (member.IsConfirmed.HasValue == false || member.IsConfirmed.Value == false) return Result.Fail("會員資格尚未確認");
+			if (member.IsConfirmed.HasValue == false || member.IsConfirmed.Value == false) return Result.Fail("會員資格尚未確認，請至信箱點選驗證信");
 
 			var salt = _hashUtility.GetSalt();
 			var hashPassword = _hashUtility.ToSHA256(dto.Password, salt);
@@ -127,10 +127,10 @@ namespace SIERRA_Server.Models.Services
 		{
 			// 判斷username是否重複
 			var memberInDb = _repo.GetMemberByUsername(dto.Username);
-			if (memberInDb != null) return Result.Fail("帳號重複");
+			if (memberInDb != null) return Result.Fail("使用者名稱重複");
 
 			// 判斷email是否重複
-			if (_repo.IsEmailExist(dto.Email)) return Result.Fail("信箱已註冊");
+			if (_repo.IsEmailExist(dto.Email)) return Result.Fail("電子信箱已註冊");
 
 			// 填入剩餘欄位的值
 			var salt = _hashUtility.GetSalt();
@@ -259,7 +259,7 @@ namespace SIERRA_Server.Models.Services
 
 			if (!ValidPhone(dto.Phone))
 			{
-				return Result.Fail("電話號碼應為10位數字或全空");
+				return Result.Fail("電話號碼格式錯誤");
 			}
 
 			memberInDb.Address = dto.Address;

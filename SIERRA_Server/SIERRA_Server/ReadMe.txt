@@ -56,6 +56,7 @@ Members 部分
 [V] - Modify MemberService.EditPassword() logic
 [V] - Rename ForgotPassword & ResetPassword
 [V] - Dapper
+[V] - Modify ErrorMessage
 
 
 
