@@ -256,6 +256,7 @@
 }
 
 #terms-and-conditions {
+  font-size: 16px;
   font-style: italic;
   font-weight: 600;
   margin-right: auto;
@@ -337,4 +338,11 @@ input:-webkit-autofill {
 #swal2-html-container pre {
   white-space: pre-wrap;
   text-align: left;
+}
+
+#register-demo,
+#forgot-demo {
+  position: absolute;
+  bottom: 50px;
+  right: 10px;
 }

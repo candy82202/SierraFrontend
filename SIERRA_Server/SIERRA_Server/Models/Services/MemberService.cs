@@ -199,7 +199,7 @@ namespace SIERRA_Server.Models.Services
 		{
 			// 檢查該帳號是否存在
 			var memberInDb = _repo.GetMemberById(dto.MemberId);
-			if (memberInDb == null || memberInDb.ConfirmCode != dto.ConfirmCode) return Result.Fail("請檢查驗證連結是否有更動，若仍失敗請聯繫工程師");
+			if (memberInDb == null || memberInDb.ConfirmCode != dto.ConfirmCode) return Result.Fail("重設失敗，請檢查驗證連結是否有更動");
 
 			// 更新密碼，並將ConfirmCode清空
 			var salt = _hashUtility.GetSalt();
