@@ -149,7 +149,7 @@ namespace SIERRA_Server.Models.Services
 			// 寄驗證信
 			var memberId = _repo.GetMemberIdByUsername(dto.Username);
 			//var confirmLink = _urlHelper.Action("ActiveRegister", "Members", new { IdToString, confirmCode });
-			var confirmUrl = $"http://127.0.0.1:5501/RegisterActive.html?memberId={memberId}&confirmCode={confirmCode}";
+			var confirmUrl = $"http://localhost:5501/RegisterActive.html?memberId={memberId}&confirmCode={confirmCode}";
 			_emailHelper.SendConfirmRegisterEmail(dto.Email, confirmUrl, dto.Username);
 
 			return Result.Success();
@@ -187,7 +187,7 @@ namespace SIERRA_Server.Models.Services
 
 			// 寄驗證信
 			var memberId = _repo.GetMemberIdByUsername(dto.Username);
-			var confirmUrl = $"http://127.0.0.1:5501/ResetPassword.html?memberId={memberId}&confirmCode={confirmCode}";
+			var confirmUrl = $"http://localhost:5501/ResetPassword.html?memberId={memberId}&confirmCode={confirmCode}";
 			_emailHelper.SendForgotPasswordEmail(dto.Email, confirmUrl, dto.Username);
 
 			return Result.Success();

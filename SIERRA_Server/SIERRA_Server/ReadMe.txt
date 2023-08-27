@@ -57,7 +57,7 @@ Members 部分
 [V] - Rename ForgotPassword & ResetPassword
 [V] - Dapper
 [V] - Modify ErrorMessage
-
+[V] - Modify "127.0.0.1" to "localhost" 
 
 
 

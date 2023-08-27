@@ -161,7 +161,7 @@ namespace SIERRA_Server.Models.Services
             {
                 if (memberId == null)
                 {
-                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://127.0.0.1:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
+                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
                 }
                 else
                 {
@@ -174,13 +174,13 @@ namespace SIERRA_Server.Models.Services
                             systemMessage.AppendLine($"{coupon.CouponName}");
                         }
 
-                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://127.0.0.1:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
 
                     }
                     else
                     {
                         systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
-                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://127.0.0.1:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
 
                     }
                 }
@@ -260,7 +260,7 @@ namespace SIERRA_Server.Models.Services
             }
 
 
-            systemMessage.AppendLine("除了蛋糕以外還有課程，可以選日期推薦<a href='http://127.0.0.1:5501/lessonBook.html'>課程預約</a>。");
+            systemMessage.AppendLine("除了蛋糕以外還有課程，可以選日期推薦<a href='http://localhost:5501/lessonBook.html'>課程預約</a>。");
 
             chat.AppendSystemMessage(systemMessage.ToString());
             chat.AppendUserInput(text);
