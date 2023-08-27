@@ -714,7 +714,7 @@
               this.UpdateCart(item, newQty);
             } else {
               // 如果数量小于等于1，可以选择从购物车中移除项目
-              this.handleDelete(item.id);
+              this.handleDelete(item);
               this.getTotal();
             }
             this.sureCoupon = null;
