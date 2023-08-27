@@ -339,7 +339,7 @@ const desserts = {
 
     async addProduct(des) {
       // cartOpen如果是false那就打開購物車
-
+      this.GetToken();
       const selectedSpecId = this.selectedUnitPrice; // Use selectedUnitPrice directly
       console.log(selectedSpecId);
       const dessertId = des.dessertId;
@@ -409,7 +409,7 @@ const desserts = {
             <article class="js-cart-product">
             <div class="d-flex">
             <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
-            height: 50px; width: 50px;   "/>
+            height: 70px; width: 70px;  margin-right:15px  "/>
              <h1 class="product_name ">${item.dessertName}</h1> </div>
               <div class="cart__product__qty">
               數量: <span class="qty">${item.count}</span> * NT
@@ -430,6 +430,30 @@ const desserts = {
       } catch (error) {
         console.error("Error getting cart items:", error);
       }
+    },
+    GetToken() {
+      const storedToken = localStorage.getItem("jwtToken");
+      if (storedToken == null) {
+        // this._router.navigate(["回首頁"]);
+        window.location.href = "LogIn.html"; // 刷新頁面，並導至首頁
+      } else {
+        // Parse the token to check if it's expired
+        const tokenExpired = isTokenExpired(storedToken);
+        //如果token過期刷新重新抓取token
+        // if (tokenExpired) {
+        //   this.refreshData();
+        // }
+      }
+      return { Authorization: "Bearer " + storedToken };
+    },
+
+    isTokenExpired(token) {
+      // Parse the token to get the expiration date (replace this with your actual parsing logic)
+      const decodedToken = this.parseToken(token);
+      const expirationDate = new Date(decodedToken.exp * 1000);
+      const currentDate = new Date();
+
+      return currentDate > expirationDate;
     },
   },
   computed: {
