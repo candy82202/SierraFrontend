@@ -75,7 +75,7 @@ namespace SIERRA_Server.Models.Services
 		{
 			// 判斷username是否重複
 			var memberInDb = _repo.GetMemberByUsername(dto.Username);
-			if (memberInDb != null) return Result.Fail("帳號重複");
+			if (memberInDb != null) return Result.Fail("使用者名稱重複");
 
 			// 因在GoogleLogin()時就已經檢查過email了，故不再檢查
 
