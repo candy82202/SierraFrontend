@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>SIERRA</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <!-- <link href="assets/img/favicon.png" rel="icon" /> -->
+    <link href="assets/img/logoNew.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/Flip.css" />
+    <link href="assets/css/login.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- ======= Header ======= -->
+      <header id="header" class="header fixed-top d-flex align-items-center">
+        <div
+          class="container d-flex align-items-center justify-content-between"
+        >
+          <a
+            href="index.html"
+            class="logo d-flex align-items-center me-auto me-lg-0"
+          >
+            <img src="assets/img/logoNew.png" alt="" />
+            <h1>SIERRA</h1>
+          </a>
+          <nav id="navbar" class="navbar">
+            <ul>
+              <li><a href="index.html">首頁</a></li>
+              <li><a href="#about">關於我們</a></li>
+              <li class="dropdown">
+                <a href="#menu"
+                  ><span>甜點</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
+                <ul>
+                  <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                  <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                  <li><a href="desserts.html#/snack">點心</a></li>
+                  <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                  <li><a href="desserts.html#/presents">禮盒</a></li>
+                </ul>
+              </li>
+              <li><a href="Lessons.html">課程</a></li>
+              <li><a href="Teacher.html">師資</a></li>
+              <li><a href="#promotion">近期活動</a></li>
+              <li class="dropdown">
+                <a href="#"
+                  ><span>常見問題</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
+                <ul>
+                  <li><a href="rule.html">常見問題</a></li>
+                  <li class="dropdown">
+                    <a href="/MemberCenter.html"
+                      ><span>會員中心</span>
+                      <i class="bi bi-chevron-down dropdown-indicator"></i
+                    ></a>
+                    <ul>
+                      <li>
+                        <a href="/MemberCenter.html">會員優惠券</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </nav>
+          <!-- .navbar -->
+          <div class="d-flex" style="justify-content: space-between">
+            <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+            <div class="shoppingCartDiv me-3">
+              <a
+                class="js-toggle-cart"
+                href="#"
+                title="View cart"
+                @click="getCartItems()"
+              >
+                <span
+                  class="shoppingCart badge badge-pill badge-warning"
+                ></span>
+                <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- <div class="shoppingCartDiv">
+            <a href="#" title="View cart" @click="getCartItems()">
+              <span class="shoppingCart badge badge-pill badge-warning"></span>
+              <i class="bi bi-cart"></i>
+            </a>
+          </div> -->
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        </div>
+      </header>
+      <!-- End Header -->
+      <!-- ======= Hero Section ======= -->
+      <section id="hero" class="hero d-flex align-items-center section-bg">
+        <div class="container">
+          <div class="row justify-content-between gy-5">
+            <div
+              class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start"
+            >
+              <h2 data-aos="fade-up">
+                Enjoy Your <br />
+                Delicious Desserts
+              </h2>
+              <p data-aos="fade-up" data-aos-delay="100">
+                甜點跟課程的結合，透過對甜點的熱愛
+                讓有同樣的烘焙、廚藝同好所交織的饗宴空間。
+              </p>
+              <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+                <a href="lessonBook.html" class="btn-book-a-table">預定課程</a>
+                <!-- <a
+                  href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+                  class="glightbox btn-watch-video d-flex align-items-center"
+                  ><i class="bi bi-play-circle"></i><span>Watch Video</span></a
+                > -->
+              </div>
+            </div>
+            <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
+              <img
+                src="assets/img/dakwaz1.jpg"
+                class="img-fluid mt-3 me-2"
+                alt=""
+                data-aos="zoom-out"
+                data-aos-delay="300"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End Hero Section -->
+
+      <main id="main">
+        <!-- ======= About Section ======= -->
+        <section id="about" class="about">
+          <div class="container" data-aos="fade-up">
+            <div class="section-header">
+              <div class="mb-4"></div>
+              <p>了解更多 <span>關於我們</span></p>
+            </div>
+
+            <div class="row gy-4">
+              <div
+                class="col-lg-7 position-relative about-img"
+                style="background-image: url(assets/img/about.jpg)"
+                data-aos="fade-up"
+                data-aos-delay="150"
+              >
+                <div class="call-us position-absolute">
+                  <h4>預定課程</h4>
+                  <p>(03)426-0163</p>
+                </div>
+              </div>
+              <div
+                class="col-lg-5 d-flex align-items-end"
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
+                <div class="content ps-0 ps-lg-5">
+                  <p class="fst-italic">
+                    甜點跟課程的結合，透過對甜點的熱愛
+                    讓有同樣的烘焙、廚藝同好所交織的饗宴空間
+                  </p>
+                  <ul>
+                    <li>
+                      <i class="bi bi-check2-all"></i>
+                      好吃的甜點不用華麗鋪張，做出具備撫慰人心效果的甜點
+                      純粹美味的內在就能療癒心靈，做好蛋糕，記憶美好生活
+                    </li>
+                    <li>
+                      <i class="bi bi-check2-all"></i>
+                      提供了甜點的多樣類別呈現。無論是濃郁的巧克力蛋糕、精緻的法式馬卡龍還是清新的水果塔，您都能在這裡找到您喜愛的口味，讓味蕾感受到無盡的美妙滋味。
+                    </li>
+                    <li>
+                      <i class="bi bi-check2-all"></i>
+                      我們深信甜點不僅是味覺的享受，更是情感與回憶的串連。透過對甜點的熱愛，我們希望打造一個獨特的空間，讓客人在其中感受到家的溫馨與烘焙的快樂，讓這裡成為他們生活中另一個寶貴的寄託之所。
+                    </li>
+                  </ul>
+                  <p>
+                    SIERRA不僅提供了課程與甜點販售功能，更是一個熱情、創意與分享的聚集地。
+                    相信SIERRA能夠豐富人們的生活，讓每個人都能在忙碌的日常中找到片刻的放鬆與愉悅，並將這份美好傳遞下去。
+                  </p>
+
+                  <div class="position-relative mt-4">
+                    <img
+                      src="assets/img/about-2.jpg"
+                      class="img-fluid"
+                      alt=""
+                    />
+                    <a
+                      href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+                      class="glightbox play-btn"
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End About Section -->
+        <!-- start shopping cart -->
+        <aside class="cart js-cart mt-5">
+          <div class="cart__header">
+            <h1 class="cart__title">購物車</h1>
+            <p class="cart__text">
+              <a
+                class="button button--light js-toggle-cart"
+                href="#"
+                title="Close cart"
+              >
+                <i class="bi bi-x-square-fill"></i>
+              </a>
+            </p>
+          </div>
+          <div class="cart__products js-cart-products cart-scrollerbar">
+            <p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>
+            <div
+              class="cart__product js-cart-product-template"
+              v-for="item in cartItems"
+              :key="item.id"
+            >
+              <article class="js-cart-product">
+                <h1 class="product_name">{{ item.dessertName }}</h1>
+
+                數量: <span class="qty">{{ item.quantity }}</span> * NT
+                <span class="dessertPrice">{{ item.price }}</span>
+                <p>
+                  <a
+                    class="js-remove-product"
+                    href="#"
+                    title="Delete product"
+                    @click="removeProduct(item.id)"
+                  >
+                    刪除
+                  </a>
+                </p>
+              </article>
+            </div>
+          </div>
+          <div class="cart__footer">
+            <p class="cart__text">
+              <a
+                class="button checkbtn"
+                href="shoppingCart.html"
+                title="Buy products"
+                >結帳
+              </a>
+            </p>
+          </div>
+        </aside>
+        <!-- End shopping cart -->
+        <!-- ======= CustomerSection ======= -->
+        <div id="chatApp">
+          <div id="body">
+            <div id="chat-circle" class="btn btn-raised" @click="toggleChatBox">
+              <div id="chat-overlay"></div>
+              <i class="material-icons">speaker_phone</i>
+            </div>
+
+            <div
+              class="chat-box"
+              :class="{ 'show': showChatBox, 'scale': chatBoxScale }"
+              style="z-index: 5"
+            >
+              <div class="chat-box-header">
+                SIERRA
+                <span class="chat-box-toggle"
+                  ><i class="material-icons" @click="toggleChatBox"
+                    >close</i
+                  ></span
+                >
+              </div>
+              <div class="chat-box-body">
+                <div class="loading-indicator" v-if="loading">
+                  <img src="assets/img/chatloading.gif" alt="Loading" />
+                </div>
+                <div class="chat-box-overlay"></div>
+                <div class="chat-logs"></div>
+                <div class="response-message"></div>
+                <!--chat-log -->
+              </div>
+              <div class="chat-input">
+                <form>
+                  <input
+                    v-model="textInput"
+                    type="text"
+                    id="chat-input"
+                    placeholder="Send a message..."
+                  />
+                  <button
+                    type="button"
+                    class="chat-submit"
+                    id="chat-submit"
+                    @click="sendMessage"
+                  >
+                    <i class="material-icons">send</i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======= End CustomerSection ======= -->
+
+        <!-- ======= StatsSection ======= -->
+        <section id="stats-counter" class="stats-counter">
+          <div class="container" data-aos="zoom-out">
+            <div class="row gy-4">
+              <div class="col-lg-2 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <!-- <span
+                    data-purecounter-start="0"
+                    data-purecounter-end="232"
+                    data-purecounter-duration="1"
+                    class="purecounter"
+                  ></span>
+                  <p>Clients</p> -->
+                  <span>SIERAA</span>
+                </div>
+              </div>
+              <!-- End Stats Item -->
+
+              <div class="col-lg-4 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span> 熱情 創意 分享</span>
+                </div>
+              </div>
+              <!-- End Stats Item -->
+              <div class="col-lg-6 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span> 的饗宴空間。 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End Stats Section -->
+
+        <!-- ======= Menu Section ======= -->
+
+        <section id="menu" class="menu mb-4 mt-2">
+          <div id="app">
+            <div class="container" data-aos="fade-up">
+              <div class="section-header mb-2">
+                <div class="mb-5"></div>
+                <p>SIERRA <span>Dessert Top 3</span></p>
+              </div>
+              <!-- Router View Here -->
+              <router-view></router-view>
+            </div>
+          </div>
+        </section>
+
+        <!-- End Menu Section -->
+
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials section-bg mt-5">
+          <div class="container" data-aos="fade-up">
+            <div class="section-header">
+              <!-- <h2>Testimonials</h2> -->
+              <div class="mb-3"></div>
+              <p>What Are They <span>Saying About Us</span></p>
+            </div>
+
+            <div
+              class="slides-1 swiper"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <div class="row gy-4 justify-content-center">
+                      <div class="col-lg-6">
+                        <div class="testimonial-content">
+                          <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            SIERRA真是甜點愛好者的天堂！不僅商品瀏覽體驗超高質感，而且每次購物都有不同的優惠活動，讓我一來就愛上這裡。更特別的是每日、每週小遊戲，不僅好玩還能得到額外優惠，真是聰明又有趣！這裡就像是我的甜點秘密基地，絕對值得五顆星的評價！
+                            <i class="bi bi-quote quote-icon-right"></i>
+                          </p>
+                          <h3>Saul Goodman</h3>
+                          <h4>Ceo &amp; Founder</h4>
+                          <div class="stars">
+                            <i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 text-center">
+                        <img
+                          src="assets/img/testimonials/testimonials-1.jpg"
+                          class="img-fluid testimonial-img"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End testimonial item -->
+
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <div class="row gy-4 justify-content-center">
+                      <div class="col-lg-6">
+                        <div class="testimonial-content">
+                          <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            非常值得參加的初階烘焙課程！
+                            這個初階烘焙課程真是太棒了！老師非常專業且有耐心，詳細講解了每個步驟和技巧，讓我從一個完全沒有烘焙經驗的新手，一步步學會製作美味的甜點。課程內容豐富，包含了多種經典和創意甜點的製作，讓我對烘焙有了更深的了解。而且，課程中的小班教學讓我們得到了更多的指導和互動，真的非常受用。我現在可以自信地在家製作出讓朋友們驚艷的蛋糕和點心了！謝謝甜點店提供這麼棒的課程，我會推薦給所有烘焙愛好者！
+                            <i class="bi bi-quote quote-icon-right"></i>
+                          </p>
+                          <h3>Sara Wilsson</h3>
+                          <h4>Designer</h4>
+                          <div class="stars">
+                            <i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 text-center">
+                        <img
+                          src="assets/img/testimonials/testimonials-2.jpg"
+                          class="img-fluid testimonial-img"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End testimonial item -->
+
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <div class="row gy-4 justify-content-center">
+                      <div class="col-lg-6">
+                        <div class="testimonial-content">
+                          <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            我愛死這家甜點店的巧克力慕斯蛋糕了！每次吃都像是在天堂一樣，慕斯蛋糕的口感綿密輕盈，搭配濃郁的巧克力，讓人感受到絕美的滋味。甜度剛好，不會太甜膩，是我在這裡必點的美味甜點。
+                            這家店的糕點真的很特別，品項多樣，每次來都有不同的驚喜。我也推薦他們的抹茶生巧克力和焦糖海鹽抹茶生巧塔，抹茶控必定要來報到!!每一款都是令人難忘的美味。真的很感謝甜點店給我們帶來這麼美味的甜點饗宴！
+                            <i class="bi bi-quote quote-icon-right"></i>
+                          </p>
+                          <h3>Jena Karlis</h3>
+                          <h4>Store Owner</h4>
+                          <div class="stars">
+                            <i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 text-center">
+                        <img
+                          src="assets/img/testimonials/testimonials-3.jpg"
+                          class="img-fluid testimonial-img"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End testimonial item -->
+
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <div class="row gy-4 justify-content-center">
+                      <div class="col-lg-6">
+                        <div class="testimonial-content">
+                          <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            這家甜點店的品質真的是一流的！他們的黑森林蛋糕是我吃過最好吃的，每一口都讓人陶醉。蛋糕的層次豐富，巧克力和櫻桃的結合恰到好處，甜而不膩，讓我一吃難忘。而且他們的威士忌提拉米蘇也是絕對的美味，綿密的口感，融合了濃郁的威士忌風味內餡，每一口都是一種享受。這裡的甜點真的值得稱讚，他們的品項也很多樣化，無論是慶祝活動還是平日小確幸，威士忌提拉米蘇都是最佳的選擇。謝謝甜點店提供這麼美味的甜點，我會一直支持你們的！
+                            <i class="bi bi-quote quote-icon-right"></i>
+                          </p>
+                          <h3>John Larson</h3>
+                          <h4>Entrepreneur</h4>
+                          <div class="stars">
+                            <i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i
+                            ><i class="bi bi-star-fill"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 text-center">
+                        <img
+                          src="assets/img/testimonials/testimonials-4.jpg"
+                          class="img-fluid testimonial-img"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End testimonial item -->
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </section>
+        <!-- End Testimonials Section -->
+        <!-- ======= Lesson Section ======= -->
+        <section id="events" class="events">
+          <div id="lessonApp">
+            <div class="container-fluid" data-aos="fade-up">
+              <div class="section-header">
+                <div class="mb-3"></div>
+                <p>Share <span>Your Moments</span> In Our Restaurant</p>
+              </div>
+
+              <div
+                class="slides-3 swiper"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <div class="swiper-wrapper">
+                  <div
+                    class="swiper-slide event-item d-flex flex-column justify-content-end"
+                    v-for="lesson in lessons"
+                    :key="lesson.lessonId"
+                    :style="{ backgroundImage: 'url(' + PhotoPath +lesson.lessonImageName[0] + ')' } "
+                  >
+                    <h3>{{lesson.lessonTitle}}</h3>
+                    <div class="price align-self-start">
+                      ${{lesson.lessonPrice}}
+                    </div>
+                    <p class="description">{{lesson.lessonDetail}}</p>
+                  </div>
+                  <!-- End Event item -->
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End Lesson Section -->
+        <!-- ======= Chefs Section ======= -->
+        <section id="chefs" class="chefs section-bg">
+          <div id="teacherApp">
+            <div class="container" data-aos="fade-up">
+              <div class="section-header">
+                <h2>SIERRA 師資</h2>
+                <div class="mb-3"></div>
+                <p><span>專業</span> 師資團隊</p>
+              </div>
+            </div>
+            <div class="centerflipcards">
+              <div
+                class="square-flip"
+                v-for="teacher in teachers"
+                :key="teacher.teacherId"
+              >
+                <div class="square" data-image="PhotoPath+teacher.teacherImage">
+                  <div class="square-container">
+                    <div class="align-center mb-1">
+                      <img
+                        :src="PhotoPath+teacher.teacherImage"
+                        class="boxshadow"
+                        alt=""
+                      />
+                    </div>
+                    <h2 class="textshadow">{{teacher.teacherName}}</h2>
+                    <h3 class="textshadow">{{teacher.experience}}</h3>
+                  </div>
+                  <div class="flip-overlay"></div>
+                </div>
+                <div
+                  class="square2"
+                  data-image="https://unsplash.com/photos/iOPY32U-szg"
+                >
+                  <div class="square-container2">
+                    <div class="align-center back">
+                      <h2>專長:{{teacher.specialty}}</h2>
+                      <h2>證照:{{teacher.license}}</h2>
+                      <h2>課程:{{teacher.specialty}}</h2>
+                    </div>
+                  </div>
+                  <div class="flip-overlay"></div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </section>
+        <section></section>
+
+        <!-- End Chefs Section -->
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact">
+          <div class="container" data-aos="fade-up">
+            <div class="section-header">
+              <!-- <h2>Contact</h2> -->
+              <div class="mb-3"></div>
+              <p>Need Help? <span>Contact Us</span></p>
+            </div>
+
+            <div class="mb-3">
+              <iframe
+                style="border: 0; width: 100%; height: 350px"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
+                frameborder="0"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <!-- End Google Maps -->
+          </div>
+        </section>
+        <!-- End Contact Section -->
+      </main>
+      <!-- End #main -->
+
+      <!-- ======= Footer ======= -->
+      <footer id="footer" class="footer">
+        <div class="container">
+          <div class="row gy-3">
+            <div class="col-lg-3 col-md-6 d-flex">
+              <i class="bi bi-geo-alt icon"></i>
+              <div>
+                <h4>地址</h4>
+                <p>
+                  桃園市 中壢區 <br />
+                  新生路二段421號<br />
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links d-flex">
+              <i class="bi bi-telephone icon"></i>
+              <div>
+                <h4>預定方式</h4>
+                <p>
+                  <strong>電話:</strong> 03 426 0163<br />
+                  <strong>Email:</strong> fuen283@ispan.com<br />
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links d-flex">
+              <i class="bi bi-clock icon"></i>
+              <div>
+                <h4>營業時間</h4>
+                <p>
+                  <strong>星期一到六: 11AM</strong> - 23PM<br />
+                  星期日: 公休
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links">
+              <h4>追蹤我們</h4>
+              <div class="social-links d-flex">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"
+                  ><i class="bi bi-instagram"></i
+                ></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="copyright">
+            &copy; Copyright <strong><span>SIERRA</span></strong
+            >. All Rights Reserved
+          </div>
+          <div class="credits">Designed by SIERRA</div>
+        </div>
+      </footer>
+      <!-- End Footer -->
+
+      <a
+        href="#"
+        class="scroll-top d-flex align-items-center justify-content-center"
+        ><i class="bi bi-arrow-up-short"></i
+      ></a>
+
+      <div id="preloader"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="assets/js/variables.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- vue and vue Router -->
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.2.4/dist/vue-router.global.js"></script>
+
+    <!-- Cake Router Link-->
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/menu.js"></script>
+    <script src="assets/js/roomTemperature.js"></script>
+    <script src="assets/js/moldCake.js"></script>
+    <script src="assets/js/snack.js"></script>
+    <script src="assets/js/dessert.js"></script>
+    <script src="assets/js/longCake.js"></script>
+    <script src="assets/js/presents.js"></script>
+    <script src="assets/js/choco.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/cart.js"></script>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        //Count nr. of square classes
+        var countSquare = $(".square").length;
+
+        //For each Square found add BG image
+        for (i = 0; i < countSquare; i++) {
+          var firstImage = $(".square").eq([i]);
+          var secondImage = $(".square2").eq([i]);
+
+          var getImage = firstImage.attr("data-image");
+          var getImage2 = secondImage.attr("data-image");
+
+          firstImage.css("background-image", "url(" + getImage + ")");
+          secondImage.css("background-image", "url(" + getImage2 + ")");
+        }
+      });
+
+      const inputValue = document.querySelector("input");
+      const egg = document.querySelector(".egg");
+      const eggColor = document.querySelector(".egg-color");
+      const openEggColor = document.querySelector(".open-egg-color");
+      const colors = ["#E5A0B9", "#F3D478", "#9DCFE0", "#B9AED4"];
+      let currentColor = "#E5A0B9";
+
+      document.querySelector(".switch").addEventListener("click", function () {
+        currentColor = colors[Math.floor(Math.random() * colors.length)];
+        eggColor.style.fill = currentColor;
+        openEggColor.style.fill = currentColor;
+        this.classList.toggle("active");
+        setTimeout(() => this.classList.remove("active"), 700);
+        egg.classList.toggle("active");
+      });
+
+      egg.addEventListener("click", function () {
+        this.classList.remove("active");
+        document.querySelector(".mask").classList.toggle("active");
+      });
+
+      document.querySelector(".mask").addEventListener("click", function () {
+        this.classList.toggle("active");
+      });
+      const memberId = localStorage.getItem("memberId");
+
+      var Teachervueapp = {
+        data() {
+          return {
+            teachers: [],
+            teacherName: "",
+            PhotoPath: "/assets/img/",
+          };
+        },
+        methods: {
+          async filterTeachers() {
+            try {
+              const response = await axios.get(variables.API_URL + "Teacher");
+              this.teachers = response.data.teachers;
+              console.log(this.teachers);
+            } catch (error) {
+              alert(error);
+            }
+          },
+          async getCartItems() {
+            const username = localStorage.getItem("username");
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertCarts?username=${username}`,
+                config
+              );
+
+              const cartItems = response.data;
+              console.log(cartItems);
+              const cartProductsContainer = $(".js-cart-products");
+              cartProductsContainer.empty(); // Clear the existing cart items
+
+              if (cartItems.length === 0) {
+                // Display the cart empty message if there are no items
+                cartProductsContainer.append(
+                  '<p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>'
+                );
+              } else {
+                cartItems.forEach((item) => {
+                  const cartProductTemplate = `
+                  <div class="cart__product"  v-for="item in cartItems" :key="item.id">
+                  <article class="js-cart-product">
+                  <div class="d-flex">
+                  <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+                  height: 50px; width: 50px;   "/>
+                   <h1 class="product_name ">${item.dessertName}</h1> </div>
+                    <div class="cart__product__qty">
+                    數量: <span class="qty">${item.count}</span> * NT
+                    <span class="dessertPrice">${item.price}</span>         
+                      <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+                        刪除
+                      </a>
+                     </div>
+                  </article>
+                </div>
+                  `;
+                  cartProductsContainer.append(cartProductTemplate);
+                });
+              }
+              numberOfProducts = cartItems.length;
+              $(".cart__footer .button").text("結帳 " + numberOfProducts);
+              $(".shoppingCart").text(numberOfProducts);
+            } catch (error) {
+              console.error("Error getting cart items:", error);
+            }
+          },
+        },
+        mounted: function () {
+          this.filterTeachers();
+
+          const storedToken = localStorage.getItem("jwtToken");
+          const isUserLoggedIn = storedToken !== null;
+          if (isUserLoggedIn) {
+            return this.getCartItems();
+          }
+        },
+      };
+
+      const Lessonvueapp = {
+        data() {
+          return {
+            lessons: [],
+            //  lessonImages: [],
+            PhotoPath: "/assets/img/",
+            lessonCategories: [],
+            selectedCategory: null,
+          };
+        },
+        methods: {
+          async filterLessons() {
+            let _this = this;
+            var request = {};
+            if (this.selectedCategory) {
+              request.params = { categoryName: this.selectedCategory };
+            }
+            const response1 = axios
+              .get(variables.API_URL + "Lesson/category", request)
+              .then((response) => {
+                _this.lessonCategories = response.data;
+              })
+              .catch((err) => {
+                alert(err);
+              });
+            const response = axios
+              .get(variables.API_URL + "Lesson/lesson", request)
+              .then((response) => {
+                _this.lessons = response.data;
+                console.log(_this.lessons);
+                //_this.lessonImages = response.data.lessonImages;
+              })
+              .catch((err) => {
+                alert(err);
+              });
+          },
+          formatDate: function (value) {
+            //console.log(value);
+            const options = {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            };
+            return new Date(value).toLocaleDateString("en-US", options);
+          },
+        },
+        mounted: function () {
+          //this.filterLessonCategories();
+          this.filterLessons();
+        },
+      };
+
+      var chatvueapp = {
+        data() {
+          return {
+            textInput: "",
+            responseMessage: "",
+            showChatBox: false,
+            chatBoxScale: false, // 添加 chatBoxScale 屬性
+            INDEX: 0,
+            loading: false,
+          };
+        },
+        methods: {
+          toggleChatBox() {
+            if (!this.showChatBox) {
+              $("#chat-circle").toggle("scale");
+              $(".chat-box").toggle("scale");
+              this.sendHelloMsg();
+              // this.getMemberImg();
+            }
+            this.chatBoxScale = !this.chatBoxScale; // 切换 chatBoxScale 的狀態來觸發效果
+
+            // $(".chat-box-toggle").click(function () {
+            //   $("#chat-circle").toggle("scale");
+            //   $(".chat-box").toggle("scale");
+            // });
+          },
+          async getMemberImg() {
+            const response = await axios.get(
+              `${variables.API_URL}Members/GetMemberImageUrl?id=${memberId}`,
+              config
+            );
+            const img = response.data;
+            console.log(img);
+            return img;
+          },
+          sendHelloMsg() {
+            const username = this.GetToken();
+            //給定傳訊息的類別是使用者
+            const type = "user";
+            var str =
+              "<div id='cm-msg-" +
+              this.INDEX +
+              "' class=\"chat-msg " +
+              type +
+              '">';
+            str += '          <span class="msg-avatar">';
+            str += '            <img src="assets\/img\/logoNew.png">';
+            str += "          <\/span>";
+            str += '          <div class="cm-msg-text">';
+            str +=
+              "您好, " +
+              username +
+              "<\/br>歡迎來到SIERRA<\/br>請問有甚麼可以為您服務的?";
+            str += "          <\/div>";
+            str += "        <\/div>";
+            // 将生成的消息添加到聊天记录
+            $(".chat-logs").append(str);
+
+            //把訊息漸顯滾動到底部
+            $("#cm-msg-" + this.INDEX)
+              .hide()
+              .fadeIn(300);
+
+            $(".chat-logs")
+              .stop()
+              .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+          },
+          generate_message(msg, type, img, showLoading = false) {
+            this.INDEX++;
+            // 移除先前的 loading 圖示
+            $(".chat-logs .loading-indicator").remove();
+
+            var str =
+              "<div id='cm-msg-" +
+              this.INDEX +
+              "' class=\"chat-msg " +
+              type +
+              '">';
+            str += '          <span class="msg-avatar">';
+            str += '            <img src="' + img + '">';
+            str += "          <\/span>";
+            str += '          <div class="cm-msg-text">';
+            str += msg;
+            str += "          <\/div>";
+            str += "        <\/div>";
+
+            this.textInput = ""; // 清空输入框内容
+
+            $(".chat-logs").append(str);
+
+            if (showLoading) {
+              var loadingStr =
+                "<div class='loading-indicator'><img src='assets/img/chatloading.gif' style='width:50px;height:50px' alt='Loading'></div>";
+              $(".chat-logs").append(loadingStr);
+            }
+
+            $("#cm-msg-" + this.INDEX)
+              .hide()
+              .fadeIn(300);
+            $(".chat-logs")
+              .stop()
+              .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+          },
+          async sendMessage() {
+            //if input is empty
+            const inputText = this.textInput.trim();
+            if (inputText === "") {
+              return;
+            }
+            //make sure is user log in or not
+            const storedToken = localStorage.getItem("jwtToken");
+            const isUserLoggedIn = storedToken !== null;
+            const type = isUserLoggedIn ? "self" : "other";
+
+            //different img type
+            let img;
+            if (type === "self") {
+              img = await this.getMemberImg();
+            } else {
+              img = "assets/img/logoNew.png";
+            }
+
+            this.generate_message(inputText, "self", img, true); // 顯示 loading 圖示
+
+            const apiUrl = `${
+              variables.API_URL
+            }OpenAi/AskDessert?text=${encodeURIComponent(inputText)}`;
+            try {
+              let response;
+              if (isUserLoggedIn) {
+                const memberApiUrl = `${apiUrl}&memberId=${memberId}`;
+                response = await axios.post(memberApiUrl, null, config);
+              } else {
+                response = await axios.post(apiUrl);
+              }
+
+              this.generate_message(
+                response.data,
+                "user",
+                "assets/img/logoNew.png",
+                false // 隱藏 loading 圖示
+              );
+            } catch (error) {
+              console.error("Error sending message:", error);
+              this.generate_message(
+                "抱歉，我無法回答這個問題，請洽客服.",
+                "user",
+                "assets/img/logoNew.png",
+                false // 隱藏 loading 圖示
+              );
+            }
+          },
+          // generate_message(msg, type, img) {
+          //   this.INDEX++;
+
+          //   var str =
+          //     "<div id='cm-msg-" +
+          //     this.INDEX +
+          //     "' class=\"chat-msg " +
+          //     type +
+          //     '">';
+          //   str += '          <span class="msg-avatar">';
+          //   str += '            <img src="' + img + '">';
+          //   str += "          <\/span>";
+          //   str += '          <div class="cm-msg-text">';
+          //   str += msg;
+          //   str += "          <\/div>";
+          //   str += "        <\/div>";
+
+          //   this.textInput = ""; // 清空输入框内容
+
+          //   $(".chat-logs").append(str);
+
+          //   $("#cm-msg-" + this.INDEX)
+          //     .hide()
+          //     .fadeIn(300);
+          //   $(".chat-logs")
+          //     .stop()
+          //     .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+          // },
+          // async sendMessage() {
+          //   const inputText = this.textInput.trim(); // Store the trimmed input text
+          //   if (inputText === "") {
+          //     return;
+          //   }
+          //   // if (this.textInput.trim() === "") {
+          //   //   return;
+          //   // }
+          //   // console.log(this.textInput);
+
+          //   const storedToken = localStorage.getItem("jwtToken");
+          //   const isUserLoggedIn = storedToken !== null;
+          //   const type = isUserLoggedIn ? "self" : "other"; // Determine message type
+
+          //   let img;
+          //   if (type === "self") {
+          //     // If the user is logged in, get the member image
+          //     img = await this.getMemberImg();
+          //   } else {
+          //     // If not logged in, use default image
+          //     img = "assets/img/logoNew.png";
+          //   }
+
+          //   await this.generate_message(inputText, "self", img); // Display user message
+          //   this.loading = true;
+          //   const apiUrl = `${
+          //     variables.API_URL
+          //   }OpenAi/AskDessert?text=${encodeURIComponent(inputText)}`;
+          //   try {
+          //     let response;
+          //     if (isUserLoggedIn) {
+          //       const memberApiUrl = `${apiUrl}&memberId=${memberId}`;
+          //       response = await axios.post(memberApiUrl, config);
+          //     } else {
+          //       response = await axios.post(apiUrl, config);
+          //     }
+          //     // 隱藏 loading 圖示
+          //     this.loading = false;
+          //     this.generate_message(
+          //       response.data,
+          //       "user",
+          //       "assets/img/logoNew.png"
+          //     ); // Display Server response message
+          //   } catch (error) {
+          //     console.error("Error sending message:", error);
+          //     this.generate_message(
+          //       "抱歉，我無法回答這個問題，請洽客服.",
+          //       "user"
+          //     );
+          //     // 隱藏 loading 圖示
+          //     this.loading = false;
+          //   }
+          // },
+
+          generate_response_message(responseMessage) {
+            this.responseMessage = responseMessage;
+
+            $(".chat-logs")
+              .stop()
+              .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+          },
+          GetToken() {
+            var username = "";
+            const storedToken = localStorage.getItem("jwtToken");
+            var img = "";
+            if (storedToken == null) {
+              const username = "";
+              return username;
+            } else {
+              const username = localStorage.getItem("username");
+              return username;
+            }
+          },
+        },
+      };
+
+      var chatApp = Vue.createApp(chatvueapp).mount("#chatApp");
+
+      var lessonApp = Vue.createApp(Lessonvueapp).mount("#lessonApp");
+
+      var teacherApp = Vue.createApp(Teachervueapp).mount("#teacherApp");
+    </script>
+  </body>
+</html>

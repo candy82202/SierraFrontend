@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>甜點</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet" />
+    <link href="assets/css/login.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-lg-0"
+        >
+          <img src="assets/img/logoNew.png" alt="" />
+          <h1>SIERRA</h1>
+        </a>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="#about">關於我們</a></li>
+            <li class="dropdown">
+              <a href="#menu"
+                ><span>甜點</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                <li><a href="desserts.html#/snack">點心</a></li>
+                <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                <li><a href="desserts.html#/presents">禮盒</a></li>
+              </ul>
+            </li>
+            <li><a href="Lessons.html">課程</a></li>
+            <li><a href="Teacher.html">師資</a></li>
+            <li><a href="#promotion">近期活動</a></li>
+            <li class="dropdown">
+              <a href="#"
+                ><span>常見問題</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="rule.html">常見問題</a></li>
+                <li class="dropdown">
+                  <a href="/MemberCenter.html"
+                    ><span>會員中心</span>
+                    <i class="bi bi-chevron-down dropdown-indicator"></i
+                  ></a>
+                  <ul>
+                    <li>
+                      <a href="/MemberCenter.html">會員優惠券</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="#contact">聯絡我們</a></li>
+          </ul>
+        </nav>
+        <!-- .navbar -->
+        <div class="d-flex" style="justify-content: space-between">
+          <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+          <div class="shoppingCartDiv me-3">
+            <a
+              class="js-toggle-cart"
+              href="#"
+              title="View cart"
+              @click="getCartItems()"
+            >
+              <span class="shoppingCart badge badge-pill badge-warning"></span>
+              <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- <div class="shoppingCartDiv">
+        <a href="#" title="View cart" @click="getCartItems()">
+          <span class="shoppingCart badge badge-pill badge-warning"></span>
+          <i class="bi bi-cart"></i>
+        </a>
+      </div> -->
+        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <main id="main">
+      <!-- ======= Breadcrumbs ======= -->
+      <div class="breadcrumbs mb-2">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>常見問題</h2>
+            <ol>
+              <li><a href="index.html">首頁</a></li>
+              <li>常見問題</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- End Breadcrumbs -->
+
+      <main id="main" class="main">
+        <!-- End Page Title -->
+        <div class="container mt-2">
+          <section class="section faq">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="card basic mb-3">
+                  <div class="card-body">
+                    <h4 class="mt-3 mb-3 fw-bold">訂購須知</h4>
+
+                    <div>
+                      <h5>※ 如何知道訂單什麼時候會出貨</h5>
+                      <div class="ms-3">
+                        <p>
+                          除以下特殊節慶之外的正常時間，我們都是在您選擇的希望到貨日期的前一天才會寄出包裹，例如：您的希望到貨日期選擇9/2(二)，那麼我們就是9/1(一)當天寄出，正常是9/2(二)可以收到，但如遇物流端因素(包裹送錯縣市、量大送不完等)就有可能9/3(三)才會到貨，所以強烈建議將希望到貨日期選擇在要使用蛋糕前一兩天先到貨！
+                        </p>
+
+                        <p>
+                          ➡逢各大節日前(年節、中秋節等節慶)，物流包裹量通常都會暴增，需請您自行將希望到貨日期選擇在您要送禮/慶祝前的兩~三天，提前收到比較不會因為物流延遲而耽誤您的送禮/慶祝安排。
+                        </p>
+                        <p>
+                          ➡如遇母親節、父親節，將統一由我們主動提前出貨，例如：您的希望到貨日期選擇5/6(五)，那麼我們就是5/4(三)寄出，預計是5/5(四)、5/6(五)到貨。
+                        </p>
+                        <p>
+                          以上請注意⚠提前收到的蛋糕基本上都會在賞味期限內，依照蛋糕外盒上的保存方式妥善存放即可；如遇物流量暴增情況下，黑貓宅配可能會視情況調整服務時間，詳情依黑貓官網公告為主。
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="pt-2">
+                      <h5>※宅配須知</h5>
+                      <div class="ms-3">
+                        <p>
+                          目前與黑貓宅配物流配合全程低溫冷凍配送，因週日黑貓宅配無提供配送服務，故：
+                        </p>
+                        <p>
+                          ➡➡選擇希望週六到貨者：若週六當天沒有順利收到包裹，則會順延至下週一再配送，如有週末慶祝/送禮安排等，建議將希望到貨日期選擇週四、週五先到貨。
+                        </p>
+                        <p>
+                          ➡➡選擇希望週一到貨者：包裹會於週六先行寄出，週日會暫置黑貓營業所冷凍保存一天，週一進行配送。
+                        </p>
+                        <p>
+                          ※目前沒有辦法指定到貨時間點(例如：早上10點到、下午3點到之類的指定時間)，也沒有晚上配送時間，實際送達時間需依照當區司機安排路線為主，若收件地址為營業場所有特殊開門營業時間(例如：中午12點才營業有人收貨、診所幾點休診期間等等)的送貨備註，您可以在【訂單確認頁面】的訂單備註區(如下圖)告訴我們，我們會再將備註寫在宅配單上讓當區配送司機知悉。
+                        </p>
+                        <p>
+                          ※SIERRA不負擔黑貓宅配物流延遲的責任，包裹出貨後配送狀況依物流中心、當區配送營業所為主，詳情請至黑貓官網查詢或撥打黑貓客服。
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="pt-2">
+                      <h5>※宅配風險</h5>
+                      <div class="ms-3">
+                        <p>
+                          運送過程中，如包裹在物流公司分流理貨當中有解凍到、失溫，都很有可能會因為配送人員與路況的不同，導致蛋糕位移、變形、或是盒內四周沾到黏膩果膠等損壞的風險，請務必謹慎評估風險後再下單。
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- F.A.Q Group 3 -->
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="mt-3 mb-3 fw-bold">關 於 訂 單</h4>
+
+                    <div class="accordion accordion-flush" id="faq-group-3">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsThree-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：我是使用國外信用卡，也可以線上刷卡結帳嗎?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsThree-1"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-3"
+                        >
+                          <div class="accordion-body">
+                            可以的哦，我們提供卡別VISA、MASTER、JCB
+                            線上付款服務，目前不接受銀聯卡。
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsThree-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：我想要取消訂單，該怎麼辦?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsThree-2"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-3"
+                        >
+                          <div class="accordion-body">
+                            訂單完成付款之後即會安排蛋糕製作，訂單顯示【已確認】後是無法取消、退款、更換口味；訂單顯示【已完成】即不可修改訂單內容與收件資料，以上如有其他不可抗之因素，請在客服無誤時間內致電詢問。
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsThree-3"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：我想要更換蛋糕口味可以嗎?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsThree-3"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-3"
+                        >
+                          <div class="accordion-body">
+                            蛋糕皆為接單生產，所以訂單完成後無法再更換口味。
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End F.A.Q Group 3 -->
+              </div>
+
+              <div class="col-lg-6">
+                <!-- F.A.Q Group 2 -->
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h3 class="mt-3 mb-3 fw-bold">關 於 運 送</h3>
+
+                    <div class="accordion accordion-flush" id="faq-group-2">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsTwo-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：請問下單完成後最快多久會送達呢?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsTwo-1"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-2"
+                        >
+                          <div class="accordion-body">
+                            官網下單有三天工作天，您可以在官網的結帳頁面查看最快到貨日期唷！例如：今日9/1(一)下單，可選擇9/5(五)的希望到貨日期；如已無法選擇您想要的希望到貨日期，可以在客服服務時間內致電詢問，我們會建議再您要使用蛋糕當天的前一兩天先收到貨，比較不會因為物流端因素(包裹送錯縣市、當區包裹量太大送不完)等耽誤到您的慶祝或是送禮安排，提前先收到的蛋糕都會在賞味期限內請您放心！
+                            ⚠如逢節日/節慶/送禮期間，物流量都會非常大，請務必選擇蛋糕使用日的前一兩天到貨，物流量變大一定會增加包裹之間的碰撞機會，分流當中蛋糕有被解凍到、配送人員與路況不同，都有可能導致蛋糕位移及損壞風險!!!
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsTwo-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：請問「預購商品」要多久才能收到呢?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsTwo-2"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-2"
+                        >
+                          <div class="accordion-body">
+                            通常約提前約半個月開放預訂，官網下單可選擇您想要的到貨日期，下單至商品送達約30天左右，實際情況依該檔期活動說明為主。
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsTwo-3"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：請問可以指定時間送達蛋糕嗎?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsTwo-3"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-2"
+                        >
+                          <div class="accordion-body">
+                            目前無接受指定送達時段哦！實際送達時間需依照當區物流司機安排的路線為主。
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsTwo-4"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：我要寄送蛋糕至飯店民宿、KTV
+                            請櫃檯代收，請問我需要多注意什麼嗎?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsTwo-4"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-2"
+                        >
+                          <div class="accordion-body">
+                            請您務必先自行聯絡飯店、民宿、餐廳或KTV人員是否可以代收蛋糕，並且需冷凍保存哦！
+                            並將完整店家地址填寫於送貨地址欄位並備註需請櫃台人員代收，
+                            也可以將您在店家訂位、訂房的簡易資訊備註給我們，讓我們註記在宅配單上讓黑貓司機知悉唷！
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsTwo-5"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：請問可以寄便利商店店到店嗎?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsTwo-5"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-2"
+                        >
+                          <div class="accordion-body">
+                            不好意思，目前我們僅配合黑貓低溫宅配寄送，
+                            無提供超商取貨、店到店服務哦！
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsTwo-6"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：請問有貨到付款嗎?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsTwo-6"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-2"
+                        >
+                          <div class="accordion-body">
+                            不好意思，目前線上訂購的所有商品皆為接單製作生產，故無提供貨到付款服務。
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End F.A.Q Group 2 -->
+
+                <!-- F.A.Q Group 1 -->
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h4 class="mt-3 mb-3 fw-bold">常見Q&A</h4>
+
+                    <div class="accordion accordion-flush" id="faq-group-1">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsOne-1"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：蛋糕一段時間內無法冷凍保存，會壞掉嗎？
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsOne-1"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-1"
+                        >
+                          <div class="accordion-body">
+                            官網選購 --- 黑貓冷凍寄送
+                            6吋重乳酪：只有6吋重乳酪蛋糕盒底部會有一個保冰劑可以暫時保冰
+                            3
+                            個小時，在常溫下大約半小時左右會開始軟化，如沒有馬上要食用的話，建議將蛋糕冰回冷凍，冰回冷凍的時間大概是「在外面退冰多久，冷凍就需放多久」，要食用前在從冷凍取出至室溫退冰約20-40分鐘即可品嘗，蛋糕可以冷凍保存7天唷！
+                            2.5吋重乳酪小蛋糕組合：在常溫下大約5-10分鐘左右會開始軟化，如沒有馬上要食用的話，建議將蛋糕冰回冷凍，冰回冷凍的時間大概是「在外面退冰多久，冷凍就需放多久」，要食用前在從冷凍取出至室溫退冰約5-10分鐘即可品嘗，蛋糕可以冷凍保存7天唷！
+                            6吋輕乳酪蛋糕：蛋糕收到之後，如沒有馬上要食用的話，可以將蛋糕放置冷藏保存，食用前不用退冰即可直接品嘗；如當下馬上要食用的話，冷凍狀態下的蛋糕可放置室溫退冰至個人喜歡吃的口感即可品嘗，蛋糕可以冷藏保存7天、冷凍保存14天唷！
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsOne-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：請問素食者可以食用嗎？
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsOne-2"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-1"
+                        >
+                          <div class="accordion-body">
+                            可以！我們的所有蛋糕都是蛋奶素的喔！
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsOne-3"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：如何切出漂亮的乳酪蛋糕？
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsOne-3"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-1"
+                        >
+                          <div class="accordion-body">
+                            Step1 首先使用家中水果刀浸泡熱水約 5 秒 Step2
+                            擦乾刀上的水份後進行切片 Step3
+                            每次切片重複以上動作，即可切出完美切片的乳酪蛋糕啦！
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsOne-4"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：為什麼蛋糕可以保存7 天，會不新鮮吧？
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsOne-4"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-1"
+                        >
+                          <div class="accordion-body">
+                            因為我們的乳酪蛋糕不添加麵粉及水，全是真材實料的乳酪製作而成，
+                            所以只要以冷凍保存是可以保存 7
+                            天的哦！請您放心享用。
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button
+                            class="accordion-button collapsed"
+                            data-bs-target="#faqsOne-5"
+                            type="button"
+                            data-bs-toggle="collapse"
+                          >
+                            Q：香草輕乳酪蛋糕為什麼會看到黑黑一點?
+                          </button>
+                        </h2>
+                        <div
+                          id="faqsOne-5"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#faq-group-1"
+                        >
+                          <div class="accordion-body">
+                            我們選用的是馬達加斯加的天然香草籽，
+                            切開蛋糕後會清晰地看到香草籽佈滿其中，請您放心享用哦。
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End F.A.Q Group 1 -->
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <!-- End #main -->
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="container">
+        <div class="row gy-3">
+          <div class="col-lg-3 col-md-6 d-flex">
+            <i class="bi bi-geo-alt icon"></i>
+            <div>
+              <h4>地址</h4>
+              <p>
+                桃園市 中壢區 <br />
+                新生路二段421號<br />
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links d-flex">
+            <i class="bi bi-telephone icon"></i>
+            <div>
+              <h4>預定方式</h4>
+              <p>
+                <strong>電話:</strong> 03 426 0163<br />
+                <strong>Email:</strong> fuen283@ispan.com<br />
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links d-flex">
+            <i class="bi bi-clock icon"></i>
+            <div>
+              <h4>營業時間</h4>
+              <p>
+                <strong>星期一到六: 11AM</strong> - 23PM<br />
+                星期日: 公休
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>追蹤我們</h4>
+            <div class="social-links d-flex">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>SIERRA</span></strong
+          >. All Rights Reserved
+        </div>
+        <div class="credits">Designed by SIERRA</div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="scroll-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SIERRA</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <!-- <link href="assets/img/favicon.png" rel="icon" /> -->
+    <link href="assets/img/logoNew.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+      integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.min.css"
+      integrity="sha256-7jUS+MWeqkFdmW9ozkZ7mPagz+QmMbsBlt+Q3MsE+FU="
+      crossorigin="anonymous"
+    />
+    <style>
+      .terms-span {
+        font-style: italic;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-lg-0"
+        >
+          <img src="assets/img/logoNew.png" alt="" />
+          <h1>SIERRA</h1>
+        </a>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="#about">關於我們</a></li>
+            <li class="dropdown">
+              <a href="#menu"
+                ><span>甜點</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                <li><a href="desserts.html#/snack">點心</a></li>
+                <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                <li><a href="desserts.html#/presents">禮盒</a></li>
+              </ul>
+            </li>
+            <li><a href="Lessons.html">課程</a></li>
+            <li><a href="Teacher.html">師資</a></li>
+            <li><a href="#promotion">近期活動</a></li>
+            <li class="dropdown">
+              <a href="#"
+                ><span>常見問題</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="rule.html">常見問題</a></li>
+                <li class="dropdown">
+                  <a href="/MemberCenter.html"
+                    ><span>會員中心</span>
+                    <i class="bi bi-chevron-down dropdown-indicator"></i
+                  ></a>
+                  <ul>
+                    <li>
+                      <a href="/MemberCenter.html">會員優惠券</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="#contact">聯絡我們</a></li>
+          </ul>
+        </nav>
+        <!-- .navbar -->
+        <div class="d-flex" style="justify-content: space-between">
+          <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+          <div class="shoppingCartDiv me-3"></div>
+        </div>
+      </div>
+    </header>
+    <!-- End Header -->
+    <!-- 結帳流程圖示 -->
+    <section class="TopcheckoutCircle">
+      <div class="Topcontainer mt-5">
+        <div class="progress-container">
+          <div class="progress"></div>
+          <div class="circle">
+            <a href="shoppingCart.html" style="color: black">購物車</a>
+          </div>
+          <div class="circle active">填寫資料</div>
+          <div class="circle">訂單確認</div>
+        </div>
+      </div>
+    </section>
+
+    <div id="app">
+      <div class="container">
+        <div class="row">
+          <!-- 第一個 Card -->
+          <div class="col-md-12">
+            <div class="card mb-4">
+              <div class="card-header">
+                <div v-if="coupon.usingCoupon == null">
+                  <h3 class="card-title d-inline">
+                    合計: ${{ dessertOrderTotal }} (共{{totalItemCount}}件)
+                    <sapn style="color: black">運費:$60</sapn>
+                  </h3>
+                  <button
+                    class="btn btn-link float-end"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse1"
+                  >
+                    <i class="bi bi-chevron-down"></i>
+                  </button>
+                </div>
+                <div v-else="coupon!==null">
+                  <div class="d-flex m-0">
+                    <h3>合計:</h3>
+                    <h3
+                      class="card-title d-inline text-decoration-line-through m-0"
+                    >
+                      ${{dessertOrderTotal}}
+                    </h3>
+                    <h3 style="color: red" class="m-0">${{totalWithCoupon}}</h3>
+                    <h3 class="m-0 me-1">(共{{totalItemCount}}件)</h3>
+
+                    <p style="color: red" class="me-auto mt-2">
+                      {{coupon.usingCoupon}}
+                      <sapn style="color: black">運費:$60</sapn>
+                    </p>
+
+                    <button
+                      class="btn btn-link float-end"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse1"
+                    >
+                      <i class="bi bi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="collapse" id="collapse1">
+                <div class="card-body">
+                  <div
+                    class="row"
+                    v-for="(item, index) in cartItems"
+                    :key="item.id"
+                  >
+                    <!-- 商品資料 Card -->
+                    <div class="col-md-2">
+                      <div class="card-body">
+                        <h6 class="card-title">商品資料</h6>
+                        <p>{{ item.dessertName }}</p>
+                      </div>
+                    </div>
+                    <!-- 單件價格 Card -->
+                    <div class="col-md-2">
+                      <div class="card-body">
+                        <h6 class="card-title">單件價格</h6>
+                        <p>{{ item.price }}</p>
+                      </div>
+                    </div>
+                    <!-- 數量 Card -->
+                    <div class="col-md-2">
+                      <div class="card-body">
+                        <h6 class="card-title">數量</h6>
+                        <p>{{ item.count }}</p>
+                      </div>
+                    </div>
+                    <!-- 小計 Card -->
+                    <div class="col-md-2">
+                      <div class="card-body">
+                        <h6 class="card-title">小計</h6>
+                        <p>{{ item.price * item.count }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form v-on:submit.prevent="validateForm">
+          <!-- 第二個 Card -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="card-header bg-light mb-3">
+                    <h5 class="card-title">使用者資料</h5>
+                  </div>
+                  <div class="mb-3">
+                    <label for="username" class="form-label">使用者名稱</label>
+                    <input
+                      type="text "
+                      class="form-control"
+                      id="username"
+                      v-model="customer.username"
+                      disabled
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">電子信箱</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      v-model="customer.email"
+                      disabled
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="phone" class="form-label">電話號碼</label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phone"
+                      v-model="customer.phone"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="gender" class="form-label">性別</label>
+                    <select
+                      class="form-select"
+                      id="gender"
+                      v-model="customer.gender"
+                    >
+                      <option value="male">男性</option>
+                      <option value="female">女性</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 送貨資料 Card -->
+            <div class="col-md-6">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="card-header bg-light mb-3">
+                    <h5 class="card-title">送貨資料</h5>
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipientAddress" class="form-label"
+                      >送貨地址</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="recipientAddress"
+                      placeholder="請輸入送貨地址"
+                      v-model="recipientAddress"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="deliveryMethod" class="form-label"
+                      >送貨方式</label
+                    >
+                    <select
+                      class="form-select"
+                      id="deliveryMethod"
+                      v-model="deliveryMethod"
+                    >
+                      <option value="宅配">宅配</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipientName" class="form-label"
+                      >收件人名稱</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="recipientName"
+                      v-model="recipient"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipientphone" class="form-label"
+                      >收件人電話號碼</label
+                    >
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="recipientphone"
+                      v-model="recipientPhone"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- 訂單備註 Card -->
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="card-header bg-light mb-3">
+                    <h5 class="card-title">訂單備註</h5>
+                  </div>
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    v-model="note"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 付款資料 Card -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="card-header bg-light mb-3">
+                    <h5 class="card-title">付款資料</h5>
+                  </div>
+                  <select
+                    class="form-select"
+                    id="paymentMethod"
+                    v-model="payMethod"
+                  >
+                    <option value="信用卡">信用卡</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="form-group d-flex justify-content-center"
+            v-if="errorMsgs.length>0"
+          >
+            <p>請填寫完整資料:</p>
+            <br />
+            <ul style="list-style-type: disc">
+              <li v-for="error in errorMsgs" class="text-danger">{{error}}</li>
+            </ul>
+          </div>
+
+          <!-- 第六個 Card -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="mb-3 form-check">
+                    <div
+                      class="modal fade"
+                      id="termsModal"
+                      tabindex="-1"
+                      aria-labelledby="termsModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width: 800px">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="termsModalLabel">
+                              服務條款及隱私權政策
+                            </h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-body left-aligned-content">
+                            一、隱私權保護政策的適用範圍
+                            隱私權保護政策內容，包括本網站如何處理在您使用網站服務時收集到的個人識別資料。隱私權保護政策不適用於本網站以外的相關連結網站，也不適用於非本網站所委託或參與管理的人員。
+                            <br /><br />
+                            二、個人資料的蒐集、處理及利用方式
+                            當您造訪本網站或使用本網站所提供之功能服務時，我們將視該服務功能性質，請您提供必要的個人資料，並在該特定目的範圍內處理及利用您的個人資料；非經您書面同意，本網站不會將個人資料用於其他用途。
+                            本網站在您使用服務信箱、問卷調查等互動性功能時，會保留您所提供的姓名、電子郵件地址、聯絡方式及使用時間等。
+                            於一般瀏覽時，伺服器會自行記錄相關行徑，包括您使用連線設備的IP位址、使用時間、使用的瀏覽器、瀏覽及點選資料記錄等，做為我們增進網站服務的參考依據，此記錄為內部應用，決不對外公佈。
+                            為提供精確的服務，我們會將收集的問卷調查內容進行統計與分析，分析結果之統計數據或說明文字呈現，除供內部研究外，我們會視需要公佈統計數據及說明文字，但不涉及特定個人之資料。
+                            <br /><br />
+                            三、資料之保護
+                            指由經過授權的人員才能接觸您的個人資料，如因業務需要有必要委託其他單位提供服務時，本網站亦會嚴格要求其遵守保密義務，並且採取必要檢查程序以確定其將確實遵守。
+                            <br /><br />
+                            四、網站對外的相關連結
+                            本網站的網頁提供其他網站的網路連結，您也可經由本網站所提供的連結，點選進入其他網站。但該連結網站不適用本網站的隱私權保護政策，您必須參考該連結網站中的隱私權保護政策。
+                            <br /><br />
+                            五、與第三人共用個人資料之政策
+                            本網站絕不會提供、交換、出租或出售任何您的個人資料給其他個人、團體、私人企業或公務機關，但有法律依據或合約義務者，不在此限。
+                            <br /><br />
+                            前項但書之情形包括不限於：
+                            <br />
+                            1.經由您書面同意。<br />
+                            2.法律明文規定。<br />
+                            3.為免除您生命、身體、自由或財產上之危險。<br />
+                            4.與公務機關或學術研究機構合作，基於公共利益為統計或學術研究而有必要，且資料經過提供者處理或蒐集著依其揭露方式無從識別特定之當事人。<br />
+                            5.當您在網站的行為，違反服務條款或可能損害或妨礙網站與其他使用者權益或導致任何人遭受損害時，經網站管理單位研析揭露您的個人資料是為了辨識、聯絡或採取法律行動所必要者。<br />
+                            6.本網站委託廠商協助蒐集、處理或利用您的個人資料時，將對委外廠商或個人善盡監督管理之責。
+                            <br /><br />
+                            六、Cookie之使用
+                            為了提供您最佳的服務，本網站會在您的電腦中放置並取用我們的Cookie，若您不願接受Cookie的寫入，您可在您使用的瀏覽器功能項中設定隱私權等級為高，即可拒絕Cookie的寫入，但可能會導至網站某些功能無法正常執行
+                            。
+                            <br /><br />
+                            七、隱私權保護政策之修正
+                            本網站隱私權保護政策將因應需求隨時進行修正，修正後的條款將刊登於網站上。
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              data-bs-dismiss="modal"
+                            >
+                              確定
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="agreeTerms"
+                    />
+                    <label class="form-check-label" for="agreeTerms">
+                      我同意<span
+                        class="terms-span"
+                        @mouseover="hoverLabel = true"
+                        @mouseleave="hoverLabel = false"
+                        @click="showModal"
+                        :style="hoverLabel ? {color: 'blue'} : {}"
+                        >網站服務條款及隱私權政策</span
+                      ></label
+                    >
+                  </div>
+                  <button class="btn btn-success" @click="submitAllData">
+                    提交表單
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- ======= Footer ======= -->
+      <footer id="footer" class="footer">
+        <div class="container">
+          <div class="row gy-3">
+            <div class="col-lg-3 col-md-6 d-flex">
+              <i class="bi bi-geo-alt icon"></i>
+              <div>
+                <h4>地址</h4>
+                <p>
+                  桃園市 中壢區 <br />
+                  新生路二段421號<br />
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links d-flex">
+              <i class="bi bi-telephone icon"></i>
+              <div>
+                <h4>預定方式</h4>
+                <p>
+                  <strong>電話:</strong> 03 426 0163<br />
+                  <strong>Email:</strong> fuen283@ispan.com<br />
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links d-flex">
+              <i class="bi bi-clock icon"></i>
+              <div>
+                <h4>營業時間</h4>
+                <p>
+                  <strong>星期一到六: 11AM</strong> - 23PM<br />
+                  星期日: 公休
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links">
+              <h4>追蹤我們</h4>
+              <div class="social-links d-flex">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"
+                  ><i class="bi bi-instagram"></i
+                ></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="copyright">
+            &copy; Copyright <strong><span>SIERRA</span></strong
+            >. All Rights Reserved
+          </div>
+          <div class="credits">Designed by SIERRA</div>
+        </div>
+      </footer>
+    </div>
+    <!-- End Footer -->
+    <script src="assets/js/variables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Updated Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="
+      https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.all.min.js
+      "
+    >
+      //sweetalert2
+    </script>
+
+    <script>
+      let config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      };
+      const app = Vue.createApp({
+        data() {
+          return {
+            errorMsgs: [],
+            cartItems: [], // 保存購物車傳遞過來的購物車數據
+            shippingFee: 60,
+            recipientAddress: "", // 用於儲存和顯示送貨地點
+            coupon: null,
+            customer: {
+              // 顧客資料
+              username: "",
+              email: "",
+              phone: "",
+              gender: "",
+            },
+            recipient: "",
+            recipientPhone: "",
+            deliveryMethod: "",
+            note: "", // 訂單備註
+            payMethod: "", // 付款方式
+            hoverLabel: false,
+          };
+        },
+        methods: {
+          async getCartItems() {
+            const username = localStorage.getItem("username"); // Replace this with the actual username
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertCarts?username=${username}`,
+                config
+              );
+              console.log(response.data);
+              this.cartItems = response.data;
+            } catch (error) {
+              console.error("Error getting cart items:", error);
+            }
+          },
+          async fetchCustomerData() {
+            const username = localStorage.getItem("username"); // 從localStorage中獲取username
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertOrders/${username}`,
+                config
+              );
+              // 使用解構賦值來獲取 response 中的 gender
+              const { gender, ...otherData } = response.data;
+              // 根據 gender 的值來轉換為 "male" 或 "female"
+              this.customer.gender = gender ? "male" : "female";
+              // 將其他的資料也賦值到 customer
+              this.customer = { ...this.customer, ...otherData };
+            } catch (error) {
+              console.error("Error fetching customer data", error);
+            }
+          },
+          showModal() {
+            const modal = new bootstrap.Modal(
+              document.getElementById("termsModal")
+            );
+            modal.show();
+          },
+          validateForm: function () {
+            let isValid = true;
+            this.errorMsgs = [];
+            // 驗證電話號碼
+            if (!this.customer.phone.trim()) {
+              isValid = false;
+              this.errorMsgs.push("請輸入電話號碼");
+            } else if (!/^\d{10}$/.test(this.customer.phone)) {
+              isValid = false;
+              this.errorMsgs.push("電話號碼格式不正確");
+            }
+            // 驗證性別
+            if (!this.customer.gender) {
+              isValid = false;
+              this.errorMsgs.push("請選擇性別");
+            }
+            // 驗證送貨地址
+            if (!this.recipientAddress.trim()) {
+              isValid = false;
+              this.errorMsgs.push("請輸入送貨地址");
+            }
+            // 驗證送貨方式
+            if (!this.deliveryMethod) {
+              isValid = false;
+              this.errorMsgs.push("請選擇送貨方式");
+            }
+            // 驗證收件人名稱
+            if (!this.recipient.trim()) {
+              isValid = false;
+              this.errorMsgs.push("請輸入收件人名稱");
+            }
+            // 驗證收件人電話號碼
+            if (!this.recipientPhone.trim()) {
+              isValid = false;
+              this.errorMsgs.push("請輸入收件人電話號碼");
+            } else if (!/^\d{10}$/.test(this.recipientPhone)) {
+              isValid = false;
+              this.errorMsgs.push("收件人電話號碼格式不正確");
+            }
+            // 驗證付款方式
+            if (!this.payMethod) {
+              isValid = false;
+              this.errorMsgs.push("請選擇付款方式");
+            }
+            // 驗證服務條款與隱私政策
+            const agreeTermsElement = document.getElementById("agreeTerms");
+            if (!agreeTermsElement.checked) {
+              isValid = false;
+              this.errorMsgs.push("您必須同意服務條款及隱私權政策");
+            }
+            return isValid;
+          },
+          async submitAllData() {
+            if (!this.validateForm()) {
+              return;
+            }
+            try {
+              // 1. Update User Data
+              await this.updateUserData();
+
+              // 2. Submit New Order
+              await this.submitOrder();
+
+              // Notify the user of successful submission
+              //alert("訂單建立成功");
+              Swal.fire({
+                title: "<strong> 訂單建立成功</strong>",
+                icon: "success",
+                html: "<a href=//localhost:5501/ecpay2.html>前往綠界付款</a> ",
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+              });
+            } catch (error) {
+              console.error("Error during submission:", error);
+              alert("Failed to submit data. Please try again.");
+            }
+          },
+          async updateUserData() {
+            const username = localStorage.getItem("username"); // 從localStorage中獲取username
+            // 將 gender 從字串轉換為 boolean
+            const genderBool = this.customer.gender === "male" ? true : false;
+            //更新使用者電話性別
+            const userData = {
+              Phone: this.customer.phone,
+              Gender: genderBool,
+            };
+            //console.log('Submitting user data:', userData);
+            try {
+              // 將使用者資料發送到後端以進行更新
+              const response = await axios.put(
+                `${variables.API_URL}DessertOrders/${username}`,
+                userData,
+                config
+              );
+
+              if (response.status !== 200) {
+                throw new Error("Failed to update user data");
+              }
+            } catch (error) {
+              //console.error("API response:", error.response.data);
+              console.error("Error updating user data:", error);
+            }
+          },
+          async submitOrder() {
+            // 創建訂單對象
+            const orderData = {
+              username: localStorage.getItem("username"), // 這可以作為購物車的標識符
+              memberId: localStorage.getItem("memberId"),
+              dessertOrderTotal: this.dessertOrderTotal,
+              recipient: this.recipient,
+              shippingFee: this.shippingFee,
+              recipientAddress: this.recipientAddress,
+              recipientPhone: this.recipientPhone,
+              deliveryMethod: this.deliveryMethod,
+              note: this.note,
+              payMethod: this.payMethod,
+            };
+            //console.log('Submitting order data:', orderData);
+            // 將訂單數據發送到後端
+            try {
+              const response = await axios.post(
+                `${variables.API_URL}DessertOrders`,
+                orderData,
+                config
+              );
+
+              if (response.status === 200) {
+                console.log("Order created successfully", response.data);
+              } else {
+                throw new Error("Failed to create order");
+              }
+            } catch (error) {
+              //console.error("API response:", error.response.data);
+              console.error("Error submitting order:", error);
+              throw error;
+            }
+          },
+          async GetUsingCoupon() {
+            const username = localStorage.getItem("username");
+            await axios
+              .get(
+                `https://localhost:520/api/DessertCarts/UsingCoupon?username=${username}`,
+                config
+              )
+              .then((res) => {
+                this.coupon = res.data;
+                console.log(this.totalWithCoupon);
+              });
+          },
+        },
+        computed: {
+          totalItemCount() {
+            return this.cartItems.reduce((acc, item) => acc + item.count, 0);
+          },
+          dessertOrderTotal() {
+            return (
+              this.cartItems.reduce(
+                (acc, item) => acc + item.price * item.count,
+                0
+              ) + this.shippingFee
+            );
+          },
+          totalWithCoupon() {
+            return this.dessertOrderTotal + this.coupon.discountValue;
+          },
+        },
+        mounted: function () {
+          this.fetchCustomerData(); // 當頁面載入時取得userName資料
+          this.getCartItems(); // 當頁面載入時從取出購物車數據
+          this.GetUsingCoupon();
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

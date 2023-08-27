@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <title>SIERRA</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+
+  <!-- Favicons -->
+  <!-- <link href="assets/img/favicon.png" rel="icon" /> -->
+  <link href="assets/img/logoNew.png" rel="icon" />
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <!-- Animate CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet" />
+  <link href="assets/css/login.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+        <img src="assets/img/logoNew.png" alt="" />
+        <h1>SIERRA</h1>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="index.html">首頁</a></li>
+          <li><a href="#about">關於我們</a></li>
+          <li class="dropdown">
+            <a href="#menu"><span>甜點</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+              <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+              <li><a href="desserts.html#/snack">點心</a></li>
+              <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+              <li><a href="desserts.html#/presents">禮盒</a></li>
+            </ul>
+          </li>
+          <li><a href="Lessons.html">課程</a></li>
+          <li><a href="Teacher.html">師資</a></li>
+          <li><a href="#promotion">近期活動</a></li>
+          <li class="dropdown">
+            <a href="#"><span>常見問題</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="rule.html">常見問題</a></li>
+              <li class="dropdown">
+                <a href="/MemberCenter.html"><span>會員中心</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
+                  <li>
+                    <a href="/MemberCenter.html">會員優惠券</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="#contact">聯絡我們</a></li>
+        </ul>
+      </nav>
+      <!-- .navbar -->
+      <div class="d-flex" style="justify-content: space-between">
+        <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+        <div class="shoppingCartDiv me-3">
+          <a class="js-toggle-cart" href="#" title="View cart" @click="getCartItems()">
+            <span class="shoppingCart badge badge-pill badge-warning"></span>
+            <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- <div class="shoppingCartDiv">
+            <a href="#" title="View cart" @click="getCartItems()">
+              <span class="shoppingCart badge badge-pill badge-warning"></span>
+              <i class="bi bi-cart"></i>
+            </a>
+          </div> -->
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header>
+  <!-- End Header -->
+  <div class="breadcrumbs" style="z-index: 2">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>甜點心理測驗</h2>
+        <ol>
+          <li><a href="index.html">首頁</a></li>
+          <li>甜點心理測驗</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div id="app" class="container stats-psycho">
+    <div class="container mt-5 mb-5 psychometric-test" v-if="wantToShow==0">
+      <div class="h10"></div>
+      <div class="d-flex justify-content-center">
+        <h1 class="psychometric-test-title mt-5">甜點心理測驗</h1>
+      </div>
+      <div class="d-flex justify-content-center mt-3 mb-5">
+        <h4 class="psychometric-test-title">
+          快來試試這個禮拜適合什麼口味吧~
+        </h4>
+      </div>
+      <div class="h20"></div>
+      <div class="d-flex justify-content-center mb-5">
+        <div class="button btn-book-a-table" @click="GoToQuestionOne">
+          開始測驗
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="button btn-book-a-table">
+          <a href="index.html" style="color: white">返回首頁 </a>
+        </div>
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="container mt-5 mb-5 psychometric-test1" v-if="wantToShow==1">
+      <div class="h10"></div>
+      <div class="d-flex justify-content-center">
+        <h1 class="psychometric-test-title mt-5">這個假日最想去哪裡?</h1>
+      </div>
+      <div class="h20"></div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionTwo(1)">
+          海灘度假勝地
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionTwo(2)">
+          城市深度旅遊
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionTwo(3)">
+          鄉間田野郊遊
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionTwo(4)">
+          文化歷史參觀
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionTwo(5)">
+          探索自然之旅
+        </div>
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="container mt-5 mb-5 psychometric-test2" v-if="wantToShow==2">
+      <div class="h10"></div>
+      <div class="d-flex justify-content-center">
+        <h1 class="psychometric-test-title mt-5">
+          你在聚會中通常扮演什麼角色？
+        </h1>
+      </div>
+      <div class="h20"></div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionThree(1)">
+          說笑逗樂大家的班底
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionThree(2)">
+          耐心傾聽的知心好友
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionThree(3)">
+          舉辦派對的活躍主人
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionThree(4)">
+          擔任策劃以及組織者
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionThree(5)">
+          找新朋友的社交達人
+        </div>
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="container mt-5 mb-5 psychometric-test3" v-if="wantToShow==3">
+      <div class="h10"></div>
+      <div class="d-flex justify-content-center">
+        <h1 class="psychometric-test-title mt-5">這個假日想做哪種活動？</h1>
+      </div>
+      <div class="h20"></div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFour(1)">
+          戶外運動或出外旅行
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFour(2)">
+          在家做感興趣的事情
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFour(3)">
+          參加派對或社交活動
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFour(4)">
+          嘗試新的藝術或手作
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFour(5)">
+          躺在床上什麼都不做
+        </div>
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="container mt-5 mb-5 psychometric-test4" v-if="wantToShow==4">
+      <div class="h10"></div>
+      <div class="d-flex justify-content-center">
+        <h1 class="psychometric-test-title mt-5">
+          你在生日時最想收到哪種禮物？
+        </h1>
+      </div>
+      <div class="h20"></div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFive(1)">
+          手寫的信件卡片
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFive(2)">
+          最新的科技產品
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFive(3)">
+          精心準備的派對
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFive(4)">
+          獨特的手工作品
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToQuestionFive(5)">
+          高級品味的禮盒
+        </div>
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="container mt-5 mb-5 psychometric-test5" v-if="wantToShow==5">
+      <div class="h10"></div>
+      <div class="d-flex justify-content-center">
+        <h1 class="psychometric-test-title mt-5">
+          你在週末最喜歡穿哪種服裝風格？
+        </h1>
+      </div>
+      <div class="h20"></div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToEnd(1)">
+          休閒舒適的運動套裝
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToEnd(2)">
+          典雅時尚的正式服裝
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToEnd(3)">
+          顏色繽紛的流行服飾
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToEnd(4)">
+          自然舒暢的輕便裝扮
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="button btn-book-a-table" @click="GoToEnd(5)">
+          獨具個性的創意穿搭
+        </div>
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="container mt-5 mb-5 d-flex justify-content-center" v-if="wantToShow==6">
+      <div v-if="result==null" class="animate__flip">
+        等待結果...
+        <img src="assets/img/去背甜點.png" alt="" class="animate__animated animate__flip anima_infinity wait-result" />
+      </div>
+      <div v-else="result">
+        <section class="d-flex justify-content-center">
+          <div>
+            <div class="psychometric-test-result-card mb-3">
+              <div class="d-flex justify-content-center mb-3">
+                <img :src="'/assets/img/'+result.image" class="psychometric-test-result-image" />
+              </div>
+              <div class="d-flex justify-content-center">
+                <h2>這個禮拜適合您的口味:</h2>
+              </div>
+              <div class="d-flex justify-content-center">
+                <h2 class="psychometric-test-title">{{result.title}}</h2>
+              </div>
+              <div class="d-flex justify-content-center">
+                <div class="psychometric-test-result-content">
+                  <p>{{result.content}}</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-center">
+                <div class="button btn-book-a-table me-3" @click="ReplayGame">
+                  重新測驗
+                </div>
+                <div class="button btn-book-a-table">
+                  <a href="index.html" style="color: white">返回首頁 </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <aside class="related">
+            <div class="_cont">
+
+              <h2>推薦商品</h2>
+              <div class="collection-list cols-4" id="collection-list" data-products-per-page="4">
+                <div v-for="dessert in result.suggestProducts" :key="dessert.dessertId">
+                  <a :href="'dessertProducts.html#/desserts/' + dessert.dessertId" class="product-box"
+                    @click="refreshData">
+                    <span class="img">
+                      <span :style="{ backgroundImage: 'url(' + 'assets/img/' + dessert.dessertImage + ')' }"
+                        class="i first"></span>
+                    </span>
+                    <span class="text">
+                      <strong>{{ dessert.dessertName }}</strong>
+                      <span> $ {{ dessert.unitPrice }} </span>
+                      <div class="variants">
+                        <div class="variant">
+                          <div class="var available">
+                            <div>{{ dessert.size }}</div>
+                          </div>
+                        </div>
+                        <div class="variant">
+                          <div class="var available">
+                            <div>{{ dessert.flavor }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+        <!-- <div class="filter"></div> -->
+      </div>
+    </div>
+    <div class="filter"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="assets/js/variables.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+    integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+
+  <script src="https://unpkg.com/vue-router@4.2.4/dist/vue-router.global.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <!-- Sweet Alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/login.js"></script>
+  <script>
+    var memberId = localStorage.getItem("memberId");
+    const vueApp = {
+      data() {
+        return {
+          ans1: 0,
+          ans2: 0,
+          ans3: 0,
+          ans4: 0,
+          ans5: 0,
+          wantToShow: 0,
+          result: null,
+        };
+      },
+      methods: {
+        GoToQuestionOne() {
+          this.wantToShow = 1;
+        },
+        GoToQuestionTwo(ans) {
+          this.ans1 = ans;
+          this.wantToShow = 2;
+        },
+        GoToQuestionThree(ans) {
+          this.ans2 = ans;
+          this.wantToShow = 3;
+        },
+        GoToQuestionFour(ans) {
+          this.ans3 = ans;
+          this.wantToShow = 4;
+        },
+        GoToQuestionFive(ans) {
+          this.ans4 = ans;
+          this.wantToShow = 5;
+        },
+        async GoToEnd(ans) {
+          this.ans5 = ans;
+          this.wantToShow = 6;
+          var ansAry = [
+            this.ans1,
+            this.ans2,
+            this.ans3,
+            this.ans4,
+            this.ans5,
+          ];
+          await axios
+            .post(
+              `https://localhost:520/api/MemberCoupons/WeeklyGame?memberId=${memberId}`,
+              ansAry, config
+            )
+            .then((res) => {
+              this.result = res.data;
+              console.log(this.result);
+              if (this.result.result.isSuccess) {
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "領取成功",
+                  text: `恭喜獲得  ${this.result.result.message}`,
+                  showConfirmButton: true,
+                });
+              }
+            });
+        },
+        async getCartItems() {
+          const username = localStorage.getItem("username");
+          try {
+            const response = await axios.get(
+              `${variables.API_URL}DessertCarts?username=${username}`,
+              config
+            );
+
+            const cartItems = response.data;
+            const cartProductsContainer = $(".js-cart-products");
+            cartProductsContainer.empty(); // Clear the existing cart items
+
+            if (cartItems.length === 0) {
+              // Display the cart empty message if there are no items
+              cartProductsContainer.append(
+                '<p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>'
+              );
+            } else {
+              cartItems.forEach((item) => {
+                const cartProductTemplate = `
+                  <div class="cart__product"  v-for="item in cartItems" :key="item.id">
+                  <article class="js-cart-product">
+                  <div class="d-flex">
+                  <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+                  height: 50px; width: 50px;   "/>
+                   <h1 class="product_name ">${item.dessertName}</h1> </div>
+                    <div class="cart__product__qty">
+                    數量: <span class="qty">${item.count}</span> * NT
+                    <span class="dessertPrice">${item.price}</span>         
+                      <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+                        刪除
+                      </a>
+                     </div>
+                  </article>
+                </div>
+                  `;
+                cartProductsContainer.append(cartProductTemplate);
+              });
+            }
+            numberOfProducts = cartItems.length;
+            $(".cart__footer .button").text("結帳 " + numberOfProducts);
+            $(".shoppingCart").text(numberOfProducts);
+          } catch (error) {
+            console.error("Error getting cart items:", error);
+          }
+        },
+        ReplayGame() {
+          this.wantToShow = 0;
+          this.ans1, this.ans2, this.ans3, this.ans4, (this.ans5 = 0);
+          this.result = null;
+        },
+      },
+      mounted: function () {
+        this.getCartItems();
+      },
+    };
+    var app = Vue.createApp(vueApp).mount("#app");
+  </script>
+</body>
+
+</html>

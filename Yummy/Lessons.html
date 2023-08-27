@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>SIERRA</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <!-- <link href="assets/img/favicon.png" rel="icon" /> -->
+    <link href="assets/img/logoNew.png" rel="icon" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link href="assets/css/main.css" rel="stylesheet" />
+    <link href="assets/css/login.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- ======= Header ======= -->
+      <header id="header" class="header fixed-top d-flex align-items-center">
+        <div
+          class="container d-flex align-items-center justify-content-between"
+        >
+          <a
+            href="index.html"
+            class="logo d-flex align-items-center me-auto me-lg-0"
+          >
+            <img src="assets/img/logoNew.png" alt="" />
+            <h1>SIERRA</h1>
+          </a>
+
+          <nav id="navbar" class="navbar">
+            <ul>
+              <li><a href="index.html">首頁</a></li>
+              <li><a href="#about">關於我們</a></li>
+              <li class="dropdown">
+                <a href="#menu"
+                  ><span>甜點</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
+                <ul>
+                  <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                  <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                  <li><a href="desserts.html#/snack">點心</a></li>
+                  <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                  <li><a href="desserts.html#/presents">禮盒</a></li>
+                </ul>
+              </li>
+              <li><a href="Lessons.html">課程</a></li>
+              <li><a href="Teacher.html">師資</a></li>
+              <li><a href="#promotion">近期活動</a></li>
+              <li class="dropdown">
+                <a href="#"
+                  ><span>常見問題</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
+                <ul>
+                  <li><a href="rule.html">常見問題</a></li>
+                  <li class="dropdown">
+                    <a href="/MemberCenter.html"
+                      ><span>會員中心</span>
+                      <i class="bi bi-chevron-down dropdown-indicator"></i
+                    ></a>
+                    <ul>
+                      <li>
+                        <a href="/MemberCenter.html">會員優惠券</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </nav>
+          <!-- .navbar -->
+          <div class="d-flex" style="justify-content: space-between">
+            <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+            <div class="shoppingCartDiv me-3">
+              <a
+                class="js-toggle-cart"
+                href="#"
+                title="View cart"
+                @click="getCartItems()"
+              >
+                <span
+                  class="shoppingCart badge badge-pill badge-warning"
+                ></span>
+                <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- <div class="shoppingCartDiv">
+              <a href="#" title="View cart" @click="getCartItems()">
+                <span class="shoppingCart badge badge-pill badge-warning"></span>
+                <i class="bi bi-cart"></i>
+              </a>
+            </div> -->
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        </div>
+      </header>
+      <!-- End Header -->
+      <!-- start shopping cart -->
+      <aside class="cart js-cart mt-5">
+        <div class="cart__header">
+          <h1 class="cart__title">購物車</h1>
+          <p class="cart__text">
+            <a
+              class="button button--light js-toggle-cart"
+              href="#"
+              title="Close cart"
+            >
+              <i class="bi bi-x-square-fill"></i>
+            </a>
+          </p>
+        </div>
+        <div class="cart__products js-cart-products cart-scrollerbar">
+          <p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>
+          <div
+            class="cart__product js-cart-product-template"
+            v-for="item in cartItems"
+            :key="item.id"
+          >
+            <article class="js-cart-product">
+              <h1 class="product_name">{{ item.dessertName }}</h1>
+
+              數量: <span class="qty">{{ item.quantity }}</span> * NT
+              <span class="dessertPrice">{{ item.price }}</span>
+              <p>
+                <a
+                  class="js-remove-product"
+                  href="#"
+                  title="Delete product"
+                  @click="removeProduct(item.id)"
+                >
+                  刪除
+                </a>
+              </p>
+            </article>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <p class="cart__text">
+            <a class="button" href="shoppingCart.html" title="Buy products"
+              >結帳
+            </a>
+          </p>
+        </div>
+      </aside>
+      <!-- End shopping cart -->
+      <!-- ======= Breadcrumbs ======= -->
+      <div class="breadcrumbs">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>課程</h2>
+            <ol>
+              <li><a href="index.html">首頁</a></li>
+              <li>課程</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- End Breadcrumbs -->
+      <!-- start shopping cart -->
+      <aside class="cart js-cart mt-5">
+        <div class="cart__header">
+          <h1 class="cart__title">購物車</h1>
+          <p class="cart__text">
+            <a
+              class="button button--light js-toggle-cart"
+              href="#"
+              title="Close cart"
+            >
+              <i class="bi bi-x-square-fill"></i>
+            </a>
+          </p>
+        </div>
+        <div class="cart__products js-cart-products cart-scrollerbar">
+          <p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>
+          <div
+            class="cart__product js-cart-product-template"
+            v-for="item in cartItems"
+            :key="item.id"
+          >
+            <article class="js-cart-product">
+              <h1 class="product_name">{{ item.dessertName }}</h1>
+
+              數量: <span class="qty">{{ item.quantity }}</span> * NT
+              <span class="dessertPrice">{{ item.price }}</span>
+              <p>
+                <a
+                  class="js-remove-product"
+                  href="#"
+                  title="Delete product"
+                  @click="removeProduct(item.id)"
+                >
+                  刪除
+                </a>
+              </p>
+            </article>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <p class="cart__text">
+            <a class="button" href="shoppingCart.html" title="Buy products"
+              >結帳
+            </a>
+          </p>
+        </div>
+      </aside>
+      <!-- End shopping cart -->
+      <router-view></router-view>
+
+      <!-- End Footer -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="assets/js/variables.js"></script>
+    <script src="assets/js/login.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/76eb3f0e59.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.2.4/dist/vue-router.global.js"></script>
+
+    <!-- sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- router -->
+    <script src="assets/js/lessons.js"></script>
+    <script src="assets/js/lessonDetail.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/appLesson.js"></script>
+
+    <script></script>
+  </body>
+</html>

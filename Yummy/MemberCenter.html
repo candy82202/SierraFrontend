@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>SIERRA</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="assets/img/logoNew.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet" />
+    <link href="assets/css/login.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.min.css"
+      integrity="sha256-7jUS+MWeqkFdmW9ozkZ7mPagz+QmMbsBlt+Q3MsE+FU="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://jqueryui.com/resources/demos/style.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/4815e83c25.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .member-nav-item {
+        height: 50px;
+        text-align: center;
+        display: flex;
+      }
+
+      .member-nav-item a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      /* #main .container {
+      width: 80%;
+    } */
+
+      #member-app {
+        padding: 30px 30px;
+        border: 1px solid rgb(224, 224, 224);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .edit-area {
+        display: flex;
+      }
+
+      .btn-area {
+        display: flex;
+        margin-top: 36px;
+      }
+
+      .edit-area .profile-area {
+        display: flex;
+        width: 76%;
+        margin: 0 20px 0 0;
+      }
+
+      .edit-area .profile-area .col {
+        align-items: center;
+
+        display: flex;
+        margin-top: 30px;
+      }
+
+      .edit-area .profile-area .col .form-control {
+        width: 300px;
+        margin-left: auto;
+        text-align: center;
+      }
+
+      .edit-area .profile-area .col .form-label {
+        margin: 0;
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      .edit-area .member-image-area {
+        padding: 50px 30px 3px 30px;
+        width: 24%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .edit-area .member-image-area img {
+        border: 1px solid rgb(201, 201, 201);
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+
+        margin-bottom: 20px;
+      }
+
+      .btn-area {
+        margin: 30px 30px 5px;
+      }
+
+      #upload-file {
+        height: 38px;
+        /* width: 90px */
+      }
+
+      #edit-member-btn {
+        margin-right: 204px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-lg-0"
+        >
+          <img src="assets/img/logoNew.png" alt="" />
+          <h1>SIERRA</h1>
+        </a>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="#about">關於我們</a></li>
+            <li class="dropdown">
+              <a href="#menu"
+                ><span>甜點</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                <li><a href="desserts.html#/snack">點心</a></li>
+                <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                <li><a href="desserts.html#/presents">禮盒</a></li>
+              </ul>
+            </li>
+            <li><a href="Lessons.html">課程</a></li>
+            <li><a href="Teacher.html">師資</a></li>
+            <li><a href="#promotion">近期活動</a></li>
+            <li class="dropdown">
+              <a href="#"
+                ><span>常見問題</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="rule.html">常見問題</a></li>
+                <li class="dropdown">
+                  <a href="/MemberCenter.html"
+                    ><span>會員中心</span>
+                    <i class="bi bi-chevron-down dropdown-indicator"></i
+                  ></a>
+                  <ul>
+                    <li>
+                      <a href="/MemberCenter.html">會員優惠券</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="#contact">聯絡我們</a></li>
+          </ul>
+        </nav>
+        <!-- .navbar -->
+        <div class="d-flex" style="justify-content: space-between">
+          <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+          <div class="shoppingCartDiv me-3">
+            <a
+              class="js-toggle-cart"
+              href="#"
+              title="View cart"
+              @click="getCartItems()"
+            >
+              <span class="shoppingCart badge badge-pill badge-warning"></span>
+              <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+            </a>
+          </div>
+        </div>
+
+        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <main id="main">
+      <!-- start shopping cart -->
+      <aside class="cart js-cart mt-5">
+        <div class="cart__header">
+          <h1 class="cart__title">購物車</h1>
+          <p class="cart__text">
+            <a
+              class="button button--light js-toggle-cart"
+              href="#"
+              title="Close cart"
+            >
+              <i class="bi bi-x-square-fill"></i>
+            </a>
+          </p>
+        </div>
+        <div class="cart__products js-cart-products cart-scrollerbar">
+          <p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>
+          <div
+            class="cart__product js-cart-product-template"
+            v-for="item in cartItems"
+            :key="item.id"
+          >
+            <article class="js-cart-product">
+              <h1 class="product_name">{{ item.dessertName }}</h1>
+
+              數量: <span class="qty">{{ item.quantity }}</span> * NT
+              <span class="dessertPrice">{{ item.price }}</span>
+              <p>
+                <a
+                  class="js-remove-product"
+                  href="#"
+                  title="Delete product"
+                  @click="removeProduct(item.id)"
+                >
+                  刪除
+                </a>
+              </p>
+            </article>
+          </div>
+        </div>
+        <div class="cart__footer">
+          <p class="cart__text">
+            <a class="button" href="shoppingCart.html" title="Buy products"
+              >結帳
+            </a>
+          </p>
+        </div>
+      </aside>
+      <!-- End shopping cart -->
+      <!-- ======= Breadcrumbs ======= -->
+      <div class="breadcrumbs">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>會員中心</h2>
+          </div>
+        </div>
+      </div>
+      <!-- End Breadcrumbs -->
+      <div class="container mt-5 mb-5">
+        <ul class="nav nav-tabs" id="member-tabs" role="tablist">
+          <li class="nav-item member-nav-item w-50" role="presentation">
+            <a
+              class="nav-link active"
+              id="profile-tab"
+              data-bs-toggle="tab"
+              href="#profile"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="true"
+              >會員的個人資訊</a
+            >
+          </li>
+          <li class="nav-item member-nav-item flex-fill" role="presentation">
+            <a
+              class="nav-link"
+              id="coupons-tab"
+              data-bs-toggle="tab"
+              href="#coupons"
+              role="tab"
+              aria-controls="coupons"
+              aria-selected="false"
+              >會員的優惠券</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <!-- 第一個 Tab 頁面：會員的個人資訊 -->
+          <div
+            class="tab-pane fade show active"
+            id="profile"
+            role="tabpanel"
+            aria-labelledby="profile-tab"
+          >
+            <!-- 個人資訊 -->
+            <div id="member-app">
+              <!-- <form action="" class="member-form"> -->
+              <div class="edit-area">
+                <div class="row row-cols-2 profile-area">
+                  <div class="col">
+                    <label class="form-label" for="username-input"
+                      >使用者名稱</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username-input"
+                      v-model="memberData.username"
+                      disabled
+                    />
+                  </div>
+                  <div class="col">
+                    <label class="form-label" for="email-input">電子信箱</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="email-input"
+                      v-model="memberData.email"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="col">
+                    <label class="form-label" for="address-input">地址</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="address-input"
+                      v-model="memberData.address"
+                    />
+                  </div>
+
+                  <!-- 台灣地址選擇器，有時間再來搞
+                  <div id="twzipcode" class="form-row">
+                    <div class="form-group col">
+                      <div data-role="county" data-style="form-control" data-name="county" data-value="">
+                      </div>
+                    </div>
+                    <div class="form-group col">
+                      <div data-role="district" data-style="form-control" data-name="district" data-value=""></div>
+                    </div>
+                    <div class="form-group col">
+                      <div data-role="zipcode" data-style="form-control" data-name="zipcode" data-value=""></div>
+                    </div>
+                  </div> -->
+
+                  <div class="col">
+                    <label class="form-label" for="phone-input">電話號碼</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="phone-input"
+                      v-model="memberData.phone"
+                      pattern="[0-9]{10}"
+                      maxlength="10"
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="col">
+                    <label class="form-label" for="birth-input">生日</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="birth-input"
+                      v-model="memberData.birth"
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="col">
+                    <label class="form-label" for="gender-input">性別</label>
+                    <select
+                      class="form-control"
+                      id="gender-input"
+                      v-model="memberData.gender"
+                    >
+                      <option value="" disabled>請選擇</option>
+                      <option value="true">男</option>
+                      <option value="false">女</option>
+                    </select>
+                  </div>
+
+                  <!-- <div class="mt-3 d-flex">
+                    <button type="submit" class="btn btn-primary ms-auto" @click="EditMember($event)">
+                      儲存
+                    </button>
+                  </div> -->
+                </div>
+
+                <div class="member-image-area">
+                  <img v-bind:src="imageUrl" alt="會員頭像" id="member-image" />
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="upload-file"
+                    @change="UploadFileChange($event)"
+                  />
+                </div>
+              </div>
+              <div class="btn-area">
+                <div
+                  class="col text-danger error-list"
+                  id="response-error-list"
+                >
+                  <ul>
+                    <li></li>
+                  </ul>
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="EditMember()"
+                  id="edit-member-btn"
+                >
+                  儲存資料
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary ms-auto"
+                  @click="EditMemberImage()"
+                >
+                  儲存頭像
+                </button>
+              </div>
+              <!-- </form> -->
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="coupons"
+            role="tabpanel"
+            aria-labelledby="coupons-tab"
+          >
+            <!-- 優惠券 -->
+            <div id="coupon-app">
+              <div class="member-form position-relative">
+                <nav class="nav">
+                  <a
+                    href="#"
+                    class="nav-item is-active"
+                    active-color="orange"
+                    @click="ChangeCouponToCanUse"
+                    >可使用</a
+                  >
+                  <a
+                    href="#"
+                    class="nav-item"
+                    active-color="green"
+                    @click="ChangeCouponToCanNotUse"
+                    >未啟用</a
+                  >
+                  <a
+                    href="#"
+                    class="nav-item"
+                    active-color="blue"
+                    @click="ChangeCouponToBeenUsed"
+                    >已使用</a
+                  >
+                </nav>
+                <div v-if="wantToShow==1">
+                  <div v-if="coupons.length==0">
+                    <div
+                      class="d-flex justify-content-center align-items-center h200px"
+                    >
+                      <h3 style="color: var(--color-text)">
+                        您目前沒有可使用的優惠券
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="coupon d-flex my-3" v-for="coupon in coupons">
+                    <div class="coupon-head py-4 pt-5">
+                      <div v-if="coupon.couponType==3">
+                        <i class="fa-solid fa-truck"></i>
+                        <p class="coupon-title">免運券</p>
+                      </div>
+                      <div v-else-if="coupon.couponType==2">
+                        <i class="fa-solid fa-percent"></i>
+                        <p class="coupon-title">打折券</p>
+                      </div>
+                      <div v-else="coupon.couponType==1">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        <p class="coupon-title">折價券</p>
+                      </div>
+                    </div>
+                    <div class="coupon-body p-2 border-end-0 border-start-0">
+                      <h1 class="fw-bold fs-4">{{coupon.couponName}}</h1>
+                      <p class="my-1">
+                        <strong class="fw-bolder fs-6">適用商品:</strong
+                        >{{coupon.applyTo}}
+                      </p>
+                      <p>
+                        <i class="fa-regular fa-clock"></i
+                        >剩餘時間:{{coupon.remainingTime}}
+                      </p>
+                    </div>
+                    <div class="coupon-foot">
+                      <div
+                        class="button coupon-btn"
+                        data-bs-toggle="modal"
+                        :data-bs-target="'#couponModal'+coupon.memberCouponId"
+                      >
+                        詳情
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="wantToShow==2">
+                  <div v-if="couponsCanNotUse.length==0">
+                    <div
+                      class="d-flex justify-content-center align-items-center h200px"
+                    >
+                      <h3 style="color: var(--color-text)">
+                        您目前沒有未啟用的優惠券
+                      </h3>
+                    </div>
+                  </div>
+                  <div
+                    class="coupon d-flex my-3"
+                    v-for="coupon in couponsCanNotUse"
+                  >
+                    <div class="coupon-head py-4 pt-5">
+                      <div v-if="coupon.couponType==3">
+                        <i class="fa-solid fa-truck"></i>
+                        <p class="coupon-title">免運券</p>
+                      </div>
+                      <div v-else-if="coupon.couponType==2">
+                        <i class="fa-solid fa-percent"></i>
+                        <p class="coupon-title">打折券</p>
+                      </div>
+                      <div v-else="coupon.couponType==1">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        <p class="coupon-title">折價券</p>
+                      </div>
+                    </div>
+                    <div class="coupon-body p-2 border-end-0 border-start-0">
+                      <h1 class="fw-bold fs-4">{{coupon.couponName}}</h1>
+                      <p>適用商品:{{coupon.applyToDetail}}</p>
+                      <p>
+                        <i class="fa-regular fa-clock"></i
+                        >啟用時間:{{coupon.startAtText}}
+                      </p>
+                    </div>
+                    <div class="coupon-foot">
+                      <div
+                        class="button coupon-btn"
+                        data-bs-toggle="modal"
+                        :data-bs-target="'#couponModal'+coupon.memberCouponId"
+                      >
+                        詳情
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="wantToShow==3">
+                  <h2 class="fw-bolder fs-4 mt-3">近一個月內使用的優惠券:</h2>
+                  <div v-if="couponBeenUsed.length==0">
+                    <div
+                      class="d-flex justify-content-center align-items-center h200px"
+                    >
+                      <h3 style="color: var(--color-text)">
+                        您近一個月內沒有使用優惠券
+                      </h3>
+                    </div>
+                  </div>
+                  <div
+                    class="coupon d-flex my-3"
+                    v-for="coupon in couponBeenUsed"
+                  >
+                    <div class="coupon-head py-4 pt-5">
+                      <div v-if="coupon.couponType==3">
+                        <i class="fa-solid fa-truck"></i>
+                        <p class="coupon-title">免運券</p>
+                      </div>
+                      <div v-else-if="coupon.couponType==2">
+                        <i class="fa-solid fa-percent"></i>
+                        <p class="coupon-title">打折券</p>
+                      </div>
+                      <div v-else="coupon.couponType==1">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        <p class="coupon-title">折價券</p>
+                      </div>
+                    </div>
+                    <div class="coupon-body p-2 border-end-0 border-start-0">
+                      <h1 class="fw-bold fs-4">{{coupon.couponName}}</h1>
+                      <p><strong>適用商品:</strong>{{coupon.applyToDetail}}</p>
+                      <p>
+                        <i class="fa-regular fa-clock"></i
+                        >使用時間:{{coupon.usedAtText}}
+                      </p>
+                    </div>
+                    <div class="coupon-foot">
+                      <div
+                        class="button coupon-btn"
+                        data-bs-toggle="modal"
+                        :data-bs-target="'#couponModal'+coupon.memberCouponId"
+                      >
+                        詳情
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  v-for="coupon in coupons"
+                  class="modal fade"
+                  :id="'couponModal'+coupon.memberCouponId"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="chosecoupon mb-2">
+                          <div class="chosecoupon-main justify-content-center">
+                            <div class="chosecoupon-head pt-4">
+                              <div v-if="coupon.couponType==3">
+                                <i class="fa-solid fa-truck"></i>
+                                <p class="coupon-title">免運券</p>
+                              </div>
+                              <div v-else-if="coupon.couponType==2">
+                                <i class="fa-solid fa-percent ms-2"></i>
+                                <p class="coupon-title">打折券</p>
+                              </div>
+                              <div v-else="coupon.couponType==1">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                                <p class="coupon-title">折價券</p>
+                              </div>
+                            </div>
+                            <div class="chosecoupon-body">
+                              <div>
+                                <h6 class="fw-bold mb-1">
+                                  {{coupon.couponName}}
+                                </h6>
+                                <p class="chosecoupon-content mb-5">
+                                  <strong>適用商品:</strong>{{coupon.applyTo}}
+                                </p>
+                                <div class="d-flex">
+                                  <p class="chosecoupon-content m-0 me-auto">
+                                    剩餘時間:{{coupon.remainingTime}}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="p-5"
+                            :id="`couponDetail${coupon.memberCouponId}`"
+                          >
+                            <h6 class="fw-bold mb-1">有效期限</h6>
+                            <p class="mb-3">{{coupon.canUseTimeRange}}</p>
+                            <h6 class="fw-bold mb-1">取得時間</h6>
+                            <p class="mb-3">{{coupon.getTime}}</p>
+                            <h6 class="fw-bold mb-1">適用商品</h6>
+                            <p class="mb-3">{{coupon.applyToDetail}}</p>
+                            <h6 class="fw-bold mb-1">付款方式</h6>
+                            <p class="mb-3">適用所有付款方式</p>
+                            <h6 class="fw-bold mb-1">物流方式</h6>
+                            <p class="mb-3">適用所有物流方式</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <div
+                          type="button"
+                          class="button coupon-btn"
+                          data-bs-dismiss="modal"
+                        >
+                          確定
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  v-for="coupon in couponsCanNotUse"
+                  class="modal fade"
+                  :id="'couponModal'+coupon.memberCouponId"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="chosecoupon mb-2">
+                          <div class="chosecoupon-main justify-content-center">
+                            <div class="chosecoupon-head pt-4">
+                              <div v-if="coupon.couponType==3">
+                                <i class="fa-solid fa-truck"></i>
+                                <p class="coupon-title">免運券</p>
+                              </div>
+                              <div v-else-if="coupon.couponType==2">
+                                <i class="fa-solid fa-percent ms-2"></i>
+                                <p class="coupon-title">打折券</p>
+                              </div>
+                              <div v-else="coupon.couponType==1">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                                <p class="coupon-title">折價券</p>
+                              </div>
+                            </div>
+                            <div class="chosecoupon-body">
+                              <div>
+                                <h6 class="fw-bold mb-1">
+                                  {{coupon.couponName}}
+                                </h6>
+                                <p class="chosecoupon-content mb-5">
+                                  <strong>適用商品:</strong>{{coupon.applyTo}}
+                                </p>
+                                <div class="d-flex">
+                                  <p class="chosecoupon-content m-0 me-auto">
+                                    剩餘時間:{{coupon.remainingTime}}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="p-5"
+                            :id="`couponDetail${coupon.memberCouponId}`"
+                          >
+                            <h6 class="fw-bold mb-1">有效期限</h6>
+                            <p class="mb-3">{{coupon.canUseTimeRange}}</p>
+                            <h6 class="fw-bold mb-1">取得時間</h6>
+                            <p class="mb-3">{{coupon.getTime}}</p>
+                            <h6 class="fw-bold mb-1">適用商品</h6>
+                            <p class="mb-3">{{coupon.applyToDetail}}</p>
+                            <h6 class="fw-bold mb-1">付款方式</h6>
+                            <p class="mb-3">適用所有付款方式</p>
+                            <h6 class="fw-bold mb-1">物流方式</h6>
+                            <p class="mb-3">適用所有物流方式</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <div
+                          type="button"
+                          class="button coupon-btn"
+                          data-bs-dismiss="modal"
+                        >
+                          確定
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  v-for="coupon in couponBeenUsed"
+                  class="modal fade"
+                  :id="'couponModal'+coupon.memberCouponId"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="chosecoupon mb-2">
+                          <div class="chosecoupon-main justify-content-center">
+                            <div class="chosecoupon-head pt-4">
+                              <div v-if="coupon.couponType==3">
+                                <i class="fa-solid fa-truck"></i>
+                                <p class="coupon-title">免運券</p>
+                              </div>
+                              <div v-else-if="coupon.couponType==2">
+                                <i class="fa-solid fa-percent ms-2"></i>
+                                <p class="coupon-title">打折券</p>
+                              </div>
+                              <div v-else="coupon.couponType==1">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                                <p class="coupon-title">折價券</p>
+                              </div>
+                            </div>
+                            <div class="chosecoupon-body">
+                              <div>
+                                <h6 class="fw-bold mb-1">
+                                  {{coupon.couponName}}
+                                </h6>
+                                <p class="chosecoupon-content mb-5">
+                                  <strong>適用商品:</strong>{{coupon.applyTo}}
+                                </p>
+                                <div class="d-flex">
+                                  <p class="chosecoupon-content m-0 me-auto">
+                                    使用時間:{{coupon.usedAtText}}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="p-5"
+                            :id="`couponDetail${coupon.memberCouponId}`"
+                          >
+                            <h6 class="fw-bold mb-1">有效期限</h6>
+                            <p class="mb-3">{{coupon.canUseTimeRange}}</p>
+                            <h6 class="fw-bold mb-1">取得時間</h6>
+                            <p class="mb-3">{{coupon.getTime}}</p>
+                            <h6 class="fw-bold mb-1">使用時間</h6>
+                            <p class="mb-3">{{coupon.usedAtText}}</p>
+                            <h6 class="fw-bold mb-1">適用商品</h6>
+                            <p class="mb-3">{{coupon.applyToDetail}}</p>
+                            <h6 class="fw-bold mb-1">付款方式</h6>
+                            <p class="mb-3">適用所有付款方式</p>
+                            <h6 class="fw-bold mb-1">物流方式</h6>
+                            <p class="mb-3">適用所有物流方式</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <div
+                          type="button"
+                          class="button coupon-btn"
+                          data-bs-dismiss="modal"
+                        >
+                          確定
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card Footer -->
+      <!-- 
+        <div class="logInFooter">
+            <span>or </span><a class="toggle-link" href="#">註冊</a>
+        </div>
+        </div>
+        </div> -->
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="container">
+        <div class="row gy-3">
+          <div class="col-lg-3 col-md-6 d-flex">
+            <i class="bi bi-geo-alt icon"></i>
+            <div>
+              <h4>地址</h4>
+              <p>
+                A108 Adam Street <br />
+                New York, NY 535022 - US<br />
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links d-flex">
+            <i class="bi bi-telephone icon"></i>
+            <div>
+              <h4>預定方式</h4>
+              <p>
+                <strong>Phone:</strong> +1 5589 55488 55<br />
+                <strong>Email:</strong> info@example.com<br />
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links d-flex">
+            <i class="bi bi-clock icon"></i>
+            <div>
+              <h4>營業時間</h4>
+              <p>
+                <strong>星期一到六: 11AM</strong> - 23PM<br />
+                Sunday: Closed
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Follow Us</h4>
+            <div class="social-links d-flex">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>SIERRA</span></strong
+          >. All Rights Reserved
+        </div>
+        <div class="credits">Designed by SIERRA</div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="scroll-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <div id="preloader"></div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/jquery-ui-i18n.min.js"></script>
+    <script src="assets/js/variables.js"></script>
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.all.min.js"></script>
+    <script>
+      const memberId = localStorage.getItem("memberId");
+      const memberVueApp = {
+        data() {
+          return {
+            memberData: {
+              id: null,
+              username: null,
+              email: null,
+              address: null,
+              phone: null,
+              birth: null,
+              gender: null,
+              imageName: null,
+              uploadFile: null,
+            },
+            imageUrl: null,
+          };
+        },
+        mounted: function () {
+          this.GetMember();
+          this.getCartItems();
+        },
+        methods: {
+          async getCartItems() {
+            const username = localStorage.getItem("username"); // Replace this with the actual username
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertCarts?username=${username}`,
+                config
+              );
+
+              const cartItems = response.data;
+              const cartProductsContainer = $(".js-cart-products");
+              cartProductsContainer.empty(); // Clear the existing cart items
+
+              if (cartItems.length === 0) {
+                // Display the cart empty message if there are no items
+                cartProductsContainer.append(
+                  '<p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>'
+                );
+              } else {
+                cartItems.forEach((item) => {
+                  const cartProductTemplate = `
+              <div class="cart__product"  v-for="item in cartItems" :key="item.id">
+              <article class="js-cart-product">
+              <div class="d-flex">
+              <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+              height: 50px; width: 50px;   "/>
+               <h1 class="product_name ">${item.dessertName}</h1> </div>
+                <div class="cart__product__qty">
+                數量: <span class="qty">${item.count}</span> * NT
+                <span class="dessertPrice">${item.price}</span>
+                  <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+                    刪除
+                  </a>
+                 </div>
+              </article>
+            </div>
+              `;
+                  cartProductsContainer.append(cartProductTemplate);
+                });
+              }
+              numberOfProducts = cartItems.length;
+              $(".cart__footer .button").text("結帳 " + numberOfProducts);
+              $(".shoppingCart").text(numberOfProducts);
+            } catch (error) {
+              console.error("Error getting cart items:", error);
+            }
+          },
+          async GetMember() {
+            const memberId = localStorage.getItem("memberId");
+            await axios
+              .get(
+                `https://localhost:520/api/Members/GetMember?id=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.memberData = res.data;
+
+                // 把接到的資料做一些處理
+                if (this.memberData.birth == null) {
+                  this.memberData.birth = "請選擇"; // 设置为 "請選擇"，如果 birth 为 null
+                } else {
+                  this.memberData.birth = formatToDate(this.memberData.birth);
+                }
+                $.datepicker.setDefaults($.datepicker.regional["zh-TW"]); // 設定datepicker的語言
+                $("#birth-input").datepicker({
+                  changeMonth: true,
+                  changeYear: true,
+                  dateFormat: "yy-mm-dd",
+                  maxDate: "0d",
+                  yearRange: "1900:nn",
+                });
+
+                if (this.memberData.gender == null) this.memberData.gender = "";
+
+                this.imageUrl = `https://localhost:520/Uploads/${this.memberData.imageName}`;
+                localStorage.setItem("imageUrl", this.imageUrl);
+                document.querySelector("#user-image").src = this.imageUrl;
+              })
+              .catch((err) => {
+                console.error("Error occurred:", err);
+              });
+          },
+          async EditMember() {
+            // 移除之前的錯誤訊息
+            document.querySelector("#response-error-list").innerHTML = "";
+
+            // 由jQuery-ui的datepicker選取日期時，無法正確繫結到memberData.birth，因此發送請求前再抓1次值
+            // 這就是所謂的vue和jq水土不服
+            //this.memberData.birth = (this.memberData.birth == "請選擇") ? null : document.querySelector("#birth-input").value;
+
+            let birthInput = document.querySelector("#birth-input").value;
+            if (birthInput == "請選擇") {
+              this.memberData.birth = null;
+            } else {
+              this.memberData.birth = birthInput;
+            }
+
+            await axios
+              .put(
+                `https://localhost:520/api/Members/EditMember`,
+                this.memberData,
+                config
+              )
+              .then((res) => {
+                // 若API寫的回傳值是修改完的資料，再用這個
+                // this.memberData = res.data;
+                console.log(res.data);
+                Swal.fire({
+                  title: res.data,
+                  text: "",
+                  icon: "success",
+                  showCancelButton: false, // 不顯示取消按鈕
+                  confirmButtonText: "確定", // 更改確定按鈕文字
+                });
+              })
+              .catch((err) => {
+                let errorElement = document.createElement("li");
+                errorElement.textContent = err.response.data;
+                document
+                  .querySelector("#response-error-list")
+                  .appendChild(errorElement);
+                console.error("Error occurred:", err);
+              });
+            this.GetMember();
+          },
+          async EditMemberImage(event) {
+            // 移除之前的錯誤訊息
+            document.querySelector("#response-error-list").innerHTML = "";
+            if (this.memberData.uploadFile == null) {
+              let errorElement = document.createElement("li");
+              errorElement.textContent = "請選擇任一圖片檔案";
+              document
+                .querySelector("#response-error-list")
+                .appendChild(errorElement);
+              return;
+            }
+            await axios
+              .put(
+                `https://localhost:520/api/Members/EditMemberImage`,
+                this.memberData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res.data);
+                Swal.fire({
+                  title: res.data,
+                  text: "",
+                  icon: "success",
+                  showCancelButton: false, // 不顯示取消按鈕
+                  confirmButtonText: "確定", // 更改確定按鈕文字
+                });
+                localStorage.setItem("imageUrl", this.imageUrl);
+              })
+              .catch((err) => {
+                let errorElement = document.createElement("li");
+                errorElement.textContent = err.response.data;
+                document
+                  .querySelector("#response-error-list")
+                  .appendChild(errorElement);
+                console.error("Error occurred:", err);
+              });
+            this.GetMember();
+          },
+          UploadFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+              this.memberData.uploadFile = file;
+              var reader = new FileReader();
+              reader.onload = (e) => {
+                this.imageUrl = e.target.result;
+              };
+              reader.readAsDataURL(file);
+            }
+          },
+        },
+      };
+      var memberApp = Vue.createApp(memberVueApp).mount("#member-app");
+
+      const couponVueApp = {
+        data() {
+          return {
+            coupons: [],
+            couponsCanNotUse: [],
+            couponBeenUsed: [],
+            wantToShow: 1,
+          };
+        },
+        mounted: function () {
+          this.GetCouponCanUse();
+          this.GetCouponCanNotUse();
+          this.GetCouponBeenUsed();
+        },
+        methods: {
+          GetCouponCanUse() {
+            axios
+              .get(
+                `https://localhost:520/api/MemberCoupons?MemberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.coupons = res.data;
+              })
+              .catch((err) => {
+                alert(err);
+              });
+          },
+          GetCouponCanNotUse() {
+            axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/CanNotUse?MemberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.couponsCanNotUse = res.data;
+              });
+          },
+          GetCouponBeenUsed() {
+            axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/GetUsed?MemberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.couponBeenUsed = res.data;
+              });
+          },
+          ChangeCouponToCanUse() {
+            this.wantToShow = 1;
+          },
+          ChangeCouponToCanNotUse() {
+            this.wantToShow = 2;
+          },
+          ChangeCouponToBeenUsed() {
+            this.wantToShow = 3;
+          },
+        },
+      };
+      var couponApp = Vue.createApp(couponVueApp).mount("#coupon-app");
+      const indicator = document.querySelector(".nav-indicator");
+      const items = document.querySelectorAll(".nav-item");
+
+      function handleIndicator(el) {
+        items.forEach((item) => {
+          item.classList.remove("is-active");
+          item.removeAttribute("style");
+        });
+
+        // indicator.style.width = `${el.offsetWidth}px`;
+        // indicator.style.left = `${el.offsetLeft}px`;
+        // indicator.style.backgroundColor = el.getAttribute("active-color");
+
+        el.classList.add("is-active");
+        el.style.color = el.getAttribute("active-color");
+      }
+
+      items.forEach((item, index) => {
+        item.addEventListener("click", (e) => {
+          handleIndicator(e.target);
+        });
+        item.classList.contains("is-active") && handleIndicator(item);
+      });
+    </script>
+  </body>
+</html>

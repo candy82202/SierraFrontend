@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <title>SIERRA</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+
+  <!-- Favicons -->
+  <link href="assets/img/logoNew.png" rel="icon" />
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet" />
+  <link href="assets/css/login.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+        <h1>SIERRA</h1>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="index.html">首頁</a></li>
+          <li><a href="#about">關於我們</a></li>
+          <li class="dropdown">
+            <a href="#menu"><span>甜點</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+              <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+              <li><a href="desserts.html#/snack">點心</a></li>
+              <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+              <li><a href="desserts.html#/presents">禮盒</a></li>
+            </ul>
+          </li>
+          <li><a href="Lessons.html">課程</a></li>
+          <li><a href="Teacher.html">師資</a></li>
+          <li><a href="#promotion">近期活動</a></li>
+          <li class="dropdown">
+            <a href="#"><span>常見問題</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="rule.html">常見問題</a></li>
+              <li class="dropdown">
+                <a href="/MemberCenter.html"><span>會員中心</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
+                  <li>
+                    <a href="/MemberCenter.html">會員優惠券</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="#contact">聯絡我們</a></li>
+        </ul>
+      </nav>
+      <!-- .navbar -->
+
+      <div class="d-flex" style="justify-content: space-between">
+        <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+        <div class="shoppingCartDiv me-3">
+          <a class="js-toggle-cart" href="#" title="View cart" @click="getCartItems()">
+            <span class="shoppingCart badge badge-pill badge-warning"></span>
+            <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+          </a>
+        </div>
+      </div>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <main id="main" class="login-lock-height">
+    <div id="app">
+      <!-- 等待驗證結果回傳 -->
+      <div v-if="isLoading">
+        <div class="breadcrumbs">
+          <div class="container">
+            <div class="w-100 d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <h2 class="ms-2 mt-1">驗證中...</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 驗證成功 -->
+      <div v-else-if="status === '驗證成功'">
+        <div class="breadcrumbs">
+          <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+              <h2>驗證成功</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="container mb-5 mt-5">
+          <div class="row">
+            <div class="col">
+              <h1 style="font-size: 36px">
+                歡迎您成為Sierra的會員。<br />
+                將在 {{countdown}}秒後自動導至登入頁。
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 驗證失敗 -->
+      <div v-else>
+        <div class="breadcrumbs">
+          <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+              <h2>驗證失敗</h2>
+            </div>
+          </div>
+        </div>
+        <div class="container mb-5 mt-5">
+          <div class="row">
+            <div class="col">
+              <h1 style="font-size: 36px">
+                請檢查驗證連結是否有更動，若仍失敗請聯繫工程師。
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="row gy-3">
+        <div class="col-lg-3 col-md-6 d-flex">
+          <i class="bi bi-geo-alt icon"></i>
+          <div>
+            <h4>地址</h4>
+            <p>
+              A108 Adam Street <br />
+              New York, NY 535022 - US<br />
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 footer-links d-flex">
+          <i class="bi bi-telephone icon"></i>
+          <div>
+            <h4>預定方式</h4>
+            <p>
+              <strong>Phone:</strong> +1 5589 55488 55<br />
+              <strong>Email:</strong> info@example.com<br />
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 footer-links d-flex">
+          <i class="bi bi-clock icon"></i>
+          <div>
+            <h4>營業時間</h4>
+            <p>
+              <strong>星期一到六: 11AM</strong> - 23PM<br />
+              Sunday: Closed
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 footer-links">
+          <h4>Follow Us</h4>
+          <div class="social-links d-flex">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>SIERRA</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">Designed by SIERRA</div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/login.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  <script src="https://unpkg.com/vue@next"></script>
+
+  <script>
+    var vueApp = {
+      data() {
+        return {
+          status: "",
+          isLoading: true,
+          countdown: 3.0,
+        };
+      },
+      methods: {
+        async ActiveRegister() {
+          const currentUrl = window.location.href;
+          const urlParams = new URLSearchParams(currentUrl.split("?")[1]);
+          const memberIdfromURL = urlParams.get("memberId");
+          const confirmCodefromURL = urlParams.get("confirmCode");
+
+          let url = `https://localhost:520/api/Members/ActiveRegister`;
+          let data = {
+            memberId: memberIdfromURL,
+            confirmCode: confirmCodefromURL,
+          };
+
+          try {
+            let response = await axios.post(url, data);
+            console.log(response.data);
+            console.log(response.data.error);
+            this.isLoading = false;
+            this.status = response.data;
+
+            // 開始倒數計時
+            const countdownInterval = setInterval(() => {
+              if (this.countdown > 1) {
+                this.countdown -= 1;
+              } else {
+                clearInterval(countdownInterval);
+                window.location.href = "http://localhost:5501/Login.html";
+              }
+            }, 1000);
+          } catch (error) {
+            this.isLoading = false;
+            console.error("Error occurred:", error);
+          }
+        },
+      },
+      mounted() {
+        // 在 Vue 載入後執行 ActiveRegister 方法
+        this.ActiveRegister();
+      },
+    };
+
+    var app = Vue.createApp(vueApp).mount("#app");
+  </script>
+</body>
+
+</html>

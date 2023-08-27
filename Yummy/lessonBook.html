@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- 連結Full Calendar -->
+    <link href="assets/css/Book.css" rel="stylesheet" />
+    <script src="assets/js/Book.js"></script>
+    <!-- 轉換成中文 -->
+    <script src="locales-all.js"></script>
+    <link href="assets/css/main.css" rel="stylesheet" />
+
+    <!-- <link rel="stylesheet" href="style.css">  -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="font-src 'self' http://127.0.0.1:5500"> -->
+  </head>
+  <body class="body1">
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-lg-0"
+        >
+        </a>
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li>
+              <img
+                style="width: 102.36px; height: 36.99px"
+                src="assets/img/logoNew.png"
+                alt=""
+              />
+              <a href="index.html">
+                <h1>SIERRA</h1>
+              </a>
+            </li>
+            <!-- <li><a href="#about">關於我們</a></li> -->
+            <!-- <li class="dropdown">
+              <a href="#menu"
+                ><span>甜點</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a>
+              <ul>
+                <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                <li><a href="desserts.html#/snack">點心</a></li>
+                <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                <li><a href="desserts.html#/presents">禮盒</a></li>
+              </ul>
+            </li> -->
+            <li><a href="Lessons.html">課程</a></li>
+            <li><a href="Teacher.html">師資</a></li>
+            <!-- <li><a href="#gallery">環境介紹</a></li> -->
+            <!-- <li class="dropdown">
+              <a href="#"
+                ><span>常見問題</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i
+              ></a> -->
+            <!-- <ul>
+                <li><a href="rule.html">常見問題</a></li>
+                <li class="dropdown">
+                  <a href="/MemberCenter.html"
+                    ><span>會員中心</span>
+                    <i class="bi bi-chevron-down dropdown-indicator"></i
+                  ></a>
+                  <ul>
+                    <li>
+                      <a href="/MemberCenter.html">會員優惠券</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul> -->
+            <!-- </li> -->
+            <!-- <li><a href="#contact">聯絡我們</a></li> -->
+          </ul>
+        </nav>
+        <!-- .navbar -->
+
+        <!-- <a class="btn-book-a-table" href="#book-a-table">預定課程</a> -->
+        <!-- <a class="btn-book-a-table" href="LogIn.html">LogIn</a> -->
+        <!-- <a
+          class="button js-toggle-cart btn-book-a-table"
+          href="#"
+          title="View cart"
+          @click="getCartItems()"
+        >
+          購物車
+        </a> -->
+        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      </div>
+    </header>
+    <!-- End Header -->
+    <div id="app">
+      <div class="container1">
+        <div id="calendar">
+          <router-view name="lessonDetail"></router-view>
+        </div>
+      </div>
+    </div>
+    <script src="assets/js/variables.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.2.4/dist/vue-router.global.js"></script>
+
+    <script src="assets/js/lessonDetail.js"></script>
+
+    <script src="assets/js/appLesson.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      const baseAddress = "https://localhost:520/";
+
+      function countPerson(maxCapacity, actualCapacity) {
+        const realPerson = maxCapacity - actualCapacity;
+        return realPerson;
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+          locale: "zh-tw",
+          navLinks: true,
+          headerToolbar: {
+            left: "customPrev,customNext,today",
+            center: "title",
+            right: "dayGridMonth",
+          },
+          // 自定義按鈕的文本和點擊處理函數
+          customButtons: {
+            customPrev: {
+              text: "<", // 自定義 prev 按鈕的文字
+              click: function () {
+                calendar.prev(); // 自定義 prev 按鈕的點擊處理函數
+              },
+            },
+            customNext: {
+              text: ">", // 自定義 next 按鈕的文字
+              click: function () {
+                calendar.next(); // 自定義 next 按鈕的點擊處理函數
+              },
+            },
+          },
+          eventContent: function (arg) {
+            const title =
+              arg.event.title.length > 5
+                ? arg.event.title.slice(0, 5) +
+                  "<br>" +
+                  arg.event.title.slice(5)
+                : arg.event.title;
+            const time = arg.event.start.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            let html = `<div>${time}</div><div>${title}</div>`;
+
+            if (arg.event.extendedProps.isExpired) {
+              html = `<del>${html}</del>`; // 添加删除线样式
+            }
+
+            return {
+              html: html,
+            };
+          },
+          eventClick: function (info) {
+            if (info.event.extendedProps.isExpired) {
+              info.jsEvent.preventDefault();
+              return;
+            }
+          },
+
+          events: function (info, successCallback, failCallback) {
+            axios
+              .get(`${baseAddress}api/Lesson/lesson`)
+              .then(function (response) {
+                console.log(response.data);
+                const events = response.data
+                  //.filter((lesson) =>!lesson.isLessonExpired)
+                  .map((lesson) => {
+                    const remaining = countPerson(
+                      lesson.maximumCapacity,
+                      lesson.actualCapacity
+                    );
+
+                    const event = {
+                      title: `${lesson.lessonTitle}(${remaining})`,
+                      start: lesson.lessonTime,
+                      end: new Date(
+                        new Date(lesson.lessonTime).getTime() +
+                          lesson.lessonHours * 60 * 60 * 1000
+                      ),
+                      url: `/Lessons.html#/lesson/${lesson.lessonId}`,
+                      counts: remaining,
+                      editable: !lesson.isLessonExpired,
+                      extendedProps: { isExpired: lesson.isLessonExpired },
+                    };
+
+                    return event;
+                  });
+
+                //console.log(events);
+                successCallback(events);
+              })
+              .catch(function (error) {
+                //console.log("Error fetch events", error);
+                failCallback(error);
+              });
+          },
+        });
+        calendar.render();
+      });
+    </script>
+  </body>
+</html>

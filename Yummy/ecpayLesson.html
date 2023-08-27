@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <form
+        action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
+        method="post"
+      >
+        <button class="btn btn-primary" type="submit">前往綠界付款</button>
+        <div v-for="(value, key) in order">
+          <input type="text" :name="key" :value="value" />
+        </div>
+      </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      let config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      };
+      const app = Vue.createApp({
+        data() {
+          return {
+            order: {},
+          };
+        },
+        methods: {
+          callEcPayAPI() {
+            const username = localStorage.getItem("username");
+            if (!username) {
+              console.error("Username not found in localStorage.");
+              return;
+            }
+            axios
+              .post(
+                "https://localhost:520/api/ECPayLesson",
+                {
+                  username: username,
+                },
+                config
+              )
+
+              .then((response) => {
+                this.order = response.data;
+              })
+              .catch((error) => {
+                console.error("API呼叫發生錯誤: ", error);
+              });
+          },
+        },
+        mounted: function () {
+          this.callEcPayAPI();
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

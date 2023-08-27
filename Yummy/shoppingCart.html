@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SIERRA</title>
+    <link href="assets/img/logoNew.png" rel="icon" />
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/login.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- ======= Header ======= -->
+      <header id="header" class="header fixed-top d-flex align-items-center">
+        <div
+          class="container d-flex align-items-center justify-content-between"
+        >
+          <a
+            href="index.html"
+            class="logo d-flex align-items-center me-auto me-lg-0"
+          >
+            <img src="assets/img/logoNew.png" alt="" />
+            <h1>SIERRA</h1>
+          </a>
+
+          <nav id="navbar" class="navbar">
+            <ul>
+              <li><a href="index.html">首頁</a></li>
+              <li><a href="#about">關於我們</a></li>
+              <li class="dropdown">
+                <a href="#menu"
+                  ><span>甜點</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
+                <ul>
+                  <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+                  <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+                  <li><a href="desserts.html#/snack">點心</a></li>
+                  <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+                  <li><a href="desserts.html#/presents">禮盒</a></li>
+                </ul>
+              </li>
+              <li><a href="Lessons.html">課程</a></li>
+              <li><a href="Teacher.html">師資</a></li>
+              <li><a href="#promotion">近期活動</a></li>
+              <li class="dropdown">
+                <a href="#"
+                  ><span>常見問題</span>
+                  <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
+                <ul>
+                  <li><a href="rule.html">常見問題</a></li>
+                  <li class="dropdown">
+                    <a href="/MemberCenter.html"
+                      ><span>會員中心</span>
+                      <i class="bi bi-chevron-down dropdown-indicator"></i
+                    ></a>
+                    <ul>
+                      <li>
+                        <a href="/MemberCenter.html">會員優惠券</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+          </nav>
+          <!-- .navbar -->
+
+          <div class="d-flex" style="justify-content: space-between">
+            <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+            <div class="shoppingCartDiv me-3">
+              <a
+                class="js-toggle-cart"
+                href="#"
+                title="View cart"
+                @click="getCartItems()"
+                style="display: none"
+              >
+                <span
+                  class="shoppingCart badge badge-pill badge-warning"
+                ></span>
+                <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+              </a>
+            </div>
+          </div>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        </div>
+      </header>
+      <!-- End Header -->
+
+      <!-- 結帳流程圖示 -->
+      <section class="TopcheckoutCircle">
+        <div class="Topcontainer mt-5">
+          <div class="progress-container">
+            <div class="progress"></div>
+            <div class="circle active">購物車</div>
+            <div class="circle">填寫資料</div>
+            <div class="circle">訂單確認</div>
+          </div>
+          <!-- <button class="btn" id="prev" disabled>Prev</button>
+        <button class="btn" id="next">Next</button> -->
+        </div>
+      </section>
+      <main>
+        <div id="app">
+          <div class="Bodycontainer">
+            <div class="title-header">
+              <div class="dessertImage">圖片</div>
+              <div class="item_detail">商品</div>
+              <div class="price">單價</div>
+              <div class="count">數量</div>
+              <div class="amount">總計</div>
+              <div class="operate">操作</div>
+            </div>
+            <div
+              class="item_container"
+              v-for="item in cartDTO.dessertCartItems"
+              :key="item.id"
+            >
+              <div class="item_header item_body">
+                <div class="item_detail">
+                  <img
+                    :src="PhotoPath + item.dessertImageName"
+                    v-bind:alt="item.dessertName"
+                  />
+                  <div class="name">{{ item.dessertName }}</div>
+                </div>
+                <div class="price"><span>$</span>{{ item.unitPrice }}</div>
+                <div class="name">{{ item.quantity }}</div>
+                <div class="count">
+                  <button @click="handleSub(item)">-</button>
+                  {{ item.quantity }}
+                  <button @click="handlePlus(item)">+</button>
+                </div>
+                <div class="amount">{{ item.unitPrice * item.quantity }}</div>
+                <div class="operate">
+                  <button @click="handleDelete(item)" :id="item.id">
+                    刪除
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 訂單資訊 Card -->
+          <div class="container mt-5">
+            <div class="row mb-3 justify-content-center align-content-around">
+              <div class="col-md-10 col-lg-10" style="width: 80%">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="card-header bg-light mb-3">
+                      <h5 class="card-title">訂單資訊</h5>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">小計</label>
+                      <div class="form-control">NT${{total}}</div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">運費</label>
+                      <div class="form-control">NT$60</div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end">
+                      <!-- <label class="form-label">優惠卷</label>
+                <div class="form-control">NT$60</div> -->
+                      <p
+                        class="click-to-use-coupon"
+                        data-bs-toggle="modal"
+                        data-bs-target="#choseCouponModal"
+                        @click="RememberOrigin"
+                        v-if="!sureCoupon"
+                      >
+                        使用優惠卷
+                      </p>
+                      <div v-else="sureCoupon" class="d-flex position-relative">
+                        <p
+                          class="click-to-use-coupon me-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#choseCouponModal"
+                          @click="RememberOrigin"
+                        >
+                          {{sureCoupon.couponName}}
+                        </p>
+                        <i
+                          class="fa-solid fa-xmark cancel-coupon-icon"
+                          @click="CancelCoupon"
+                        ></i>
+                      </div>
+                    </div>
+                    <div class="mb-3" v-if="discountValue">
+                      <label class="form-label">折扣</label>
+                      <div class="form-control">NT${{discountValue}}</div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">合計</label>
+                      <div class="form-control">NT${{totalPrice}}</div>
+                    </div>
+                    <div v-if="cartDTO.dessertCartItems.length === 0">
+                      <button
+                        type="button"
+                        class="checkoutBtn btn btn-sm btn-success"
+                        style="display: none"
+                      >
+                        <a
+                          href="customerData.html"
+                          class="text-decoration-none"
+                          style="
+                            color: white;
+                            font-weight: bolder;
+                            font-size: 20px;
+                          "
+                        >
+                          前往結帳
+                        </a>
+                      </button>
+                    </div>
+                    <div v-else>
+                      <button
+                        type="button"
+                        class="checkoutBtn btn btn-sm btn-success"
+                        @click="getCartItems"
+                      >
+                        <a
+                          href="customerData.html"
+                          class="text-decoration-none"
+                          @click="getCartItems"
+                          style="
+                            color: white;
+                            font-weight: bolder;
+                            font-size: 20px;
+                          "
+                        >
+                          前往結帳
+                        </a>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 送貨資訊 Card -->
+          </div>
+          <!-- Coupon Modal -->
+          <div
+            class="modal fade"
+            id="choseCouponModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    選擇優惠券
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    @click="CancelSelect"
+                  ></button>
+                </div>
+                <div class="modal-body chose-coupon-modal-body">
+                  <div class="d-flex mb-3">
+                    <input
+                      type="text"
+                      class="input-coupon-code"
+                      placeholder="請輸入您的優惠碼"
+                      v-model="couponCode"
+                      @keyup.enter="GetCouponByCode"
+                    />
+                    <div
+                      class="button coupon-btn input-coupon-code-btn"
+                      @click="GetCouponByCode"
+                    >
+                      確定
+                    </div>
+                  </div>
+                  <h5 class="chose-coupon-title">可使用的優惠券</h5>
+                  <div
+                    v-if="couponCanUse.length==0"
+                    class="d-flex justify-content-center"
+                  >
+                    <h6 class="fw-bold">目前沒有可使用的優惠券</h6>
+                  </div>
+                  <div class="chosecoupon mb-2" v-for="coupon in couponCanUse">
+                    <div class="chosecoupon-main">
+                      <div class="chosecoupon-head pt-4">
+                        <div v-if="coupon.couponType==3">
+                          <i class="fa-solid fa-truck"></i>
+                          <p class="coupon-title">免運券</p>
+                        </div>
+                        <div v-else-if="coupon.couponType==2">
+                          <i class="fa-solid fa-percent ms-2"></i>
+                          <p class="coupon-title">打折券</p>
+                        </div>
+                        <div v-else="coupon.couponType==1">
+                          <i class="fa-solid fa-sack-dollar"></i>
+                          <p class="coupon-title">折價券</p>
+                        </div>
+                      </div>
+                      <div class="chosecoupon-body">
+                        <div>
+                          <h6 class="fw-bold mb-1">{{coupon.couponName}}</h6>
+                          <p class="chosecoupon-content mb-5">
+                            <strong>適用商品:</strong>{{coupon.applyTo}}
+                          </p>
+                          <div class="d-flex">
+                            <p class="chosecoupon-content m-0 me-auto">
+                              剩餘時間:{{coupon.remainingTime}}
+                            </p>
+                            <button
+                              class="btn chosecoupon-collapse-button m-0"
+                              data-bs-toggle="collapse"
+                              :data-bs-target="`#couponDetail${coupon.memberCouponId}`"
+                            >
+                              <div class="d-flex">
+                                <p class="m-0 me-2">詳情</p>
+                                <i class="fa-solid fa-caret-down"></i>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="chosecoupon-foot">
+                        <div class="position-relative mt-2">
+                          <input
+                            class="chosecoupon-radio"
+                            type="radio"
+                            name="chosen"
+                            :value="coupon"
+                            v-model="seletedCoupon"
+                          />
+                          <p class="d-block">選擇</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="collapse chosecoupon-collapse-item p-3"
+                      :id="`couponDetail${coupon.memberCouponId}`"
+                    >
+                      <h6 class="fw-bold mb-1">有效期限</h6>
+                      <p class="mb-3">{{coupon.canUseTimeRange}}</p>
+                      <h6 class="fw-bold mb-1">適用商品</h6>
+                      <p class="mb-3">{{coupon.applyToDeTail}}</p>
+                      <h6 class="fw-bold mb-1">付款方式</h6>
+                      <p class="mb-3">適用所有付款方式</p>
+                      <h6 class="fw-bold mb-1">物流方式</h6>
+                      <p class="mb-3">適用所有物流方式</p>
+                    </div>
+                  </div>
+                  <h5
+                    class="chose-coupon-title"
+                    v-if="couponCanNotUse.length !=0"
+                  >
+                    不可使用的優惠券
+                  </h5>
+                  <div
+                    class="chosecoupon mb-2"
+                    v-for="coupon in couponCanNotUse"
+                  >
+                    <div class="chosecoupon-main">
+                      <div class="chosecoupon-head pt-4">
+                        <div v-if="coupon.couponType==3">
+                          <i class="fa-solid fa-truck"></i>
+                          <p class="coupon-title">免運券</p>
+                        </div>
+                        <div v-else-if="coupon.couponType==2">
+                          <i class="fa-solid fa-percent ms-2"></i>
+                          <p class="coupon-title">打折券</p>
+                        </div>
+                        <div v-else="coupon.couponType==1">
+                          <i class="fa-solid fa-sack-dollar"></i>
+                          <p class="coupon-title">折價券</p>
+                        </div>
+                      </div>
+                      <div class="chosecoupon-body">
+                        <div>
+                          <h6 class="fw-bold mb-1">{{coupon.couponName}}</h6>
+                          <p class="chosecoupon-content mb-3">
+                            <strong>適用商品:</strong>{{coupon.applyTo}}
+                          </p>
+                          <p class="chosecoupon-content m-0">
+                            {{coupon.needWhat}}
+                          </p>
+                          <div class="d-flex">
+                            <p class="chosecoupon-content m-0 me-auto">
+                              剩餘時間:{{coupon.remainingTime}}
+                            </p>
+                            <button
+                              class="btn chosecoupon-collapse-button m-0"
+                              data-bs-toggle="collapse"
+                              :data-bs-target="`#couponDetail${coupon.memberCouponId}`"
+                            >
+                              <div class="d-flex">
+                                <p class="m-0 me-2">詳情</p>
+                                <i class="fa-solid fa-caret-down"></i>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="chosecoupon-foot">
+                        <div class="position-relative mt-2">
+                          <input
+                            class="chosecoupon-radio"
+                            type="radio"
+                            name="chosen"
+                            :value="coupon"
+                            disabled
+                            v-model="seletedCoupon"
+                          />
+                          <p class="d-block">選擇</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="collapse chosecoupon-collapse-item p-3"
+                      :id="`couponDetail${coupon.memberCouponId}`"
+                    >
+                      <h6 class="fw-bold mb-1">有效期限</h6>
+                      <p class="mb-3">{{coupon.canUseTimeRange}}</p>
+                      <h6 class="fw-bold mb-1">適用商品</h6>
+                      <p class="mb-3">{{coupon.applyToDeTail}}</p>
+                      <h6 class="fw-bold mb-1">付款方式</h6>
+                      <p class="mb-3">適用所有付款方式</p>
+                      <h6 class="fw-bold mb-1">物流方式</h6>
+                      <p class="mb-3">適用所有物流方式</p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-end"
+                    v-if="couponCanNotUse.length !=0"
+                  >
+                    <a
+                      href="desserts.html#/moldCake"
+                      class="d-flex justify-content-end"
+                    >
+                      <p class="m-0 go-to-buy">繼續購物</p>
+                      <i class="fa-solid fa-chevron-right mt-1 go-to-buy"></i>
+                      <i class="fa-solid fa-chevron-right mt-1 go-to-buy"></i>
+                    </a>
+                  </div>
+
+                  <!-- <div v-if="couponCanGet.length==0 && havePlayedDailyGame && havePlayedWeeklyGame"> -->
+                  <h5 class="chose-coupon-title">可獲得的優惠券</h5>
+                  <div class="chosecoupon mb-2" v-for="coupon in couponCanGet">
+                    <div class="chosecoupon-main">
+                      <div class="chosecoupon-head pt-4">
+                        <div v-if="coupon.couponType==3">
+                          <i class="fa-solid fa-truck"></i>
+                          <p class="coupon-title">免運券</p>
+                        </div>
+                        <div v-else-if="coupon.couponType==2">
+                          <i class="fa-solid fa-percent ms-2"></i>
+                          <p class="coupon-title">打折券</p>
+                        </div>
+                        <div v-else="coupon.couponType==1">
+                          <i class="fa-solid fa-sack-dollar"></i>
+                          <p class="coupon-title">折價券</p>
+                        </div>
+                      </div>
+                      <div class="chosecoupon-body">
+                        <div>
+                          <h6 class="fw-bold mb-1">{{coupon.couponName}}</h6>
+                          <p class="chosecoupon-content mb-3">
+                            <strong>適用商品:</strong>{{coupon.applyTo}}
+                          </p>
+                          <p class="chosecoupon-content m-0 mb-5">
+                            {{coupon.needWhat}}
+                          </p>
+                          <div class="d-flex">
+                            <p class="chosecoupon-content m-0 me-auto">
+                              領取期限:{{coupon.expireAt}}
+                            </p>
+                            <button
+                              class="btn chosecoupon-collapse-button m-0"
+                              data-bs-toggle="collapse"
+                              :data-bs-target="`#detail${coupon.couponId}`"
+                            >
+                              <div class="d-flex">
+                                <p class="m-0 me-2">詳情</p>
+                                <i class="fa-solid fa-caret-down"></i>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="chosecoupon-foot">
+                        <div class="position-relative mt-2">
+                          <input
+                            class="chosecoupon-radio"
+                            type="radio"
+                            name="chosen"
+                            :value="coupon"
+                            disabled
+                            v-model="seletedCoupon"
+                          />
+                          <p class="d-block">選擇</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="collapse chosecoupon-collapse-item p-3"
+                      :id="`detail${coupon.couponId}`"
+                    >
+                      <h6 class="fw-bold mb-1">領取期限</h6>
+                      <p class="mb-3">{{coupon.expireAt}}</p>
+                      <h6 class="fw-bold mb-1">適用商品</h6>
+                      <p class="mb-3">{{coupon.applyToDetail}}</p>
+                      <h6 class="fw-bold mb-1">付款方式</h6>
+                      <p class="mb-3">適用所有付款方式</p>
+                      <h6 class="fw-bold mb-1">物流方式</h6>
+                      <p class="mb-3">適用所有物流方式</p>
+                    </div>
+                  </div>
+                  <div class="d-flex p-3">
+                    <div
+                      class="not-play-daily-game d-flex justify-content-center align-items-center me-auto position-relative"
+                    >
+                      <img
+                        src="assets/img/扭蛋.png"
+                        alt=""
+                        class="daily-game-img"
+                      />
+                      <h5 class="daily-game-text">每日扭蛋</h5>
+                    </div>
+                    <div
+                      class="not-play-weekly-game d-flex justify-content-center align-items-center position-relative"
+                    >
+                      <img
+                        src="assets/img/去背甜點.png"
+                        alt=""
+                        class="weekly-game-img"
+                      />
+                      <h5 class="weekly-game-text">心理測驗</h5>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <a href="index.html" class="d-flex justify-content-end">
+                      <p class="m-0 go-to-buy">前往領取</p>
+                      <i class="fa-solid fa-chevron-right mt-1 go-to-buy"></i>
+                      <i class="fa-solid fa-chevron-right mt-1 go-to-buy"></i>
+                    </a>
+                  </div>
+                  <!-- </div> -->
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    @click="CancelSelect"
+                  >
+                    關閉
+                  </button>
+                  <div
+                    type="button"
+                    class="button coupon-btn"
+                    data-bs-dismiss="modal"
+                    @click="SureToUseThisCoupon"
+                  >
+                    確定
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- ======= Footer ======= -->
+      <footer id="footer" class="footer">
+        <div class="container">
+          <div class="row gy-3">
+            <div class="col-lg-3 col-md-6 d-flex">
+              <i class="bi bi-geo-alt icon"></i>
+              <div>
+                <h4>地址</h4>
+                <p>
+                  桃園市 中壢區 <br />
+                  新生路二段421號<br />
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links d-flex">
+              <i class="bi bi-telephone icon"></i>
+              <div>
+                <h4>預定方式</h4>
+                <p>
+                  <strong>電話:</strong> 03 426 0163<br />
+                  <strong>Email:</strong> fuen283@ispan.com<br />
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links d-flex">
+              <i class="bi bi-clock icon"></i>
+              <div>
+                <h4>營業時間</h4>
+                <p>
+                  <strong>星期一到六: 11AM</strong> - 23PM<br />
+                  星期日: 公休
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 footer-links">
+              <h4>追蹤我們</h4>
+              <div class="social-links d-flex">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"
+                  ><i class="bi bi-instagram"></i
+                ></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="copyright">
+            &copy; Copyright <strong><span>SIERRA</span></strong
+            >. All Rights Reserved
+          </div>
+          <div class="credits">Designed by SIERRA</div>
+        </div>
+      </footer>
+      <!-- End Footer -->
+      <!-- Updated Vue 3 CDN -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+    <script src="assets/js/variables.js"></script>
+    <script src="assets/js/login.js"></script>
+    <!-- <script src="assets/js/cart.js"></script> -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/4815e83c25.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const username = localStorage.getItem("username");
+      const memberId = localStorage.getItem("memberId");
+      // let config = {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      //   },
+      // };
+      const app = Vue.createApp({
+        data() {
+          return {
+            specification: [],
+            deliveryFee: 60,
+            cartItems: [],
+            cartDTO: [],
+            dessertName: "",
+            price: 0,
+            dessertImageName: "",
+            PhotoPath: "/assets/img/",
+            specificationId: 0,
+            dessert: [],
+            unitPrice: 0,
+            total: 0,
+            couponCanUse: [],
+            couponCanNotUse: [],
+            couponCanGet: [],
+            seletedCoupon: null,
+            sureCoupon: null,
+            originSelect: null,
+            discountValue: null,
+            havePlayedDailyGame: false,
+            havePlayedWeeklyGame: false,
+            couponCode: "",
+          };
+        },
+        methods: {
+          handlePlus(item) {
+            const newQty = 1;
+            this.UpdateCart(item, newQty);
+            this.sureCoupon = null;
+            this.seletedCoupon = null;
+            // this.getTotal();
+            this.GetCouponCanUse();
+            this.GetCouponCanNotUse();
+            this.discountValue = null;
+          },
+          handleSub(item) {
+            const newQty = -1;
+            if (item.quantity > 1) {
+              this.UpdateCart(item, newQty);
+            } else {
+              // 如果数量小于等于1，可以选择从购物车中移除项目
+              this.handleDelete(item.id);
+              this.getTotal();
+            }
+            this.sureCoupon = null;
+            this.seletedCoupon = null;
+            this.GetCouponCanUse();
+            this.GetCouponCanNotUse();
+            this.discountValue = null;
+          },
+          async handleDelete(item) {
+            const dessertCartItemId = item.id;
+            await axios.delete(
+              `${variables.API_URL}DessertCartItems/${dessertCartItemId}`,
+              config
+            );
+            this.getCartItems();
+            this.sureCoupon = null;
+            this.seletedCoupon = null;
+            this.GetCouponCanUse();
+            this.GetCouponCanNotUse();
+            this.discountValue = null;
+          },
+          async getTotal() {
+            // Replace this with the actual username
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertCarts/GetCart?username=${username}`,
+                config
+              );
+              console.log(response.data);
+
+              this.total = response.data.total;
+            } catch (error) {
+              console.error("Error getting cart items:", error);
+            }
+          },
+          async getCartItems() {
+            // Replace this with the actual username
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertCarts/GetCart?username=${username}`,
+                config
+              );
+              console.log(response.data);
+              this.cartDTO = response.data;
+              this.total = response.data.total;
+            } catch (error) {
+              console.error("Error getting cart items:", error);
+            }
+          },
+
+          async UpdateCart(item, newQty) {
+            const id = item.id;
+            const apiUrl = `${variables.API_URL}DessertCarts/UpdateCart`;
+            const params = new URLSearchParams({
+              id: id,
+              quantity: newQty,
+            });
+            await axios.put(apiUrl + "?" + params.toString(), null, config);
+            console.log("Cart item update successfully!");
+            // 更新本地的购物车项目数量
+            item.quantity += newQty;
+            this.getTotal();
+          },
+          async GetCouponCanUse() {
+            await axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/MeetCriteria?MemberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.couponCanUse = res.data;
+                console.log(this.couponCanUse);
+              });
+          },
+          RememberOrigin() {
+            this.originSelect = this.sureCoupon;
+          },
+          SureToUseThisCoupon() {
+            this.sureCoupon = this.seletedCoupon;
+            axios
+              .put(
+                `https://localhost:520/api/MemberCoupons?memberId=${memberId}&memberCouponId=${this.seletedCoupon.memberCouponId}`,
+                null,
+                config
+              )
+              .then((res) => {
+                console.log(res.data);
+                this.discountValue = res.data;
+              });
+          },
+          CancelSelect() {
+            this.seletedCoupon = this.originSelect;
+          },
+          async GetCouponCanNotUse() {
+            await axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/Ineligible?MemberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.couponCanNotUse = res.data;
+                console.log(this.couponCanNotUse);
+              });
+          },
+          async CancelCoupon() {
+            await axios
+              .put(
+                `https://localhost:520/api/MemberCoupons/CancelCoupon?memberId=${memberId}`,
+                null,
+                config
+              )
+              .then((res) => {
+                if (res.data == true) {
+                  this.sureCoupon = null;
+                  this.discountValue = null;
+                  this.seletedCoupon = null;
+                }
+              });
+          },
+          async GetUsingCoupon() {
+            await axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/GetUsingCoupon?memberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                if (res.data != null) {
+                  console.log(res);
+                  const couponId = res.data.memberCouponId;
+                  const findCoupon = this.couponCanUse.find(
+                    (c) => c.memberCouponId == couponId
+                  );
+                  this.seletedCoupon = findCoupon;
+                  this.sureCoupon = findCoupon;
+                  this.discountValue = res.data.discountPrice;
+                }
+              });
+          },
+          async GetCouponCanGet() {
+            await axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/CanGet?MemberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.couponCanGet = res.data;
+                console.log(this.couponCanGet);
+              });
+          },
+          async DidMemberPlayedGames() {
+            await axios
+              .get(
+                `https://localhost:520/api/MemberCoupons/DidMemberPlayedGame?memberId=${memberId}`,
+                config
+              )
+              .then((res) => {
+                this.havePlayedDailyGame = res.data.dailyGame;
+                this.havePlayedWeeklyGame = res.data.weeklyGame;
+              });
+          },
+          async GetCouponByCode() {
+            await axios
+              .post(
+                `https://localhost:520/api/MemberCoupons?MemberId=${memberId}&code=${this.couponCode}`,
+                null,
+                config
+              )
+              .then((res) => {
+                console.log(res.data);
+                if (res.data.isSuccess) {
+                  Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: `恭喜獲得 ${res.data.message} 優惠券`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  this.GetCouponCanUse();
+                  this.GetCouponCanNotUse();
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "領取失敗",
+                    text: res.data.message,
+                  });
+                }
+              });
+          },
+        },
+        computed: {
+          totalPrice() {
+            if (this.discountValue == null) {
+              return this.total + this.deliveryFee;
+            } else {
+              return this.total + this.deliveryFee + this.discountValue;
+            }
+          },
+        },
+        mounted: function () {
+          this.getCartItems();
+          this.GetCouponCanUse().then(() => {
+            return this.GetUsingCoupon();
+          });
+          this.GetCouponCanNotUse();
+          this.GetCouponCanGet();
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>
