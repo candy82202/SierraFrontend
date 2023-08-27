@@ -65,13 +65,15 @@ namespace SIERRA_Server.Controllers
             {
               
                 var unitPrice = d.Specifications?.FirstOrDefault()?.UnitPrice ?? 0;
+                var specificationId = d.Specifications?.FirstOrDefault()?.SpecificationId ?? 0;
                 var imageName = d.DessertImages?.FirstOrDefault()?.DessertImageName;
+
 
                 return new DessertPageDTO
                 {
                     DessertId = d.DessertId,
                     DessertName = d.DessertName,
-                   
+                   SpecificationId =specificationId,
                     UnitPrice = unitPrice,
                     ImageName = imageName,
                     TotalPages = totalPages

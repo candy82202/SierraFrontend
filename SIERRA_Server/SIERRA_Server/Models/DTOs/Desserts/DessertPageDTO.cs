@@ -2,14 +2,7 @@
 
 namespace SIERRA_Server.Models.DTOs.Desserts
 {
-    //public class DessertPageDTO
-    //{
-    //    public List<Dessert> Dessert { get; set; }
-    //    public int UnitPrice { get; set; }
-    //    public string ImageName { get; set; }
-    //    public int TotalPages { get; set; }
-    //}
-    public class DessertPageDTO
+      public class DessertPageDTO
     {
         public int DessertId { get; set; }
         public string DessertName { get; set; }
@@ -18,7 +11,7 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         public decimal DiscountedPrice => CalculateDiscountedPrice(UnitPrice, DessertDiscountPrice);
         public decimal DessertDiscountPrice { get; private set; }
         public string ImageName { get; set; }
-       
+        public int SpecificationId { get; set; }
         public int TotalPages { get; set; }
 
         private decimal CalculateDiscountedPrice(int unitPrice, decimal dessertDiscountPrice)
