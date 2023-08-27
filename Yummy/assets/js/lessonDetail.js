@@ -126,8 +126,12 @@ const lessonDetail = {
     },
     checkRegister: function () {
       const token = this.GetToken();
-
-      if (token) {
+      if (!token) {
+        window.location.href = "Login.html";
+        return;
+      }
+      //if (token)
+      else {
         const tokenExpired = this.isTokenExpired(token);
         if (tokenExpired) {
           //this.filterLessonById(lessonId);
@@ -168,7 +172,8 @@ const lessonDetail = {
       const storedToken = localStorage.getItem("jwtToken");
       if (storedToken == null) {
         // this._router.navigate(["回首頁"]);
-        window.location.href = "LogIn.html"; // 刷新頁面，並導至首頁
+        //window.location.href = "LogIn.html"; // 刷新頁面，並導至首頁
+        return null;
       } else {
         // Parse the token to check if it's expired
         const tokenExpired = isTokenExpired(storedToken);
