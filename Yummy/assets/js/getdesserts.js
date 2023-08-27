@@ -47,25 +47,13 @@ const getdesserts = {
   class="scroll-top d-flex align-items-center justify-content-center"
   ><i class="bi bi-arrow-up-short"></i
 ></a>
-<nav aria-label="Page navigation example">
+<div class="col-12">
+<nav aria-label="Page navigation example"  style=" float:right">
   <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
+      <li class="page-item " v-for="(value,index) in totalPages" :key="index" @click="clickHandler(value)"><a :class="{ 'dessertPage': true,'page-link':true, 'currentPage': thePage === value }">{{value}}</a>
+      </li>     
   </ul>
-</nav>
+</nav></div>
 `,
   data() {
     return {
@@ -74,6 +62,7 @@ const getdesserts = {
       totalPages: 0,
       PhotoPath: "/assets/img/",
       dessertLinkURL: "dessertProducts.html#/desserts/",
+      thePage: 1, //第幾頁
     };
   },
   watch: {
@@ -88,14 +77,26 @@ const getdesserts = {
   methods: {
     async loadProducts(keyword) {
       const response = await fetch(
-        `https://localhost:520/api/Desserts?keyword=${keyword}&page=1&pageSize=4`
+        `https://localhost:520/api/Desserts?keyword=${keyword}&page=${this.thePage}&pageSize=8`
       );
       const data = await response.json();
       this.products = data;
-      console.log(data);
+      // console.log(this.products);
+      this.totalPages = data[0].totalPages;
+      // console.log(data[0].totalPages);
+      this.getCartItems();
+    },
+    async reloadProducts() {
+      let apiUrl = `https://localhost:520/api/Desserts?page=${this.thePage}&pageSize=8`;
+      if (this.keyword) {
+        apiUrl += `&keyword=${this.keyword}`;
+      }
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      this.products = data;
       console.log(this.products);
-      this.totalPages = data.totalPages;
-      console.log("共幾頁" + data.totalPages);
+      this.totalPages = data[0].totalPages;
+      console.log(data[0].totalPages);
     },
     async getDessertLink(dessertId) {
       try {
@@ -113,24 +114,12 @@ const getdesserts = {
       }
     },
     async inputHandler() {
-      // this.keyword = value;
-      console.log(value);
       this.loadProducts(value);
     },
-    async getDessertLink(dessertId) {
-      try {
-        const response = await axios.get(
-          variables.API_URL + `Desserts/${dessertId}`
-        );
-        const dessertLink = `dessertProducts.html#/desserts/${dessertId}`;
-        console.log(dessertLink);
-        return dessertLink;
-        // const dessertData = response.data;
-        // // Now you can use the dessertData to display the information on dessertProducts.html
-        // console.log(dessertData);
-      } catch (error) {
-        console.error("Error fetching dessert data:", error);
-      }
+    async clickHandler(page) {
+      this.thePage = page;
+      console.log(this.thePage);
+      this.reloadProducts();
     },
     async addProduct(dessert) {
       this.GetToken();
@@ -139,7 +128,7 @@ const getdesserts = {
       // const dessert = this.dvm.find((item) => item.dessertId === dessertId);
       const productName = dessert.dessertName;
       const dessertPrice = dessert.unitPrice;
-      const specificationId = dessert.specification.specificationId;
+      const specificationId = dessert.specificationId;
       const cartProducts = $(".js-cart-product h1");
       let productExists = false;
 
@@ -179,7 +168,6 @@ const getdesserts = {
       await this.getCartItems();
       console.log("Cart item added successfully!");
     },
-
     async getCartItems() {
       const username = localStorage.getItem("username"); // Replace this with the actual username
       try {

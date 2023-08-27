@@ -1757,7 +1757,19 @@ section {
   transform: translateY(-30px);
   opacity: 0;
 }
-
+.dessertPage {
+  color: var(--color-text);
+}
+.dessertPage:hover {
+  background-color: var(--background-fill);
+  cursor: pointer;
+  color: white;
+}
+.currentPage {
+  background-color: var(--background-fill);
+  cursor: pointer;
+  color: white;
+}
 .img {
   transition: all 600ms ease-out 0s;
   -webkit-transform: translateY(0px);
