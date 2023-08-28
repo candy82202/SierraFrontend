@@ -42,7 +42,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddHangfire(config =>
 {
-    config.UseSqlServerStorage("Data Source=.;Initial Catalog=Sierra0801;Persist Security Info=True;User ID=sa5;Password=sa5;MultipleActiveResultSets=true;TrustServerCertificate=true");
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("Sierra"));
 });
 builder.Services.AddHangfireServer();
 var MyAllowSpecificOrigins = "AllowAny";
@@ -131,12 +131,7 @@ app.UseAuthentication();
 // 授權(原本就有)
 app.UseAuthorization();
 // 查看定期作業執行結果
-//app.UseHangfireDashboard();
-app.UseEndpoints(endpoints =>
-{
-	endpoints.MapControllers(); // 如果有的話，保留這個設定
-	endpoints.MapHangfireDashboard(); // 加入這行來啟用 Hangfire 檢視視窗
-});
+app.UseHangfireDashboard("/dashboard");
 
 app.MapControllers();
 

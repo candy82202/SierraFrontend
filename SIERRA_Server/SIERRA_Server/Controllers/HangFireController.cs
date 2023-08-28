@@ -21,15 +21,11 @@ namespace SIERRA_Server.Controllers
 			_db = db;
 
         }
-        //[HttpPut]
-		//public  void LetMembersCanPlayDaailyGame()
-		//{
-		//	RecurringJob.AddOrUpdate(() => DothisToLetMembersCanPlayDaailyGame(), Cron.Daily);
-		//}
-		//public void DothisToLetMembersCanPlayDaailyGame()
-		//{
-		//	var server = new MemberCouponService(_repo);
-		//	server.LetMembersCanPlayDaailyGame();
-		//}
+		[HttpPut]
+		public void LetMembersCanPlayDaailyGame()
+		{
+            var server = new MemberCouponService(_repo);
+            RecurringJob.AddOrUpdate(() => server.LetMembersCanPlayDaailyGame(), Cron.Daily);
+		}
 	}
 }
