@@ -155,6 +155,7 @@
             const time = arg.event.start.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
+              hour12: false,
             });
             let html = `<div>${time}</div><div>${title}</div>`;
 
