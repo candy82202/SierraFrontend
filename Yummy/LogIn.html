@@ -139,6 +139,7 @@
                 想起來了嗎?
                 <a href="#" class="login-link">趕緊登入</a>
               </span>
+              <button class="btn btn-primary" id="forgot-demo" type="button">demo</button>
             </div>
           </form>
         </div>
@@ -235,9 +236,9 @@
               <label>
                 <input type="checkbox" id="terms-and-conditions-checkbox" disabled />我同意
               </label>
-              <span id="terms-and-conditions">條款和條件</span>
+              <span id="terms-and-conditions">條款與細則</span>
             </div>
-            <button type="submit " class="btn-forgot-login-register">
+            <button type="submit" class="btn-forgot-login-register">
               加入會員
             </button>
             <div class="forgot-login-register">
@@ -245,6 +246,7 @@
                 已經有帳號了?
                 <a href="#" class="login-link">登入</a>
               </span>
+              <button class="btn btn-primary" id="register-demo" type="button">demo</button>
             </div>
           </form>
         </div>
@@ -352,7 +354,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.all.min.js
           .then((text) => {
             // 使用 SweetAlert 显示文本内容
             Swal.fire({
-              title: "條件與細則",
+              title: "條款與細則",
               html: "<pre>" + text + "</pre>",
               confirmButtonText: "同意",
               showCancelButton: true,
@@ -458,7 +460,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.all.min.js
       }
       if (!formIsTermsChecked) {
         let errorElement = document.createElement("li");
-        errorElement.textContent = `請同意 "條款和條件"`;
+        errorElement.textContent = `請同意 "條款與細則"`;
         document
           .querySelector("#register-error-list")
           .appendChild(errorElement);
@@ -674,6 +676,19 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.all.min.js
         wrapper.classList.remove("active-register");
       });
     });
+  </script>
+  <script>
+    document.querySelector("#register-demo").addEventListener("click", () => {
+      document.querySelector("#register-username").value = "una";
+      document.querySelector("#register-email").value = "ispanfuen28team3@gmail.com";
+      document.querySelector("#register-password").value = "123";
+      document.querySelector("#register-cofirmpassword").value = "123";
+    })
+
+    document.querySelector("#forgot-demo").addEventListener("click", () => {
+      document.querySelector("#forgot-username").value = "una";
+      document.querySelector("#forgot-email").value = "ispanfuen28team3@gmail.com";
+    })
   </script>
 </body>
 
