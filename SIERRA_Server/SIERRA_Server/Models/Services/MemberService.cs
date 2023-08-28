@@ -58,15 +58,17 @@ namespace SIERRA_Server.Models.Services
 
 		public Result ValidLogin(LoginDTO dto)
 		{
-			var member = _repo.GetMemberByUsername(dto.Username);
-			if (member == null) return Result.Fail("帳密有誤");
+			var memberInDb = _repo.GetMemberByUsername(dto.Username);
+			if (memberInDb == null) return Result.Fail("帳密有誤");
 
-			if (member.IsConfirmed.HasValue == false || member.IsConfirmed.Value == false) return Result.Fail("會員資格尚未確認，請至信箱點選驗證信");
+			if (memberInDb.IsConfirmed == false) return Result.Fail("會員資格尚未確認，請至信箱點選驗證信");
+
+			if (memberInDb.IsBan == true) return Result.Fail("該帳號已被停權，無法登入");
 
 			var salt = _hashUtility.GetSalt();
 			var hashPassword = _hashUtility.ToSHA256(dto.Password, salt);
 
-			return string.Compare(member.EncryptedPassword, hashPassword) == 0
+			return string.Compare(memberInDb.EncryptedPassword, hashPassword) == 0
 				? Result.Success()
 				: Result.Fail("帳密有誤");
 		}

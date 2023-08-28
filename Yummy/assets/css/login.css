@@ -16,7 +16,7 @@
 .wrapper {
   position: relative;
   width: 400px;
-  height: 500px;
+  height: 450px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
@@ -232,15 +232,21 @@
   /* justify-content: center; */
   font-weight: 500;
   margin: 25px 0 10px;
+
 }
 
-.forgot-login-register p a {
+.forgot-login-register p {
+  display: flex;
+  justify-content: space-between;
+}
+
+.forgot-login-register span a {
   color: #162938;
   text-decoration: none;
   font-weight: 600;
 }
 
-.forgot-login-register p a:hover {
+.forgot-login-register span a:hover {
   text-decoration: underline;
 }
 
