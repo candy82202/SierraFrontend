@@ -128,6 +128,58 @@
         </div>
       </div>
     </div>
+
+    <!-- start shopping cart -->
+    <aside class="cart js-cart mt-5">
+      <div class="cart__header">
+        <h1 class="cart__title">購物車</h1>
+        <p class="cart__text">
+          <a
+            class="button button--light js-toggle-cart"
+            href="#"
+            title="Close cart"
+          >
+            <i class="bi bi-x-square-fill"></i>
+          </a>
+        </p>
+      </div>
+      <div class="cart__products js-cart-products cart-scrollerbar">
+        <p class="cart__empty js-cart-empty">新增商品到購物車吧~</p>
+        <div
+          class="cart__product js-cart-product-template"
+          v-for="item in cartItems"
+          :key="item.id"
+        >
+          <article class="js-cart-product">
+            <h1 class="product_name">{{ item.dessertName }}</h1>
+
+            數量: <span class="qty">{{ item.quantity }}</span> * NT
+            <span class="dessertPrice">{{ item.price }}</span>
+            <p>
+              <a
+                class="js-remove-product"
+                href="#"
+                title="Delete product"
+                @click="removeProduct(item.id)"
+              >
+                刪除
+              </a>
+            </p>
+          </article>
+        </div>
+      </div>
+      <div class="cart__footer">
+        <p class="cart__text">
+          <a
+            class="button checkbtn"
+            href="shoppingCart.html"
+            title="Buy products"
+            >結帳
+          </a>
+        </p>
+      </div>
+    </aside>
+    <!-- End shopping cart -->
     <div id="app" class="container stats-psycho">
       <div class="container mt-5 mb-5 psychometric-test" v-if="wantToShow==0">
         <div class="h10"></div>
@@ -434,12 +486,6 @@
     <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
 
     <script src="https://unpkg.com/vue-router@4.2.4/dist/vue-router.global.js"></script>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-      crossorigin="anonymous"
-    ></script>
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
