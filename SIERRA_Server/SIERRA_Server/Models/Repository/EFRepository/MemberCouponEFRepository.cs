@@ -302,5 +302,15 @@ namespace SIERRA_Server.Models.Repository.EFRepository
                 }
             }
         }
-    }
+
+		public void LetMembersCanPlayDaailyGame()
+		{
+            var members = _db.Members;
+            foreach(var member in members)
+            {
+                member.DailyGamePlayed = false;
+            }
+            _db.SaveChanges();
+		}
+	}
 }

@@ -32,5 +32,6 @@ namespace SIERRA_Server.Models.Interfaces
 		Task<IEnumerable<DiscountGroupItem>> FindSuggestProduct(int discountGroupId);
         Task<bool> CancelUsingCoupon(int memberId);
         Task<object?> GetUsingCoupon(int memberId);
-    }
+		void LetMembersCanPlayDaailyGame();
+	}
 }
