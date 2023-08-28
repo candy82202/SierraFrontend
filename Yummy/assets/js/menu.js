@@ -90,7 +90,7 @@ const menu = {
 </div>
 </div>
 <div class="d-flex justify-content-center align-items-center mt-3">
-<div class="index-daily-game me-5" data-bs-toggle="modal" data-bs-target="#gachapon">
+<div class="index-daily-game me-5" data-bs-toggle="modal" data-bs-target="#gachapon" id="checkEggLogin">
 <img src="assets/img/扭蛋.png" alt="" class="index-daily-game-img">
   <h4 class="index-daily-game-text">
     每日扭蛋
@@ -98,7 +98,7 @@ const menu = {
 </div>
 
   <div class="index-weekly-game">
-  <a href="psychometricTest.html">
+  <a href="psychometricTest.html" @click="checkLogin" id="checkLogin">
   <img src="assets/img/去背甜點.png" alt="" class="index-weekly-game-img">
       <h4 class="index-weekly-game-text">
         心理測驗
@@ -456,6 +456,13 @@ const menu = {
         `,
       });
     },
+    // checkLogin() {
+    //   const isLink = document.querySelector("#checkLogin"); // 選到 a 標籤
+
+    //   isLink.preventDefault();
+    //   alert("work");
+    //   this.GetToken();
+    // },
   },
   mounted: function () {
     this.refreshData();

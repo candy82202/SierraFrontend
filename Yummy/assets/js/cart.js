@@ -32,9 +32,9 @@ function GetToken() {
   } else {
     // Parse the token to check if it's expired
     const tokenExpired = isTokenExpired(storedToken);
-    if (tokenExpired) {
-      this.refreshData();
-    }
+    // if (tokenExpired) {
+    //   this.refreshData();
+    // }
   }
   return { Authorization: "bearer " + storedToken };
 }

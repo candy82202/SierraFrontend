@@ -769,6 +769,43 @@
     <script src="assets/js/main.js"></script>
 
     <script>
+      const isLink = document.querySelector("#checkLogin"); // 選到 a 標籤
+      const isEggLink = document.querySelector("#checkEggLogin"); // 選到 a 標籤
+      isLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        PhyGetToken();
+      });
+      isEggLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        EggGetToken();
+      });
+      const PhyGetToken = async () => {
+        const storedToken = localStorage.getItem("jwtToken");
+        if (storedToken == null) {
+          window.location.href = "LogIn.html"; // 刷新頁面，並導至首頁
+        } else {
+          window.location.href = "psychometricTest.html";
+        }
+        return { Authorization: "Bearer " + storedToken };
+      };
+      const EggGetToken = async () => {
+        const storedToken = localStorage.getItem("jwtToken");
+        if (storedToken == null) {
+          window.location.href = "LogIn.html"; // 刷新頁面，並導至首頁
+        } else {
+          return;
+        }
+        return { Authorization: "Bearer " + storedToken };
+      };
+
+      // const isTokenExpired = async (token) => {
+      //   // Parse the token to get the expiration date (replace this with your actual parsing logic)
+      //   const decodedToken = this.parseToken(token);
+      //   const expirationDate = new Date(decodedToken.exp * 1000);
+      //   const currentDate = new Date();
+
+      //   return currentDate > expirationDate;
+      // };
       $(document).ready(function () {
         //Count nr. of square classes
         var countSquare = $(".square").length;
@@ -851,22 +888,22 @@
               } else {
                 cartItems.forEach((item) => {
                   const cartProductTemplate = `
-                  <div class="cart__product"  v-for="item in cartItems" :key="item.id">
-                  <article class="js-cart-product">
-                  <div class="d-flex">
-                  <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
-                  height: 50px; width: 50px;   "/>
-                   <h1 class="product_name ">${item.dessertName}</h1> </div>
-                    <div class="cart__product__qty">
-                    數量: <span class="qty">${item.count}</span> * NT
-                    <span class="dessertPrice">${item.price}</span>         
-                      <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
-                        刪除
-                      </a>
-                     </div>
-                  </article>
-                </div>
-                  `;
+                    <div class="cart__product"  v-for="item in cartItems" :key="item.id">
+                    <article class="js-cart-product">
+                    <div class="d-flex">
+                    <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+                    height: 50px; width: 50px;   "/>
+                     <h1 class="product_name ">${item.dessertName}</h1> </div>
+                      <div class="cart__product__qty">
+                      數量: <span class="qty">${item.count}</span> * NT
+                      <span class="dessertPrice">${item.price}</span>
+                        <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+                          刪除
+                        </a>
+                       </div>
+                    </article>
+                  </div>
+                    `;
                   cartProductsContainer.append(cartProductTemplate);
                 });
               }
