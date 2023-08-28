@@ -553,5 +553,10 @@ namespace SIERRA_Server.Models.Services
 			var weeklyGame =await _repo.HasPlayedWeeklyGame(memberId);
 			return new {DailyGame= dailyGame, WeeklyGame= weeklyGame};
         }
-    }
+
+		public void  LetMembersCanPlayDaailyGame()
+		{
+			_repo.LetMembersCanPlayDaailyGame();
+		}
+	}
 }
