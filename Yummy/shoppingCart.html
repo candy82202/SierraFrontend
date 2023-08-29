@@ -125,7 +125,11 @@
                     :src="PhotoPath + item.dessertImageName"
                     v-bind:alt="item.dessertName"
                   />
-                  <div class="name">{{ item.dessertName }}</div>
+                  <div class="name d-flex">
+                    {{ item.dessertName }}
+                    <p v-if="item.flavor !== null">-{{ item.flavor }}</p>
+                    <p v-if="item.size !== null">-{{ item.size }}</p>
+                  </div>
                 </div>
                 <div class="price"><span>$</span>{{ item.unitPrice }}</div>
                 <div class="name">{{ item.quantity }}</div>
