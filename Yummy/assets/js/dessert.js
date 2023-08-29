@@ -324,19 +324,6 @@ const desserts = {
         imageAlt: "Custom image",
       });
     },
-    // getDessertprodUrl(dessertId) {
-    //   return dessertLinkURL + "dessertId";
-    // },
-    // toDessertProducts(dessertId) {
-    //   window.location.href = this.getDessertprodUrl(dessertId);
-    // },
-    // getDessertUrl(dessertId) {
-    //   return variables.API_URL + "Desserts/ChocoDiscountGroups";
-    // },
-    // goToDessertDetails(dessertId) {
-    //   window.location.href = this.getDessertUrl(dessertId);
-    // },
-
     async addProduct(des) {
       // cartOpen如果是false那就打開購物車
       this.GetToken();
