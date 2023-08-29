@@ -8,12 +8,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Net.Http;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace SIERRA_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
   
     public class EcPayController : ControllerBase
     {
@@ -63,7 +64,7 @@ namespace SIERRA_Server.Controllers
                 {"TradeDesc", "好吃的甜點不用華麗鋪張，做出具備撫慰人心效果的甜點"},
                 {"ItemName",combinedDessertNames },
                 {"ReturnURL", "https://localhost:520/api/EcPay/EcpayReturn"},
-                { "ClientBackURL", "http://localhost:5501/Order.html"},
+                { "OrderResultURL", "https://localhost:520/api/EcPay/EcpayReturn"},
                 { "EncryptType",  "1"},
                 {"ChoosePayment" ,"Credit"},
                 {"PaymentType", "aio"},
@@ -103,14 +104,14 @@ namespace SIERRA_Server.Controllers
 
     public class EcpayReturnDto
     {
-        //public string MerchantID { get; set; }
-        //public string MerchantTradeNo { get; set; }
+        public string MerchantID { get; set; }
+        public string MerchantTradeNo { get; set; }
         //public string StoreID { get; set; }
-        //public int RtnCode { get; set; }
+        public int RtnCode { get; set; }
         public string RtnMsg { get; set; }
-        //public string TradeNo { get; set; }
-        //public int TradeAmt { get; set; }
-        //public string PaymentDate { get; set; }
+        public string TradeNo { get; set; }
+        public int TradeAmt { get; set; }
+        public string PaymentDate { get; set; }
     }
 
     public class UserRequest
