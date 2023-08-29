@@ -14,18 +14,30 @@ namespace SIERRA_Server.Controllers
 	public class HangFireController : ControllerBase
 	{
 		private IMemberCouponRepository _repo;
-		private AppDbContext _db;
         public HangFireController(IMemberCouponRepository repo,AppDbContext db)
         {
 			_repo = repo;
-			_db = db;
 
         }
 		[HttpPut]
-		public void LetMembersCanPlayDaailyGame()
+		public void LetMembersCanPlayDailyGame()
 		{
             var server = new MemberCouponService(_repo);
-            RecurringJob.AddOrUpdate(() => server.LetMembersCanPlayDaailyGame(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => server.LetMembersCanPlayDailyGame(), "0 16 * * *");
 		}
+		[HttpPut("Weekly")]
+		public void LetMembersCanPlayWeeklyGame()
+		{
+            var server = new MemberCouponService(_repo);
+			RecurringJob.AddOrUpdate(() => server.LetMembersCanPlayWeeklyGame(), Cron.Weekly(DayOfWeek.Monday, 16, 0));
+        }
+
+		[HttpPost]
+		public void GiveMemberCouponWhoBirthInThisMonth()
+		{
+			var server = new MemberCouponService(_repo);
+			RecurringJob.AddOrUpdate(() => server.GiveMemberCouponWhoBirthInThisMonth(), Cron.Monthly(1, 16, 0));
+		}
+
 	}
 }

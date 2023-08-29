@@ -13,6 +13,7 @@ namespace SIERRA_Server.Models.Services
     public class MemberCouponService
 	{
 		private IMemberCouponRepository _repo;
+		private AppDbContext _db;
 		public MemberCouponService(IMemberCouponRepository repo)
         {
             _repo = repo;
@@ -464,6 +465,36 @@ namespace SIERRA_Server.Models.Services
 			var result = await _repo.GetUsingCoupon(memberId);
 			return result;
         }
+        public async Task<object?> DidMemberPlayedGame(int memberId)
+        {
+            var dailyGame = await _repo.HasPlayedGame(memberId);
+            var weeklyGame = await _repo.HasPlayedWeeklyGame(memberId);
+            return new { DailyGame = dailyGame, WeeklyGame = weeklyGame };
+        }
+
+        public void LetMembersCanPlayDailyGame()
+        {
+            _repo.LetMembersCanPlayDailyGame();
+        }
+
+        public void LetMembersCanPlayWeeklyGame()
+        {
+			_repo.LetMembersCanPlayWeeklyGame();
+        }
+        public void GiveMemberCouponWhoBirthInThisMonth()
+        {
+			var members = _repo.GetBirthdayMemberInThisMonth();
+			var birthdayCoupon = _repo.GetBirthdayCoupon();
+			var memberCoupons = members.Select(m => new MemberCoupon()
+								{
+									MemberId = m.Id,
+									CouponId = birthdayCoupon.CouponId,
+									CouponName = birthdayCoupon.CouponName,
+									CreateAt = DateTime.Now,
+									ExpireAt = DateTime.Now.AddDays((double)birthdayCoupon.Expiration)
+								});
+			_repo.AddBirthdayCoupons(memberCoupons);
+        }
         private async Task<IEnumerable<MemberCoupon>> DoThisToGetCouponMeetCriteria(int memberId)
 		{
 			var coupons = await _repo.GetUsableCoupon(memberId);
@@ -547,16 +578,6 @@ namespace SIERRA_Server.Models.Services
 			return couponsMeetCriteria;
 		}
 
-        public async Task<object?> DidMemberPlayedGame(int memberId)
-        {
-            var dailyGame = await _repo.HasPlayedGame(memberId);
-			var weeklyGame =await _repo.HasPlayedWeeklyGame(memberId);
-			return new {DailyGame= dailyGame, WeeklyGame= weeklyGame};
-        }
-
-		public void  LetMembersCanPlayDaailyGame()
-		{
-			_repo.LetMembersCanPlayDaailyGame();
-		}
-	}
+        
+    }
 }
