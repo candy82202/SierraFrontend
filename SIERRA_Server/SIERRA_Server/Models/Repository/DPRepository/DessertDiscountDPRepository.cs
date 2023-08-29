@@ -463,7 +463,7 @@ namespace SIERRA_Server.Models.Repository.DPRepository
         //        }
         public async Task<List<DessertDiscountDTO>> GetTopSales()
         {
-            var dessertTopSalesList = new List<DessertDiscountDTO>();
+            var dessertDiscountList = new List<DessertDiscountDTO>();
 
             // 取得名為Sierra的連接字符串(用於連接到數據庫)
             var connectionString = _configuration.GetConnectionString("Sierra");
@@ -472,14 +472,32 @@ namespace SIERRA_Server.Models.Repository.DPRepository
             using (var connection = new SqlConnection(connectionString))
             {
                 // 從SQL 查詢裡面使用SQL Query的語法查找出資料
-                string sqlQuery = $@"
-                  SELECT TOP 3 D.DessertId, D.DessertName,s.UnitPrice  , Di.DessertImageName, SUM(Do.Quantity) AS TotalQuantity
-FROM DessertOrderDetails AS Do
-JOIN Desserts AS D ON D.DessertId = Do.DessertId
-Left join Specification as s on s.DessertId = Do.DessertId
-Left join DessertImages as Di on Di.DessertId = Do.DessertId
-GROUP BY D.DessertId, D.DessertName,s.UnitPrice , Di.DessertImageName
-ORDER BY TotalQuantity DESC;
+                string sqlQuery = $@"             
+SELECT Top 6
+    D.DessertId,
+    MAX(D.DessertName) AS DessertName,
+    MAX(S.Flavor) AS Flavor,
+    MAX(S.Size) AS Size,
+    MAX(S.UnitPrice) AS UnitPrice,
+    MAX(DGI.DiscountGroupId) AS DiscountGroupId,
+    SUM(DOD.Quantity) AS TotalQuantity,
+    MAX(DI.DessertImageName) AS DessertImageName,
+    MAX(S2.SpecificationId) AS SpecificationId
+FROM
+    DiscountGroupItems DGI
+INNER JOIN
+    Desserts D ON DGI.DessertId = D.DessertId
+LEFT JOIN
+    DessertImages DI ON DI.DessertId = D.DessertId
+LEFT JOIN
+    Specification S ON D.DessertId = S.DessertId
+LEFT JOIN
+    Specification S2 ON D.DessertId = S2.DessertId
+LEFT JOIN
+    DessertOrderDetails DOD ON D.DessertId = DOD.DessertId
+	WHERE DGI.DiscountGroupId <6
+GROUP BY D.DessertId, DGI.DiscountGroupId
+ORDER BY TotalQuantity DESC;;
 ";
 
                 await connection.OpenAsync();
@@ -490,28 +508,22 @@ ORDER BY TotalQuantity DESC;
 
                 foreach (var row in queryResult)
                 {
-                    //然後查詢的結果對應到DTO
                     var dessertDiscountDTO = new DessertDiscountDTO
                     {
                         DessertId = row.DessertId,
                         DessertName = row.DessertName,
                         UnitPrice = row.UnitPrice,
                         DessertImageName = row.DessertImageName,
-
-                        //Specification = new Specification
-                        //{
-                            SpecificationId = row.SpecificationId,
-                            //UnitPrice = row.UnitPrice,
-                            Flavor = row.Flavor,
-                            Size = row.Size
-                        //}
+                        DiscountGroupId = row.DiscountGroupId,
+                        Flavor = row.Flavor,
+                        Size = row.Size,
                     };
-                    //foreach迴圈找完相對應的結果，放在剛剛創建的DessertDiscountDTO，把這個物件內容加到dessertDiscountList裡面
-                    dessertTopSalesList.Add(dessertDiscountDTO);
+
+                    dessertDiscountList.Add(dessertDiscountDTO);
                 }
             }
             //返回剛剛迴圈找出的所有結果
-            return dessertTopSalesList;
+            return dessertDiscountList;
         }
     }
 }
