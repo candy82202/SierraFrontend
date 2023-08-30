@@ -58,6 +58,7 @@ Members 部分
 [V] - Dapper
 [V] - Modify ErrorMessage
 [V] - Modify "127.0.0.1" to "localhost" 
+[V] - Add password rules
 
 
 
