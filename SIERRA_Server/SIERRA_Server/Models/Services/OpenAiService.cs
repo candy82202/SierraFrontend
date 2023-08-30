@@ -15,15 +15,16 @@ namespace SIERRA_Server.Models.Services
         private readonly IDessertCategoryRepository _dessertCategoryRepository;
         private readonly IMemberCouponRepository _memberCouponRepo;
         private readonly IDessertDiscountRepository _dessertDiscountRepository;
+        private readonly IDessertCartRepository _dessertCartRepository;
 
-
-        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo, IDessertDiscountRepository dessertDiscountRepository)
+        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo, IDessertDiscountRepository dessertDiscountRepository , IDessertCartRepository dessertCartRepository)
         {
             _openAiConfig = optionsMonitor.CurrentValue;
             _repo = repo;
             _dessertCategoryRepository = dessertCategoryRepository;
             _memberCouponRepo = memberCouponRepo;
             _dessertDiscountRepository = dessertDiscountRepository;
+            _dessertCartRepository = dessertCartRepository;
         }
 
         public async Task<string> CheckProgramingLanguage(string language)
@@ -111,7 +112,7 @@ namespace SIERRA_Server.Models.Services
             var api = new OpenAI_API.OpenAIAPI(_openAiConfig.Key);
             var chat = api.Chat.CreateConversation();
             var hotdessert = await _repo.GetHotProductsAsync();
-
+          //  var cartPrice = await _dessertCartRepository.GetCartTotalPrice(username);
             //dessert category
             var dessertCategories = new Dictionary<string, Func<Task<List<DessertListDTO>>>>
     {
