@@ -111,5 +111,19 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             var cartDto = await GetOrCreateCart(username);
             return cartDto.DessertCartItems.Sum(item => item.SubTotal);
         }
+
+        public async Task<string> GetUsernameById(int? memberId)
+        {
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == memberId);
+
+            if (member != null)
+            {
+                return member.Username;
+            }
+            else
+            {
+                return null; // 或者返回一个默认值
+            }
+        }
     }
 }

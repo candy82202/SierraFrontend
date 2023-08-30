@@ -8,6 +8,6 @@ namespace SIERRA_Server.Models.Interfaces
         Task AddOrUpdateCartItem(string username, int dessertId, int specificationId, int quantity);
         Task UpdateCartItemQty(int id, int quantity);
         Task<int> GetCartTotalPrice(string username);
-       // Task<string> GetUsernameById(int memberId);
+        Task<string> GetUsernameById(int? memberId);
     }
 }

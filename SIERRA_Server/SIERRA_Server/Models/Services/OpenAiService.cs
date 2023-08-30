@@ -5,6 +5,7 @@ using SIERRA_Server.Models.DTOs.Desserts;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
 using System.Text;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace SIERRA_Server.Models.Services
 {
@@ -112,7 +113,8 @@ namespace SIERRA_Server.Models.Services
             var api = new OpenAI_API.OpenAIAPI(_openAiConfig.Key);
             var chat = api.Chat.CreateConversation();
             var hotdessert = await _repo.GetHotProductsAsync();
-          //  var cartPrice = await _dessertCartRepository.GetCartTotalPrice(username);
+            var username = await _dessertCartRepository.GetUsernameById(memberId);
+         
             //dessert category
             var dessertCategories = new Dictionary<string, Func<Task<List<DessertListDTO>>>>
     {
@@ -165,7 +167,7 @@ namespace SIERRA_Server.Models.Services
                     systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
                 }
                 else
-                {
+                {                   
                     var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
                     if (coupons.Any())
                     {
@@ -184,9 +186,32 @@ namespace SIERRA_Server.Models.Services
                         systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
 
                     }
+                  
                 }
             }
+            //member coupon
+            string[] shoppingCartKeyword = { "購物", "購物車", "購物金額" };
+            bool containsShoppingCartKeyword = shoppingCartKeyword.Any(keyword => text.Contains(keyword));
+            if (containsShoppingCartKeyword)
+            {
+                if (memberId == null)
+                {
+                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~無法使用購物車。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>。");
+                }
+                else
+                {
+                    var cartPrice = await _dessertCartRepository.GetCartTotalPrice(username);                  
+                    if (cartPrice != 0)
+                    {
+                        systemMessage.AppendLine($"不包含運費和折扣，您的購物車目前總金額：{cartPrice}");
+                    }
+                    else
+                    {
+                        systemMessage.AppendLine("您的購物車裡面還沒有甜點喔!歡迎添加選購");                       
 
+                    }
+                }
+            }
             //Flavor dessert discount
             string[] flavorKeywords = { "口味", "flavor", "味道", "味", "風味" };
             foreach (var keyword in flavorKeywords)
