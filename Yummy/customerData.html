@@ -326,7 +326,7 @@
               <div class="card mb-4">
                 <div class="card-body">
                   <div class="card-header bg-light mb-3">
-                    <h5 class="card-title">付款資料</h5>
+                    <h5 class="card-title">付款方式</h5>
                   </div>
                   <select
                     class="form-select"
@@ -441,12 +441,31 @@
                       ></label
                     >
                   </div>
-                  <button class="btn btn-success" @click="submitAllData">
+
+                  <button
+                    class="btn btn-primary ms-2"
+                    id="order-demo"
+                    type="button"
+                    @click="DemoOrder"
+                  >
+                    demo
+                  </button>
+                  <button class="btn btn-success ms-2" @click="submitAllData">
                     提交表單
                   </button>
                 </div>
               </div>
             </div>
+          </div>
+        </form>
+        <form
+          action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
+          method="post"
+          id="ecform"
+        >
+          <!-- <button  class="btn btn-primary" type="submit">前往綠界付款</button> -->
+          <div v-for="(value, key) in order">
+            <input type="hidden" :name="key" :value="value" />
           </div>
         </form>
       </div>
@@ -556,6 +575,7 @@
             note: "", // 訂單備註
             payMethod: "", // 付款方式
             hoverLabel: false,
+            order: {},
           };
         },
         methods: {
@@ -661,13 +681,21 @@
               // Notify the user of successful submission
               //alert("訂單建立成功");
               Swal.fire({
-                title: "<strong> 訂單建立成功</strong>",
+                title: "<strong>訂單建立成功</strong>",
+                text: "要前往綠界付款嗎?",
                 icon: "success",
-                html: "<a href=//localhost:5501/ecpay2.html>前往綠界付款</a> ",
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  document.getElementById("ecform").submit();
+                }
               });
+              this.callEcPayAPI();
+              // document.getElementById("ecform").submit();
             } catch (error) {
               console.error("Error during submission:", error);
               alert("Failed to submit data. Please try again.");
@@ -745,6 +773,35 @@
                 console.log(this.totalWithCoupon);
               });
           },
+          DemoOrder() {
+            this.recipientAddress = "台北市大安區復興南路一段390號";
+            this.deliveryMethod = "宅配";
+            this.recipient = "Danny";
+            this.recipientPhone = "0988699060";
+            this.note = "這是要送給朋友的生日禮物，請用禮物包裝並附上祝福卡。";
+            this.payMethod = "信用卡";
+          },
+          callEcPayAPI() {
+            const username = localStorage.getItem("username");
+            if (!username) {
+              console.error("Username not found in localStorage.");
+              return;
+            }
+            axios
+              .post(
+                "https://localhost:520/api/EcPay",
+                { username: username },
+                config
+              )
+
+              .then((response) => {
+                this.order = response.data;
+                console.log(this.order);
+              })
+              .catch((error) => {
+                console.error("API呼叫發生錯誤: ", error);
+              });
+          },
         },
         computed: {
           totalItemCount() {
@@ -766,6 +823,7 @@
           this.fetchCustomerData(); // 當頁面載入時取得userName資料
           this.getCartItems(); // 當頁面載入時從取出購物車數據
           this.GetUsingCoupon();
+          //this.callEcPayAPI();
         },
       });
       app.mount("#app");

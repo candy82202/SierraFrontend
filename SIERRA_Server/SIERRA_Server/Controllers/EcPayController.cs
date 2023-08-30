@@ -8,12 +8,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Net.Http;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace SIERRA_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
+  
     public class EcPayController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -24,19 +26,19 @@ namespace SIERRA_Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EcPayCheckOut([FromBody] UserRequest request)
+        public IActionResult EcPayCheckOut([FromBody] UserRequest request)
         {
             //根據提供的username查找最新一筆訂單資訊
-            var latestOrder = await _context.DessertOrders
+            var latestOrder =  _context.DessertOrders
                                             .Where(o => o.Username == request.Username)
                                             .OrderByDescending(o => o.CreateTime)
-                                            .FirstOrDefaultAsync();
+                                            .FirstOrDefault();
             var dessertOrderTotal = latestOrder.DessertOrderTotal;
 
         
 
             //根據最新訂單的Id獲取所有相應的DessertOrderDetails資料
-            var dessertDetails = await _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).ToListAsync();
+            var dessertDetails =  _context.DessertOrderDetails.Where(d => d.DessertOrderId == latestOrder.Id).ToList();
 
             if (!dessertDetails.Any())
             {
@@ -61,8 +63,8 @@ namespace SIERRA_Server.Controllers
                 {"TotalAmount",dessertOrderTotal.ToString() },
                 {"TradeDesc", "好吃的甜點不用華麗鋪張，做出具備撫慰人心效果的甜點"},
                 {"ItemName",combinedDessertNames },
-                {"ReturnURL", "https://8c53-2001-b400-e290-8861-387b-291-d5c6-fbc0.ngrok.io"},
-                { "ClientBackURL", "http://localhost:5501/Order.html"},
+                {"ReturnURL", "https://localhost:520/api/EcPay/EcpayReturn"},
+                { "OrderResultURL", "https://localhost:520/api/EcPay/EcpayReturn"},
                 { "EncryptType",  "1"},
                 {"ChoosePayment" ,"Credit"},
                 {"PaymentType", "aio"},
@@ -79,9 +81,37 @@ namespace SIERRA_Server.Controllers
             order.Add("CheckMacValue", checkMacValue);
             return Ok(order);
         }
+        
+        [HttpPost("EcpayReturn")]
+        
+        public IActionResult EcpayReturn([FromForm] EcpayReturnDto info)
+        {
+            if (info.RtnMsg == "Succeeded")
+            {
+                
 
 
 
+                return Redirect($"http://localhost:5501/Order.html");
+            }
+            else
+            {
+                return Ok(info.RtnMsg);
+            }
+
+        }
+    }
+
+    public class EcpayReturnDto
+    {
+        public string MerchantID { get; set; }
+        public string MerchantTradeNo { get; set; }
+        //public string StoreID { get; set; }
+        public int RtnCode { get; set; }
+        public string RtnMsg { get; set; }
+        public string TradeNo { get; set; }
+        public int TradeAmt { get; set; }
+        public string PaymentDate { get; set; }
     }
 
     public class UserRequest
