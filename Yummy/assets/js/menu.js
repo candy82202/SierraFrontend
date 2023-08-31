@@ -90,7 +90,7 @@ const menu = {
 </div>
 </div>
 <div class="d-flex justify-content-center align-items-center mt-3">
-<div class="index-daily-game me-5" data-bs-toggle="modal" data-bs-target="#gachapon">
+<div class="index-daily-game me-5" data-bs-toggle="modal" data-bs-target="#gachapon" id="checkEggLogin">
 <img src="assets/img/扭蛋.png" alt="" class="index-daily-game-img">
   <h4 class="index-daily-game-text">
     每日扭蛋
@@ -98,7 +98,7 @@ const menu = {
 </div>
 
   <div class="index-weekly-game">
-  <a href="psychometricTest.html">
+  <a href="psychometricTest.html" @click="checkLogin" id="checkLogin">
   <img src="assets/img/去背甜點.png" alt="" class="index-weekly-game-img">
       <h4 class="index-weekly-game-text">
         心理測驗
@@ -354,13 +354,28 @@ const menu = {
             <div class="cart__product"  v-for="item in cartItems" :key="item.id">
             <article class="js-cart-product">
             <div class="d-flex">
-            <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+            <img class="menu-img img-fluid" src="/assets/img/${
+              item.dessertImage
+            }" style="
             height: 70px; width: 70px;   margin-right:15px "/>
-             <h1 class="product_name ">${item.dessertName}</h1> </div>
+            <h1 class="product_name ">${item.dessertName}</h1>
+            ${
+              item.flavor !== null
+                ? `<h1 class="product_name"> -${item.flavor} </h1>`
+                : ""
+            }
+            ${
+              item.size !== null
+                ? `<h1 class="product_name">-${item.size}</h1>`
+                : ""
+            }
+            </div>
               <div class="cart__product__qty">
               數量: <span class="qty">${item.count}</span> * NT
               <span class="dessertPrice">${item.price}</span>         
-                <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+                <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${
+                  item.dessertCartItemId
+                })" >
                   刪除
                 </a>
                </div>
@@ -456,6 +471,13 @@ const menu = {
         `,
       });
     },
+    // checkLogin() {
+    //   const isLink = document.querySelector("#checkLogin"); // 選到 a 標籤
+
+    //   isLink.preventDefault();
+    //   alert("work");
+    //   this.GetToken();
+    // },
   },
   mounted: function () {
     this.refreshData();

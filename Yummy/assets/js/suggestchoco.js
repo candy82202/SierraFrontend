@@ -133,13 +133,27 @@ const suggestChoco = {
         <div class="cart__product"  v-for="item in cartItems" :key="item.id">
         <article class="js-cart-product">
         <div class="d-flex">
-        <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+        <img class="menu-img img-fluid" src="/assets/img/${
+          item.dessertImage
+        }" style="
         height: 70px; width: 70px;   margin-right:15px "/>
-         <h1 class="product_name ">${item.dessertName}</h1> </div>
+        <h1 class="product_name ">${item.dessertName}</h1>
+        ${
+          item.flavor !== null
+            ? `<h1 class="product_name"> -${item.flavor} </h1>`
+            : ""
+        }
+        ${
+          item.size !== null
+            ? `<h1 class="product_name">-${item.size}</h1>`
+            : ""
+        }
           <div class="cart__product__qty">
           數量: <span class="qty">${item.count}</span> * NT
           <span class="dessertPrice">${item.price}</span>         
-            <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+            <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${
+              item.dessertCartItemId
+            })" >
               刪除
             </a>
            </div>

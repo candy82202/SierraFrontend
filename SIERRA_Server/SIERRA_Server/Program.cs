@@ -64,6 +64,7 @@ builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<IDessertRepository, DessertEFRepository>();
 builder.Services.AddScoped<IDessertCategoryRepository, DessertCategoryEFRepository>();
 builder.Services.AddScoped<IDessertDiscountRepository, DessertDiscountDPRepository>();
+builder.Services.AddScoped<IDessertCartRepository, DessertCartEFRepository>();
 builder.Services.AddScoped<ILessonRepository,LessonCategoryEFRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

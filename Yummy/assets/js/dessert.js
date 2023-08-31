@@ -71,7 +71,7 @@ const desserts = {
                         <meta itemprop="priceCurrency" content="USD" />
                         <link itemprop="availability"/>
                         <div class="price-shipping">
-                          <div class="price" id="price-preview" quickbeam="price" quickbeam-price="800">
+                          <div class="price" id="price-preview">
                         $  {{ des.unitPrice }}
                           <div style="display:none">  {{  selectedUnitPrice}}</div>                         
                           </div>
@@ -80,7 +80,7 @@ const desserts = {
                       <form>            
                       <label class="form-label" for="productSelect">規格 </label>
                       <select class="form-select" name="desserts" v-model="selectedUnitPrice"  >
-                      <option v-for="(spec, index) in des.specifications" :key="spec.specificationId" :value="spec.specificationId">
+                      <option v-for="(spec, index) in des.specifications" :key="spec.specificationId" :value="spec.specificationId"   v-bind:selected="index === 0">
                       {{ spec.flavor }} {{ spec.size }}
                       <span v-if="des.discountedPrice == 0"> $ {{ spec.unitPrice }}</span>
                       <span v-else class="text-danger">
@@ -324,19 +324,6 @@ const desserts = {
         imageAlt: "Custom image",
       });
     },
-    // getDessertprodUrl(dessertId) {
-    //   return dessertLinkURL + "dessertId";
-    // },
-    // toDessertProducts(dessertId) {
-    //   window.location.href = this.getDessertprodUrl(dessertId);
-    // },
-    // getDessertUrl(dessertId) {
-    //   return variables.API_URL + "Desserts/ChocoDiscountGroups";
-    // },
-    // goToDessertDetails(dessertId) {
-    //   window.location.href = this.getDessertUrl(dessertId);
-    // },
-
     async addProduct(des) {
       // cartOpen如果是false那就打開購物車
       this.GetToken();
@@ -408,13 +395,28 @@ const desserts = {
             <div class="cart__product"  v-for="item in cartItems" :key="item.id">
             <article class="js-cart-product">
             <div class="d-flex">
-            <img class="menu-img img-fluid" src="/assets/img/${item.dessertImage}" style="
+            <img class="menu-img img-fluid" src="/assets/img/${
+              item.dessertImage
+            }" style="
             height: 70px; width: 70px;  margin-right:15px  "/>
-             <h1 class="product_name ">${item.dessertName}</h1> </div>
+            <h1 class="product_name ">${item.dessertName}</h1>
+            ${
+              item.flavor !== null
+                ? `<h1 class="product_name"> -${item.flavor} </h1>`
+                : ""
+            }
+            ${
+              item.size !== null
+                ? `<h1 class="product_name">-${item.size}</h1>`
+                : ""
+            }
+            </div>
               <div class="cart__product__qty">
               數量: <span class="qty">${item.count}</span> * NT
               <span class="dessertPrice">${item.price}</span>         
-                <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${item.dessertCartItemId})" >
+                <a class="js-remove-product" href="#" title="Delete product" onclick="handleDelete(${
+                  item.dessertCartItemId
+                })" >
                   刪除
                 </a>
                </div>

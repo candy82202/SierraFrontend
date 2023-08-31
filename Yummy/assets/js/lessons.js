@@ -93,8 +93,9 @@ const lessons = {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
+        hour12:false,
       };
-      return new Date(value).toLocaleDateString("en-US", options);
+      return new Date(value).toLocaleDateString("zh-TW", options);
     },
     async getCartItems() {
       const username = localStorage.getItem("username"); // Replace this with the actual username
