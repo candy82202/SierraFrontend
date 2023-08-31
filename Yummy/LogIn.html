@@ -35,64 +35,52 @@
   <style></style>
 </head>
 
-  <body>
-    <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center">
-      <div class="container d-flex align-items-center justify-content-between">
-        <a
-          href="index.html"
-          class="logo d-flex align-items-center me-auto me-lg-0"
-        >
-          <img src="assets/img/logoNew.png" alt="" />
-          <h1>SIERRA</h1>
-        </a>
-        <nav id="navbar" class="navbar">
-          <ul>
-            <li><a href="index.html">首頁</a></li>
-            <li><a href="#about">關於我們</a></li>
-            <li class="dropdown">
-              <a href="desserts.html#/"
-                ><span>甜點</span>
-                <i class="bi bi-chevron-down dropdown-indicator"></i
-              ></a>
-              <ul>
-                <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
-                <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
-                <li><a href="desserts.html#/snack">點心</a></li>
-                <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
-                <li><a href="desserts.html#/presents">禮盒</a></li>
-              </ul>
-            </li>
-            <li><a href="Lessons.html">課程</a></li>
-            <li><a href="Teacher.html">師資</a></li>
-            <li><a href="#promotion">近期活動</a></li>
-            <li class="dropdown">
-              <a href="#"
-                ><span>常見問題</span>
-                <i class="bi bi-chevron-down dropdown-indicator"></i
-              ></a>
-              <ul>
-                <li><a href="rule.html">常見問題</a></li>
-              </ul>
-            </li>
-            <li><a href="#contact">聯絡我們</a></li>
-          </ul>
-        </nav>
-        <!-- .navbar -->
-        <div class="d-flex" style="justify-content: space-between">
-          <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
-          <div class="shoppingCartDiv me-3">
-            <a
-              class="js-toggle-cart"
-              href="#"
-              title="View cart"
-              @click="getCartItems()"
-            >
-              <span class="shoppingCart badge badge-pill badge-warning"></span>
-              <i class="bi bi-bag-fill" style="font-size: 35px"></i>
-            </a>
-          </div>
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+        <img src="assets/img/logoNew.png" alt="" />
+        <h1>SIERRA</h1>
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="index.html">首頁</a></li>
+          <li><a href="#about">關於我們</a></li>
+          <li class="dropdown">
+            <a href="desserts.html#/"><span>甜點</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="desserts.html#/moldCake">整模蛋糕</a></li>
+              <li><a href="desserts.html#/roomTemperature">常溫蛋糕</a></li>
+              <li><a href="desserts.html#/snack">點心</a></li>
+              <li><a href="desserts.html#/longCake">長條蛋糕</a></li>
+              <li><a href="desserts.html#/presents">禮盒</a></li>
+            </ul>
+          </li>
+          <li><a href="Lessons.html">課程</a></li>
+          <li><a href="Teacher.html">師資</a></li>
+          <li><a href="#promotion">近期活動</a></li>
+          <li class="dropdown">
+            <a href="#"><span>常見問題</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="rule.html">常見問題</a></li>
+            </ul>
+          </li>
+          <li><a href="#contact">聯絡我們</a></li>
+        </ul>
+      </nav>
+      <!-- .navbar -->
+      <div class="d-flex" style="justify-content: space-between">
+        <!-- <a class="btn-book-a-table" href="lessonBook.html">預定課程</a> -->
+        <div class="shoppingCartDiv me-3">
+          <a class="js-toggle-cart" href="#" title="View cart" @click="getCartItems()">
+            <span class="shoppingCart badge badge-pill badge-warning"></span>
+            <i class="bi bi-bag-fill" style="font-size: 35px"></i>
+          </a>
         </div>
+      </div>
 
       <!-- <div class="shoppingCartDiv">
             <a href="#" title="View cart" @click="getCartItems()">
@@ -194,6 +182,7 @@
                 <span>
                   忘記密碼了?<a href="#" class="forgotPassword-link">重設</a>
                 </span>
+                <button class="btn btn-primary" id="login-demo" type="button">demo</button>
                 <span>
                   還不是會員?<a href="#" class="register-link">註冊</a>
                 </span>
@@ -263,8 +252,8 @@
           <div>
             <h4>地址</h4>
             <p>
-              A108 Adam Street <br />
-              New York, NY 535022 - US<br />
+              桃園市 中壢區 <br />
+              新生路二段421號<br />
             </p>
           </div>
         </div>
@@ -274,8 +263,8 @@
           <div>
             <h4>預定方式</h4>
             <p>
-              <strong>Phone:</strong> +1 5589 55488 55<br />
-              <strong>Email:</strong> info@example.com<br />
+              <strong>電話:</strong> 03 426 0163<br />
+              <strong>Email:</strong> fuen283@ispan.com<br />
             </p>
           </div>
         </div>
@@ -286,13 +275,13 @@
             <h4>營業時間</h4>
             <p>
               <strong>星期一到六: 11AM</strong> - 23PM<br />
-              Sunday: Closed
+              星期日: 公休
             </p>
           </div>
         </div>
 
         <div class="col-lg-3 col-md-6 footer-links">
-          <h4>Follow Us</h4>
+          <h4>追蹤我們</h4>
           <div class="social-links d-flex">
             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -681,13 +670,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.21/dist/sweetalert2.all.min.js
     document.querySelector("#register-demo").addEventListener("click", () => {
       document.querySelector("#register-username").value = "una";
       document.querySelector("#register-email").value = "ispanfuen28team3@gmail.com";
-      document.querySelector("#register-password").value = "123";
-      document.querySelector("#register-cofirmpassword").value = "123";
+      document.querySelector("#register-password").value = "aaaa1234";
+      document.querySelector("#register-cofirmpassword").value = "aaaa1234";
     })
 
     document.querySelector("#forgot-demo").addEventListener("click", () => {
       document.querySelector("#forgot-username").value = "una";
       document.querySelector("#forgot-email").value = "ispanfuen28team3@gmail.com";
+    })
+
+    document.querySelector("#login-demo").addEventListener("click", () => {
+      document.querySelector("#login-username").value = "una";
+      document.querySelector("#login-password").value = "aaaa1234";
     })
   </script>
 </body>
