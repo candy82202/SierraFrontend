@@ -153,7 +153,7 @@ namespace SIERRA_Server.Models.Services
             string[] cateKeywords = { "類別", "類", "category", "種類" };
             if (cateKeywords.Any(cateKeywords => text.Contains(cateKeywords)))
             {
-                systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
+                systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問有什麼蛋糕類別，你只回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
 
             }
 
@@ -164,17 +164,17 @@ namespace SIERRA_Server.Models.Services
             {
                 if (memberId == null)
                 {
-                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
+                    systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問優惠券，你只回答:您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔!");
                 }
                 else
                 {                   
                     var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
                     if (coupons.Any())
                     {
-                        systemMessage.AppendLine("您可以使用的優惠券有：");
+                        systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問優惠券，你只回答:您可以使用的優惠券有：");
                         foreach (var coupon in coupons)
                         {
-                            systemMessage.AppendLine($"{coupon.CouponName}");
+                            systemMessage.AppendLine($"{coupon.CouponName}。");
                         }
 
                         systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
@@ -182,8 +182,8 @@ namespace SIERRA_Server.Models.Services
                     }
                     else
                     {
-                        systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
-                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+                        systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問優惠券，你只回答:您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔!" +
+                           "您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
 
                     }
                   
@@ -196,18 +196,18 @@ namespace SIERRA_Server.Models.Services
             {
                 if (memberId == null)
                 {
-                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~無法使用購物車。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>。");
+                    systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問購物車，你只回答:您還沒有加入或還沒登入會員喔~無法使用購物車。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>。");
                 }
                 else
                 {
                     var cartPrice = await _dessertCartRepository.GetCartTotalPrice(username);                  
                     if (cartPrice != 0)
                     {
-                        systemMessage.AppendLine($"不包含運費和折扣，您的購物車目前總金額：{cartPrice}");
+                        systemMessage.AppendLine($"你是一個我們甜點店做專業客戶服務的人員，當有人詢問購物車，你只回答:不包含運費和折扣，您的購物車目前總金額：{cartPrice}");
                     }
                     else
                     {
-                        systemMessage.AppendLine("您的購物車裡面還沒有甜點喔!歡迎添加選購");                       
+                        systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問購物車，你只回答:您的購物車裡面還沒有甜點喔!歡迎添加選購");                       
 
                     }
                 }

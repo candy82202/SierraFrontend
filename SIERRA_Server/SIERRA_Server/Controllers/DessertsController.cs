@@ -167,48 +167,100 @@ namespace SIERRA_Server.Controllers
             return Ok(hotProducts);
         }
         // GET: api/Desserts/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Dessert>> GetDessert(int id)
+        //{
+        //    var dvm = new List<DessertDTO>();
+
+        //    var desserts = _context.Desserts
+        //        .Include(d => d.Category)
+        //        .Include(d => d.DessertImages)
+        //        .Include(d => d.Specifications)
+        //        .Include(d => d.Discounts)
+        //        .Where(d => d.DessertId == id)
+        //        .ToList();
+
+        //    foreach (var dessert in desserts)
+        //    {
+        //        decimal dessertDiscountPrice = dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+        //     ? dessert.Discounts.First().DiscountPrice
+        //     : 0;
+
+        //        DessertDTO item = new DessertDTO(dessertDiscountPrice, dessert.Specifications.First().UnitPrice)
+        //        {
+        //            DessertId = dessert.DessertId,
+        //            DessertName = dessert.DessertName,
+        //            CategoryName = dessert.Category.CategoryName,
+        //            UnitPrice = dessert.Specifications.First().UnitPrice,
+        //            Description = dessert.Description,
+        //            DessertImages = dessert.DessertImages?.ToList(),
+        //            Specifications = dessert.Specifications.Select(spec =>
+        //                new SpecificationDTO(dessertDiscountPrice, dessert.Specifications.UnitPrice)
+        //                {
+        //                    SpecificationId = spec.SpecificationId,
+        //                    UnitPrice = spec.UnitPrice,
+        //                    Size = spec.Size,
+        //                    Flavor = spec.Flavor,
+
+        //                    // Include other properties here
+        //                }
+        //            ).ToList()
+        //        };
+        //        dvm.Add(item);
+        //    }
+
+        //    return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+        //}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dessert>> GetDessert(int id)
+        public async Task<ActionResult<List<DessertDTO>>> GetDessert(int id)
         {
             var dvm = new List<DessertDTO>();
-
-            var desserts = _context.Desserts
+            var desserts = await _context.Desserts
                 .Include(d => d.Category)
                 .Include(d => d.DessertImages)
                 .Include(d => d.Specifications)
                 .Include(d => d.Discounts)
                 .Where(d => d.DessertId == id)
-                .ToList();
+                .ToListAsync();
 
             foreach (var dessert in desserts)
             {
                 decimal dessertDiscountPrice = dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
-             ? dessert.Discounts.First().DiscountPrice
-             : 0;
+                    ? dessert.Discounts.First().DiscountPrice
+                    : 0;
 
-                DessertDTO item = new DessertDTO(dessertDiscountPrice, dessert.Specifications.First().UnitPrice)
+                var specifications = dessert.Specifications.Select(spec =>
+                {
+                    // Calculate specification discount price based on dessert discount
+                    var specificationDiscountPrice = spec.UnitPrice * (dessertDiscountPrice / 100);
+
+                    var specification = new SpecificationDTO(specificationDiscountPrice, spec.UnitPrice)
+                    {
+                        SpecificationId = spec.SpecificationId,
+                        UnitPrice = spec.UnitPrice,
+                        Size = spec.Size,
+                        Flavor = spec.Flavor
+
+                    };
+
+                    return specification;
+                }).ToList();
+
+                var item = new DessertDTO(dessertDiscountPrice, specifications.First().UnitPrice)
                 {
                     DessertId = dessert.DessertId,
                     DessertName = dessert.DessertName,
                     CategoryName = dessert.Category.CategoryName,
-                    UnitPrice = dessert.Specifications.First().UnitPrice,
+                    UnitPrice = specifications.First().UnitPrice,
                     Description = dessert.Description,
                     DessertImages = dessert.DessertImages?.ToList(),
-                    Specifications = dessert.Specifications.Select(spec =>
-                        new SpecificationDTO
-                        {
-                            SpecificationId = spec.SpecificationId,
-                            UnitPrice = spec.UnitPrice,
-                            Size = spec.Size,
-                            Flavor = spec.Flavor,
-                            // Include other properties here
-                        }
-                    ).ToList()
+                    Specifications = specifications
                 };
+
                 dvm.Add(item);
             }
 
-            return Ok(dvm); // 將結果轉為 JSON 格式並回傳
+            return Ok(dvm);
         }
 
 

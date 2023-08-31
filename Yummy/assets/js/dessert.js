@@ -85,7 +85,7 @@ const desserts = {
                       <span v-if="des.discountedPrice == 0"> $ {{ spec.unitPrice }}</span>
                       <span v-else class="text-danger">
                         <span class="text-dark text-decoration-line-through">原價 $ {{ spec.unitPrice }}</span>
-                       特價 $ {{ des.discountedPrice }}
+                       特價 $ {{ spec.dessertDiscountPrice }}
                       </span>
                     </option>
                      
@@ -219,10 +219,7 @@ const desserts = {
                   </div>
                     </div>
                     <div class="more-products" id="more-products-wrap">
-                      <span id="more-products" data-rows_per_page="1"
-                        >
-                        <a href="desserts.html#/choco">更多商品</a></span
-                      >
+                     
                     </div>
                   </div>
                 </aside>
