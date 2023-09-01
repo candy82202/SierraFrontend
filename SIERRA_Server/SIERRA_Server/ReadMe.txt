@@ -62,7 +62,11 @@ Members 部分
 [V] - Modify "127.0.0.1" to "localhost" 
 [V] - Add password rules
 [V] - Modify GoogleRegister
+<<<<<<< HEAD
 [V] - Test git reset --mixed
+=======
+[V] - Test git reset 
+>>>>>>> 91a9326aa90a166d0c3cc97bb2e341cf9868ceac
 
 
 
