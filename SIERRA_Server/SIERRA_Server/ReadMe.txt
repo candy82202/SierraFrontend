@@ -62,7 +62,7 @@ Members 部分
 [V] - Modify "127.0.0.1" to "localhost" 
 [V] - Add password rules
 [V] - Modify GoogleRegister
-
+[V] - Test git reset --mixed
 
 
 
