@@ -81,6 +81,9 @@ namespace SIERRA_Server.Models.Services
 
 			// 因在GoogleLogin()時就已經檢查過email了，故不再檢查
 
+			// 判斷密碼是否符合:長度為8~16，且必須包含至少1個英文字母和1個數字
+			if (!Regex.IsMatch(dto.Password, @"^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$")) return Result.Fail("密碼長度為8~16，且須含英文字母和數字");
+
 			// 填入剩餘欄位的值
 			var salt = _hashUtility.GetSalt();
 			dto.EncryptedPassword = _hashUtility.ToSHA256(dto.Password, salt);
