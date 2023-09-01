@@ -41,6 +41,8 @@ Desserts 部分
 	- Complete sentences
 	- Chat (answer question like customer service)
 	- Add Dessert , Categories ,DessertDiscountGroup , MemberCoupon
+
+[V] - Unit Test
 =========================================================
 Members 部分
 [V] - Login(with JWT Authentication & thress-layer Architecture)
