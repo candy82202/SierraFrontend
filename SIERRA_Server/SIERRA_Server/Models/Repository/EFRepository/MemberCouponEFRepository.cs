@@ -6,6 +6,7 @@ using SIERRA_Server.Models.Exts;
 using SIERRA_Server.Models.Infra.Promotions;
 using SIERRA_Server.Models.Interfaces;
 using System.Linq;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace SIERRA_Server.Models.Repository.EFRepository
 {
@@ -303,7 +304,7 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             }
         }
 
-		public void LetMembersCanPlayDaailyGame()
+		public void LetMembersCanPlayDailyGame()
 		{
             var members = _db.Members;
             foreach(var member in members)
@@ -312,5 +313,37 @@ namespace SIERRA_Server.Models.Repository.EFRepository
             }
             _db.SaveChanges();
 		}
-	}
+
+        public void LetMembersCanPlayWeeklyGame()
+        {
+            var members = _db.Members;
+            foreach (var member in members)
+            {
+                member.WeeklyGamePlayed = false;
+            }
+            _db.SaveChanges();
+        }
+
+        public IEnumerable<Member> GetBirthdayMemberInThisMonth()
+        {
+            var month = DateTime.Now.Month;
+            var members = _db.Members.Where(m=>m.Birth!=null).Where(m=>m.Birth.Value.Month==month);
+            return members;
+        }
+
+        public Coupon GetBirthdayCoupon()
+        {
+            var coupon = _db.CouponSettings.Include(s=>s.Coupon).Where(s=>s.CouponType==1).First().Coupon; 
+            return coupon;
+        }
+
+        public void AddBirthdayCoupons(IEnumerable<MemberCoupon> memberCoupons)
+        {
+            foreach(var memberCoupon in memberCoupons)
+            {
+                _db.MemberCoupons.Add(memberCoupon);
+            }
+            _db.SaveChanges();
+        }
+    }
 }

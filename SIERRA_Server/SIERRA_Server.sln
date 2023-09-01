@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIERRA_Server", "SIERRA_Server\SIERRA_Server.csproj", "{BA06CA07-9B67-44A4-B5B4-3881A16353F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIERRA_Server.Test", "SIERRA_Server.Test\SIERRA_Server.Test.csproj", "{C8E17661-0E7C-4094-8F98-57AF227BCF74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIERRA_Server.Tests", "SIERRA_Server.Tests\SIERRA_Server.Tests.csproj", "{58F81C26-C16B-4FA7-9773-0A5A59F9BA1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{BA06CA07-9B67-44A4-B5B4-3881A16353F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA06CA07-9B67-44A4-B5B4-3881A16353F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA06CA07-9B67-44A4-B5B4-3881A16353F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8E17661-0E7C-4094-8F98-57AF227BCF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8E17661-0E7C-4094-8F98-57AF227BCF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8E17661-0E7C-4094-8F98-57AF227BCF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8E17661-0E7C-4094-8F98-57AF227BCF74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F81C26-C16B-4FA7-9773-0A5A59F9BA1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F81C26-C16B-4FA7-9773-0A5A59F9BA1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F81C26-C16B-4FA7-9773-0A5A59F9BA1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F81C26-C16B-4FA7-9773-0A5A59F9BA1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
