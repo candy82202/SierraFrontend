@@ -5,6 +5,7 @@ using SIERRA_Server.Models.DTOs.Desserts;
 using SIERRA_Server.Models.EFModels;
 using SIERRA_Server.Models.Interfaces;
 using System.Text;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace SIERRA_Server.Models.Services
 {
@@ -15,15 +16,16 @@ namespace SIERRA_Server.Models.Services
         private readonly IDessertCategoryRepository _dessertCategoryRepository;
         private readonly IMemberCouponRepository _memberCouponRepo;
         private readonly IDessertDiscountRepository _dessertDiscountRepository;
+        private readonly IDessertCartRepository _dessertCartRepository;
 
-
-        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo, IDessertDiscountRepository dessertDiscountRepository)
+        public OpenAiService(IOptionsMonitor<OpenAiConfig> optionsMonitor, IDessertRepository repo, IDessertCategoryRepository dessertCategoryRepository, IMemberCouponRepository memberCouponRepo, IDessertDiscountRepository dessertDiscountRepository , IDessertCartRepository dessertCartRepository)
         {
             _openAiConfig = optionsMonitor.CurrentValue;
             _repo = repo;
             _dessertCategoryRepository = dessertCategoryRepository;
             _memberCouponRepo = memberCouponRepo;
             _dessertDiscountRepository = dessertDiscountRepository;
+            _dessertCartRepository = dessertCartRepository;
         }
 
         public async Task<string> CheckProgramingLanguage(string language)
@@ -111,7 +113,8 @@ namespace SIERRA_Server.Models.Services
             var api = new OpenAI_API.OpenAIAPI(_openAiConfig.Key);
             var chat = api.Chat.CreateConversation();
             var hotdessert = await _repo.GetHotProductsAsync();
-
+            var username = await _dessertCartRepository.GetUsernameById(memberId);
+         
             //dessert category
             var dessertCategories = new Dictionary<string, Func<Task<List<DessertListDTO>>>>
     {
@@ -150,7 +153,7 @@ namespace SIERRA_Server.Models.Services
             string[] cateKeywords = { "類別", "類", "category", "種類" };
             if (cateKeywords.Any(cateKeywords => text.Contains(cateKeywords)))
             {
-                systemMessage.AppendLine("如果有人詢問你有什麼蛋糕類別，請回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
+                systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問有什麼蛋糕類別，你只回答\"整模蛋糕\",\"常溫蛋糕\",\"長條蛋糕\",\"點心\",\"禮盒\"。");
 
             }
 
@@ -161,17 +164,17 @@ namespace SIERRA_Server.Models.Services
             {
                 if (memberId == null)
                 {
-                    systemMessage.AppendLine("您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
+                    systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問優惠券，你只回答:您還沒有加入或還沒登入會員喔~沒有可以使用的優惠券。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>，或是登入領取優惠券，當然參加每日扭蛋抽獎活動也可以喔!");
                 }
                 else
-                {
+                {                   
                     var coupons = await _memberCouponRepo.GetUsableCoupon(memberId);
                     if (coupons.Any())
                     {
-                        systemMessage.AppendLine("您可以使用的優惠券有：");
+                        systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問優惠券，你只回答:您可以使用的優惠券有：");
                         foreach (var coupon in coupons)
                         {
-                            systemMessage.AppendLine($"{coupon.CouponName}");
+                            systemMessage.AppendLine($"{coupon.CouponName}。");
                         }
 
                         systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
@@ -179,13 +182,36 @@ namespace SIERRA_Server.Models.Services
                     }
                     else
                     {
-                        systemMessage.AppendLine("您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔");
-                        systemMessage.AppendLine("您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+                        systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問優惠券，你只回答:您沒有可以使用的優惠券，歡迎可以領取優惠券，當然參加每日扭蛋抽獎活動也可以喔!" +
+                           "您可以從這裡查詢<a href='http://localhost:5501/MemberCenter.html'>會員中心</a>以了解更多詳情。");
+
+                    }
+                  
+                }
+            }
+            //member coupon
+            string[] shoppingCartKeyword = { "購物", "購物車", "購物金額" };
+            bool containsShoppingCartKeyword = shoppingCartKeyword.Any(keyword => text.Contains(keyword));
+            if (containsShoppingCartKeyword)
+            {
+                if (memberId == null)
+                {
+                    systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問購物車，你只回答:您還沒有加入或還沒登入會員喔~無法使用購物車。歡迎可以註冊會員，點擊這個網址連結<a href='http://localhost:5501/LogIn.html'>登入/註冊</a>。");
+                }
+                else
+                {
+                    var cartPrice = await _dessertCartRepository.GetCartTotalPrice(username);                  
+                    if (cartPrice != 0)
+                    {
+                        systemMessage.AppendLine($"你是一個我們甜點店做專業客戶服務的人員，當有人詢問購物車，你只回答:不包含運費和折扣，您的購物車目前總金額：{cartPrice}");
+                    }
+                    else
+                    {
+                        systemMessage.AppendLine("你是一個我們甜點店做專業客戶服務的人員，當有人詢問購物車，你只回答:您的購物車裡面還沒有甜點喔!歡迎添加選購");                       
 
                     }
                 }
             }
-
             //Flavor dessert discount
             string[] flavorKeywords = { "口味", "flavor", "味道", "味", "風味" };
             foreach (var keyword in flavorKeywords)

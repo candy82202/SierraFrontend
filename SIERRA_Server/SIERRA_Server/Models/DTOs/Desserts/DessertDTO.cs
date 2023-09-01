@@ -36,7 +36,20 @@ namespace SIERRA_Server.Models.DTOs.Desserts
         public int SpecificationId { get; set; }
         public string Size { get; set; }
         public string Flavor { get; set; }
-        public int? UnitPrice { get; set; }
-        // Include other properties here
+        public int UnitPrice { get; set; }
+        public decimal DiscountedPrice { get; }
+        public decimal DessertDiscountPrice { get; }  // Define as private set
+        public SpecificationDTO(decimal dessertDiscountPrice, int unitPrice)
+        {
+            DessertDiscountPrice = dessertDiscountPrice;
+            DiscountedPrice = CalculateDiscountedPrice(unitPrice, dessertDiscountPrice);
+        }
+
+        private decimal CalculateDiscountedPrice(int unitPrice, decimal dessertDiscountPrice)
+        {
+            return dessertDiscountPrice != 0
+                ? Math.Round(unitPrice * (dessertDiscountPrice / 100), 0, MidpointRounding.AwayFromZero)
+                : UnitPrice;
+        }
     }
 }

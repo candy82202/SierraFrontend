@@ -125,7 +125,11 @@
                     :src="PhotoPath + item.dessertImageName"
                     v-bind:alt="item.dessertName"
                   />
-                  <div class="name">{{ item.dessertName }}</div>
+                  <div class="name d-flex">
+                    {{ item.dessertName }}
+                    <p v-if="item.flavor !== null">-{{ item.flavor }}</p>
+                    <p v-if="item.size !== null">-{{ item.size }}</p>
+                  </div>
                 </div>
                 <div class="price"><span>$</span>{{ item.unitPrice }}</div>
                 <div class="name">{{ item.quantity }}</div>
@@ -729,7 +733,7 @@
             // Replace this with the actual username
             try {
               const response = await axios.get(
-                `${variables.API_URL}DessertCarts/GetCart?username=${username}`,
+                `${variables.API_URL}DessertCartPrice/GetCart?username=${username}`,
                 config
               );
               console.log(response.data);
@@ -743,7 +747,7 @@
             // Replace this with the actual username
             try {
               const response = await axios.get(
-                `${variables.API_URL}DessertCarts/GetCart?username=${username}`,
+                `${variables.API_URL}DessertCartPrice/GetCart?username=${username}`,
                 config
               );
               console.log(response.data);
@@ -753,20 +757,52 @@
               console.error("Error getting cart items:", error);
             }
           },
-
+          async getCartItems() {
+            // Replace this with the actual username
+            try {
+              const response = await axios.get(
+                `${variables.API_URL}DessertCartPrice/GetCart?username=${username}`,
+                config
+              );
+              console.log(response.data);
+              this.cartDTO = response.data;
+              this.total = response.data.total;
+            } catch (error) {
+              console.error("Error getting cart items:", error);
+            }
+          },
           async UpdateCart(item, newQty) {
             const id = item.id;
-            const apiUrl = `${variables.API_URL}DessertCarts/UpdateCart`;
-            const params = new URLSearchParams({
+            const apiUrl = `${variables.API_URL}DessertCartPrice/UpdateCart`;
+            const data = {
               id: id,
               quantity: newQty,
-            });
-            await axios.put(apiUrl + "?" + params.toString(), null, config);
-            console.log("Cart item update successfully!");
-            // 更新本地的购物车项目数量
-            item.quantity += newQty;
-            this.getTotal();
+            };
+
+            try {
+              const response = await axios.put(apiUrl, data, config);
+              console.log("Cart item update successfully!");
+
+              // 更新本地的购物车项目数量
+              item.quantity += newQty;
+              this.getTotal();
+            } catch (error) {
+              console.error("Error updating cart item:", error);
+            }
           },
+          // async UpdateCart(item, newQty) {
+          //   const id = item.id;
+          //   const apiUrl = `${variables.API_URL}DessertCarts/UpdateCart`;
+          //   const params = new URLSearchParams({
+          //     id: id,
+          //     quantity: newQty,
+          //   });
+          //   await axios.put(apiUrl + "?" + params.toString(), null, config);
+          //   console.log("Cart item update successfully!");
+          //   // 更新本地的购物车项目数量
+          //   item.quantity += newQty;
+          //   this.getTotal();
+          // },
           async GetCouponCanUse() {
             await axios
               .get(

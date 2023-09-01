@@ -46,6 +46,8 @@ namespace SIERRA_Server.Controllers
             {
                 DessertCartItemId = dci.Id,
                 DessertName = dci.Dessert.DessertName,
+                Flavor = dci.Specification.Flavor,
+                Size = dci.Specification.Size,
                 DessertImage = dci.Dessert.DessertImages?.OrderBy(di => di.ImageId).Select(di => di.DessertImageName).First(),
                 Price = (int)(dci.Dessert.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
                     ? Math.Round((decimal)dci.Specification.UnitPrice * ((decimal)dci.Dessert.Discounts.First().DiscountPrice / 100), 0, MidpointRounding.AwayFromZero) : dci.Specification.UnitPrice),
@@ -198,6 +200,8 @@ namespace SIERRA_Server.Controllers
                     DessertCartId = dci.DessertCartId,
                     DessertId = dci.DessertId,
                     Quantity = dci.Quantity,
+                    Flavor =dci.Specification.Flavor,
+                    Size =dci.Specification.Size,
                     DessertImageName = dci.Dessert.DessertImages.FirstOrDefault()?.DessertImageName,
                     DessertName = dci.Dessert.DessertName,
                     //dci.Dessert.Discounts.First().DiscountPrice 這是折扣的折扣率 / 100 百分比切換為小數
