@@ -352,3 +352,15 @@ input:-webkit-autofill {
   bottom: 50px;
   right: 161px;
 }
+
+#edit-password-demo {
+  position: absolute;
+  bottom: 18px;
+  right: -80px;
+}
+
+#reset-password-demo {
+  position: absolute;
+  bottom: 33px;
+  right: -80px;
+}
