@@ -9,7 +9,7 @@ namespace SIERRA_Server.Models.DTOs.Desserts
        
         public int UnitPrice { get; set; }
         public decimal DiscountedPrice => CalculateDiscountedPrice(UnitPrice, DessertDiscountPrice);
-        public decimal DessertDiscountPrice { get; private set; }
+        public decimal DessertDiscountPrice { get; set; }
         public string ImageName { get; set; }
         public int SpecificationId { get; set; }
         public int TotalPages { get; set; }

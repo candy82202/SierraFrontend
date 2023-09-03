@@ -46,6 +46,7 @@ namespace SIERRA_Server.Controllers
             var productsQuery = _context.Desserts
      .Include(d => d.Specifications)
      .Include(d => d.DessertImages)
+     .Include(d=> d.Discounts)
      .AsQueryable();
 
             if (!string.IsNullOrEmpty(keyword))
@@ -63,7 +64,9 @@ namespace SIERRA_Server.Controllers
 
             var dessertDTOs = pagedProducts.Select(d =>
             {
-              
+                decimal dessertDiscountPrice = d.Discounts.Any(d => d.StartAt < DateTime.Now && d.EndAt > DateTime.Now)
+                     ? d.Discounts.First().DiscountPrice
+                     : 0;
                 var unitPrice = d.Specifications?.FirstOrDefault()?.UnitPrice ?? 0;
                 var specificationId = d.Specifications?.FirstOrDefault()?.SpecificationId ?? 0;
                 var imageName = d.DessertImages?.FirstOrDefault()?.DessertImageName;
@@ -73,8 +76,9 @@ namespace SIERRA_Server.Controllers
                 {
                     DessertId = d.DessertId,
                     DessertName = d.DessertName,
-                   SpecificationId =specificationId,
+                    SpecificationId = specificationId,
                     UnitPrice = unitPrice,
+                    DessertDiscountPrice = dessertDiscountPrice,
                     ImageName = imageName,
                     TotalPages = totalPages
                 };
