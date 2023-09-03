@@ -16,6 +16,44 @@
     />
     <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+      .deletebutton {
+        border: 1px solid rgba(30, 29, 29, 0.481);
+        width: 27px;
+        height: 38px;
+        /* background-color: rgba(116, 115, 115, 0.4); */
+        border-radius: 5px 5px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
+        margin: 0px 5px;
+        padding: 0 1px 0 0;
+      }
+      .addbutton {
+        color: white;
+        font-weight: bold;
+        font-size: 30px;
+        border: 1px solid rgba(30, 29, 29, 0.481);
+        width: 27px;
+        height: 38px;
+        background-color: var(--color-primary);
+        border-radius: 5px 5px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
+        margin: 0px 5px;
+        padding: 0 1px 0 0;
+      }
+      .chiffres {
+        border: 1px solid rgba(0, 0, 0, 0.342);
+        border-radius: 3px 3px;
+        line-height: 40px;
+        /* background-color: #8ba0b2; */
+        width: 27px;
+        height: 38px;
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
+        margin: 0px 5px;
+      }
+    </style>
   </head>
 
   <body>
@@ -109,8 +147,10 @@
             <div class="title-header">
               <div class="dessertImage">圖片</div>
               <div class="item_detail">商品</div>
+              <div class="flavor">尺寸/口味</div>
               <div class="price">單價</div>
               <div class="count">數量</div>
+              <div></div>
               <div class="amount">總計</div>
               <div class="operate">操作</div>
             </div>
@@ -125,23 +165,40 @@
                     :src="PhotoPath + item.dessertImageName"
                     v-bind:alt="item.dessertName"
                   />
-                  <div class="name d-flex">
+                  <div class="name">
                     {{ item.dessertName }}
-                    <p v-if="item.flavor !== null">-{{ item.flavor }}</p>
-                    <p v-if="item.size !== null">-{{ item.size }}</p>
+                    <!-- <p v-if="item.flavor !== null">-{{ item.flavor }}</p>
+                    <p v-if="item.size !== null">-{{ item.size }}</p> -->
                   </div>
+                </div>
+                <div class="name d-flex">
+                  <!-- {{ item.dessertName }} -->
+                  <p v-if="item.flavor !== null">{{ item.flavor }}/</p>
+                  <p v-if="item.size !== null">{{ item.size }}</p>
                 </div>
                 <div class="price"><span>$</span>{{ item.unitPrice }}</div>
                 <div class="name">{{ item.quantity }}</div>
-                <div class="count">
-                  <button @click="handleSub(item)">-</button>
-                  {{ item.quantity }}
-                  <button @click="handlePlus(item)">+</button>
+                <div class="count d-flex jcc aic">
+                  <button class="addbutton" @click="handleSub(item)">-</button>
+                  <!-- <button @click="handleSub(item)">-</button> -->
+                  <span class="chiffres"> {{ item.quantity }}</span>
+                  <button class="addbutton" @click="handlePlus(item)">+</button>
+                  <!-- <button @click="handlePlus(item)">+</button> -->
                 </div>
-                <div class="amount">{{ item.unitPrice * item.quantity }}</div>
+                <div class="amount">
+                  <span>$</span>{{ item.unitPrice * item.quantity }}
+                </div>
                 <div class="operate">
-                  <button @click="handleDelete(item)" :id="item.id">
-                    刪除
+                  <button
+                    class="deletebutton"
+                    @click="handleDelete(item)"
+                    :id="item.id"
+                  >
+                    <!-- <span style="font-size: 20px; font-weight: 100">刪除</span> -->
+                    <i
+                      class="bi bi-trash"
+                      style="font-size: 20px; font-weight: 100"
+                    ></i>
                   </button>
                 </div>
               </div>
